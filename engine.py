@@ -42,13 +42,14 @@ class Engine:
 		while not doneRunning:
 			#handle player input
 			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					doneRunning = True
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.KEY_q:
 						doneRunning = True
 					else:
 						self._hero.update(event.key, True)
 				if event.type == pygame.KEYUP:
-					print("A tecla ", event.key, " foi solta")
 					self._hero.update(event.key, False)
 			self._hero.update(0, False)
 			self._ball.update(self.grid)
@@ -61,10 +62,11 @@ class Engine:
 							self.grid[x][y] = constants.HYPER
 						elif self.grid[x][y] == constants.PROCESS:
 							self.grid[x][y] = constants.CONQUERED
+				self.DFS(int(round(self._ball.pos[0]/constants.SCALE[0])), int(round(self._ball.pos[1]/constants.SCALE[1])))
 			else:
 				self.grid[_heroPos[0]][_heroPos[1]] = constants.PROCESS
-			self.DFS(int(round(self._ball.pos[0]/constants.SCALE[0])), int(round(self._ball.pos[1]/constants.SCALE[1])))
-			contador = -int(constants.GRID_SIZE[0]*constants.GRID_SIZE[1]/2)
+			
+			contador = int(3*constants.GRID_SIZE[0]*constants.GRID_SIZE[1]/4)
 			#draw grid
 			for x in range(constants.GRID_SIZE[0]):
 				for y in range(constants.GRID_SIZE[1]):
@@ -73,11 +75,10 @@ class Engine:
 						_color = constants.LIGHT_GREEN
 					elif self.grid[x][y] == constants.CONQUERED:
 						_color = constants.GREEN
+						contador -= 1
 					elif self.grid[x][y] == constants.HYPER:
 						_color = constants.GREEN
 						self.grid[x][y] = constants.CONQUERED
-					else:
-						contador += 1
 					pygame.draw.rect(self.screen, _color, [x*constants.SCALE[0], y*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1]])
 
 
@@ -90,7 +91,7 @@ class Engine:
 			pygame.draw.rect(self.screen, constants.RED, [self._hero.pos[0], self._hero.pos[1], constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 
 			#draw ball
-			pygame.draw.circle(self.screen, constants.BLUE, [self._ball.pos[0], self._ball.pos[1]], constants.BALL_RADIUS)
+			pygame.draw.circle(self.screen, constants.BLUE, [self._ball.pos[0] + constants.BALL_RADIUS, self._ball.pos[1] + constants.BALL_RADIUS], constants.BALL_RADIUS)
 
 		
 			font = pygame.font.SysFont('Calibri', 25, True, False)
