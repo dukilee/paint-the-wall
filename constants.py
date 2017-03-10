@@ -1,0 +1,38 @@
+#colors
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+LIGHT_GREEN = (200, 255, 200)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
+
+#screen
+SCREEN_SIZE = (800, 600)
+
+#hero
+STOP = 0
+RIGHT = 1
+UP = 2
+LEFT = 3
+DOWN = 4
+HERO_SPEED = 2
+HERO_SIZE = (20, 20)
+
+#ball
+BALL_RADIUS = 7
+
+#arrows
+NOKEY = -1
+KEY_RIGHT = 275
+KEY_UP = 273
+KEY_LEFT = 276
+KEY_DOWN = 274
+KEY_q = 113
+
+#grid
+NOTHING = 0
+PROCESS = 1
+CONQUERED = 2
+HYPER = 3
+GRID_SIZE = (40, 40)
+SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
