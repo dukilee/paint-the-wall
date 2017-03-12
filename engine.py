@@ -2,16 +2,18 @@ import constants
 import pygame
 import hero
 import ball
+import grid
+import vector2
 import sys
 from pygame.locals import *
+
 class Engine:
 	_hero = hero.Hero() 
-	_ball = ball.Ball()
+	_ball = []
 	cont = 500
+	numberBalls = 1
 	dx = (1, -1, 0, 0)
 	dy = (0, 0, 1, -1)
-	screen = pygame.display.set_mode(constants.SCREEN_SIZE) 
-	screen.fill(constants.WHITE)	
 	grid = [[0 for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
 
 	def DFS(self, startx, starty):
@@ -28,7 +30,16 @@ class Engine:
 					stack.append([nx, ny])
 
 
-	def run(self):
+	def run(self, screen):
+		self._ball = []
+		for i in range(self.numberBalls):
+			self._ball.append(ball.Ball(i))
+
+		for i in range(self.numberBalls):
+			print("iniciando")	
+			self._ball[i].pos.print()
+
+
 		pygame.init()
 		doneRunning = False
 		clock = pygame.time.Clock()
@@ -40,10 +51,11 @@ class Engine:
 			self.grid[constants.GRID_SIZE[0]-1][i] = constants.CONQUERED
 		
 		while not doneRunning:
+
 			#handle player input
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					doneRunning = True
+					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.KEY_q:
 						doneRunning = True
@@ -51,22 +63,31 @@ class Engine:
 						self._hero.update(event.key, True)
 				if event.type == pygame.KEYUP:
 					self._hero.update(event.key, False)
+
+
+			#update game physics
 			self._hero.update(0, False)
-			self._ball.update(self.grid)
+			for i in range(self.numberBalls):
+				self._ball[i].update(self.grid)
+
+
 			#update grid 
-			_heroPos = [int(round(self._hero.pos[0]/constants.SCALE[0])), int(round(self._hero.pos[1]/constants.SCALE[1]))] 
-			if self.grid[_heroPos[0]][_heroPos[1]] == constants.CONQUERED:
+			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
+			if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
 				for y in range(constants.GRID_SIZE[1]):
 					for x in range(constants.GRID_SIZE[0]):
 						if self.grid[x][y] == constants.NOTHING:
 							self.grid[x][y] = constants.HYPER
 						elif self.grid[x][y] == constants.PROCESS:
 							self.grid[x][y] = constants.CONQUERED
-				self.DFS(int(round(self._ball.pos[0]/constants.SCALE[0])), int(round(self._ball.pos[1]/constants.SCALE[1])))
+				for i in range(self.numberBalls):
+					self.DFS(int(round(self._ball[i].pos.x/constants.SCALE[0])), int(round(self._ball[i].pos.y/constants.SCALE[1])))
 			else:
-				self.grid[_heroPos[0]][_heroPos[1]] = constants.PROCESS
+				self.grid[_heroPos.x][_heroPos.y] = constants.PROCESS
 			
 			contador = int(3*constants.GRID_SIZE[0]*constants.GRID_SIZE[1]/4)
+			
+
 			#draw grid
 			for x in range(constants.GRID_SIZE[0]):
 				for y in range(constants.GRID_SIZE[1]):
@@ -79,24 +100,27 @@ class Engine:
 					elif self.grid[x][y] == constants.HYPER:
 						_color = constants.GREEN
 						self.grid[x][y] = constants.CONQUERED
-					pygame.draw.rect(self.screen, _color, [x*constants.SCALE[0], y*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1]])
+					pygame.draw.rect(screen, _color, [x*constants.SCALE[0], y*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1]])
 
 
 
-
+			#win condition
 			if contador <= 0:
 				print("YOU WON :)")
 				sys.exit()
+
 			#draw hero
-			pygame.draw.rect(self.screen, constants.RED, [self._hero.pos[0], self._hero.pos[1], constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
+			pygame.draw.rect(screen, constants.RED, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 
 			#draw ball
-			pygame.draw.circle(self.screen, constants.BLUE, [self._ball.pos[0] + constants.BALL_RADIUS, self._ball.pos[1] + constants.BALL_RADIUS], constants.BALL_RADIUS)
+			for i in range(self.numberBalls):
+				pygame.draw.circle(screen, constants.BLUE, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
 
-		
+
+			#Score
 			font = pygame.font.SysFont('Calibri', 25, True, False)
 			text = font.render("Left: {}".format(contador), True, constants.BLACK)
-			self.screen.blit(text, [0, 0])
+			screen.blit(text, [0, 0])
 
 
 			pygame.display.flip()

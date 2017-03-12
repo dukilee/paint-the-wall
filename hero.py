@@ -1,7 +1,8 @@
 import constants
+import vector2
 
 class Hero:
-	pos = [0, 0]
+	pos = vector2.Vector2(0, 0)
 	constants.HERO_SPEED = constants.HERO_SPEED
 	direction = constants.STOP
 	def update(self, key, press):
@@ -29,20 +30,20 @@ class Hero:
 					self.direction = constants.STOP
 
 		if self.direction == constants.RIGHT:
-			if self.pos[0] < constants.SCREEN_SIZE[0] - constants.HERO_SIZE[0]:
-				self.pos[0] += constants.HERO_SPEED
+			if self.pos.x < constants.SCREEN_SIZE[0] - constants.HERO_SIZE[0]:
+				self.pos.x += constants.HERO_SPEED
 		
 		elif self.direction == constants.UP:
-			if self.pos[1] > 0:
-				self.pos[1] -= constants.HERO_SPEED
+			if self.pos.y > 0:
+				self.pos.y -= constants.HERO_SPEED
 		
 		elif self.direction == constants.LEFT:
-			if self.pos[0] > 0:
-				self.pos[0] -= constants.HERO_SPEED
+			if self.pos.x > 0:
+				self.pos.x -= constants.HERO_SPEED
 		
 		elif self.direction == constants.DOWN:
-			if self.pos[1] < constants.SCREEN_SIZE[1] - constants.HERO_SIZE[1]:
-				self.pos[1] += constants.HERO_SPEED
+			if self.pos.y < constants.SCREEN_SIZE[1] - constants.HERO_SIZE[1]:
+				self.pos.y += constants.HERO_SPEED
 		
 		
 		
