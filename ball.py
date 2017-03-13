@@ -2,19 +2,26 @@ import constants
 import vector2
 import random
 import sys
+
 class Ball:
 	def __init__(self, x = 0):
 		self.pos = vector2.Vector2(100*(x+1) + random.randint(-50, 50), random.randint(50, 200))
 		self.speed = vector2.Vector2(3, 3)
+
 		aux = random.randint(-1, 1)
+
 		if aux<0:
 			self.speed.x *=-1
+
 		aux = random.randint(-1, 1)
+
 		if aux<0:
 			self.speed.y *=-1
+
 		while self.pos.x > constants.SCREEN_SIZE[0]:
 			self.pos.x -= constants.SCREEN_SIZE[0]
 			self.pos.y += 200
+
 		# self.pos.x = 200*(x+1)
 		# self.pos.y = 100
 

@@ -5,6 +5,7 @@ class Hero:
 	pos = vector2.Vector2(0, 0)
 	constants.HERO_SPEED = constants.HERO_SPEED
 	direction = constants.STOP
+	
 	def update(self, key, press):
 		if press:
 			if key == constants.KEY_RIGHT:
