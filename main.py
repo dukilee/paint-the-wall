@@ -15,17 +15,19 @@ _menu = menu.MainMenu()
 action = constants.UNDEFINED
 
 while action != constants.QUIT:
-	pygame.mixer.music.load('sounds/teste_1.mid')
-	music.play(0)
+	#pygame.mixer.music.load('sounds/teste_1.mid')
+	#music.play(0)
 	
 	action = _menu.update(screen)
-	music.stop()
+	#music.stop()
 
-	music.load('sounds/teste_2.mid')
-	music.play(0)
+	#music.load('sounds/teste_2.mid')
+	#music.play(0)
 	if action == constants.PLAY:
-		_engine = engine.Engine(12)
-		action = _engine.run(screen)
+		action = constants.RESTART
+		while action == constants.RESTART:
+			_engine = engine.Engine(12)
+			action = _engine.run(screen)
 
 	elif action == constants.STAGE:
 		_menu = menu.StageMenu()
@@ -34,7 +36,9 @@ while action != constants.QUIT:
 		_menu = menu.MainMenu()
 
 	elif action == constants.STAGE10:
-		_engine = stage_10.Stage_10(5)
-		action = _engine.run(screen)
-		
-	music.stop()
+		action = constants.RESTART
+		while action == constants.RESTART:
+			_engine = stage_10.Stage_10(5)
+			action = _engine.run(screen)
+	
+	#music.stop()

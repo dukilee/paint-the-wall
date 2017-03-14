@@ -156,4 +156,3 @@ class PauseMenu(Menu):
 		self.buttons.append(Button(100, 250, 150, 100, 'Restart', constants.RESTART, 40, False))
 		self.buttons.append(Button(275, 250, 150, 100, 'Resume', constants.UNDEFINED, 40, False))
 		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
-		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))

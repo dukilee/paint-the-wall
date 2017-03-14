@@ -46,13 +46,14 @@ class Engine:
 	def run(self, screen):
 		self._ball = []
 		conquering = False #true if there is any process block
-		repint = True#true when the hole screen needs to be redrawn
-		objectErase = []#marks the position of everything that surrounds objects(balls or hero)
+		repint = True #true when the whole screen needs to be redrawn
+		objectErase = [] #marks the position of everything that surrounds objects(balls or hero)
+
 		for i in range(self.numberBalls):
 			self._ball.append(ball.Ball(i))
 
-		for i in range(self.numberBalls):
-			self._ball[i].pos.print()
+		#for i in range(self.numberBalls):
+		#	self._ball[i].pos.print()
 
 		pygame.init()
 		doneRunning = False
@@ -79,6 +80,8 @@ class Engine:
 						action = _menu.update(screen)
 						if action == constants.MAIN_MENU:
 							doneRunning = True
+						elif action == constants.RESTART:
+							return constants.RESTART
 						repint = True
 					else:
 						self._hero.update(event.key, True)
@@ -95,7 +98,6 @@ class Engine:
 			for i in range(self.numberBalls):
 				pygame.draw.circle(screen, constants.BLUE, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
 				
-
 			#calculates what parts of the image needs to be redone
 			objectErase = [] 
 			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
@@ -159,7 +161,7 @@ class Engine:
 				pygame.display.flip()
 			#win condition
 			if contador <= 0:
-				print("YOU WON :)")
+				#print("YOU WON :)")
 				return constants.WIN
 
 			#draw hero

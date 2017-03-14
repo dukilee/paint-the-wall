@@ -27,23 +27,26 @@ class Ball:
 			return y >= 0 and y < len(grid[0])
 		return False
 
+	def valid(self, x, y, grid):
+		return self.valid_x(x, grid) and self.valid_y(y, grid)
+
 	def update(self, grid):
 		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
 		actualGrid = tools.discretize(self.pos)
 		nextGrid = tools.discretize(nextPos)
 		
-		if self.valid_x(nextGrid[0], grid) and grid[nextGrid[0]][actualGrid[1]] == constants.CONQUERED or not self.valid_x(nextGrid[0], grid):
+		if self.valid(nextGrid[0], actualGrid[1], grid) and grid[nextGrid[0]][actualGrid[1]] == constants.CONQUERED or not self.valid_x(nextGrid[0], grid):
 			self.speed.x *= -1
 			nextPos.x = self.pos.x + self.speed.x
 			nextGrid[0] = tools.round_coord(nextPos.x, 0)
 		
-		if self.valid_y(nextGrid[1], grid) and grid[actualGrid[0]][nextGrid[1]] == constants.CONQUERED or not self.valid_y(nextGrid[1], grid):
+		if self.valid(actualGrid[0], nextGrid[1], grid) and grid[actualGrid[0]][nextGrid[1]] == constants.CONQUERED or not self.valid_y(nextGrid[1], grid):
 			self.speed.y *= -1
 			nextPos.y = self.pos.y + self.speed.y
 			nextGrid[1] = tools.round_coord(nextPos.y, 1)
 		
-		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
-			print("YOU LOST :(");
+		if self.valid(nextGrid[0], nextGrid[1], grid) and grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
+			#print("YOU LOST :(");
 			return constants.LOSE
 
 		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)

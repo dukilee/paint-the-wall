@@ -3,6 +3,7 @@ import constants
 import engine
 import grid
 import hero
+import menu
 import pygame
 import random
 import sys
@@ -35,8 +36,6 @@ class level_Ball(ball.Ball):
 			nextGrid[1] = tools.round_coord(nextPos.y, 1)
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
-			print("YOU LOST :(");
-			#sys.exit()
 			return constants.LOSE
 
 		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
@@ -53,8 +52,8 @@ class Stage_10(engine.Engine):
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball(i))
 
-		for i in range(self.numberBalls):
-			self._ball[i].pos.print()
+		#for i in range(self.numberBalls):
+		#	self._ball[i].pos.print()
 
 		pygame.init()
 		doneRunning = False
@@ -77,9 +76,16 @@ class Stage_10(engine.Engine):
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.KEY_q:
-						#sys.exit()
 						#doneRunning = True
 						return constants.UNDEFINED
+					elif event.key == constants.KEY_p:
+						_menu = menu.PauseMenu()
+						action = _menu.update(screen)
+						if action == constants.MAIN_MENU:
+							doneRunning = True
+						elif action == constants.RESTART:
+							return constants.RESTART
+						repint = True
 					else:
 						self._hero.update(event.key, True)
 				if event.type == pygame.KEYUP:
@@ -124,7 +130,6 @@ class Stage_10(engine.Engine):
 			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 			if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
 				if conquering:
-					s_conquered.play()
 					conquering = False
 					repint = True
 					for y in range(constants.GRID_SIZE[1]):
@@ -137,8 +142,6 @@ class Stage_10(engine.Engine):
 						self.DFS(int(round(self._ball[i].pos.x/constants.SCALE[0])), int(round(self._ball[i].pos.y/constants.SCALE[1])))
 			else:
 				conquering = True
-				if self.grid[_heroPos.x][_heroPos.y] != constants.PROCESS:
-					s_conquering.play()
 				self.grid[_heroPos.x][_heroPos.y] = constants.PROCESS
 			
 			contador = int(3*constants.GRID_SIZE[0]*constants.GRID_SIZE[1]/4)			
@@ -159,10 +162,8 @@ class Stage_10(engine.Engine):
 							self.grid[x][y] = constants.CONQUERED
 						pygame.draw.rect(screen, _color, [x*constants.SCALE[0], y*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1]])
 				pygame.display.flip()
-			
 			#win condition
 			if contador <= 0:
-				print("YOU WON :)")
 				return constants.WIN
 
 			#draw hero
