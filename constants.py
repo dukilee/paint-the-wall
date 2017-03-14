@@ -42,11 +42,11 @@ SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
 
 #menu actions
 UNDEFINED = -1000 # for flags
-LEVEL_0 = -2 # just for testing
 UNCLICKABLE = -1
 QUIT = 0
 MAIN_MENU = 1
 STAGE_SELECT = 2
+STAGE = 3
 STAGE0 = 100
 STAGE1 = STAGE0 + 1
 STAGE2 = STAGE1 + 1

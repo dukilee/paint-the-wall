@@ -80,7 +80,7 @@ class MainMenu(Menu):
 		mouse = pygame.mouse
 		TITLE_button = Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, constants.WHITE, constants.BLACK)
 		PLAY_button = Button(260, 200, 250, 70, 'PLAY', constants.STAGE_SELECT)
-		STAGE_button = Button(260, 300, 250, 70, 'STAGES', constants.LEVEL_0)
+		STAGE_button = Button(260, 300, 250, 70, 'STAGES', constants.STAGE)
 		QUIT_button = Button(260, 400, 250, 70, 'QUIT', constants.QUIT)
 		
 		while not done:
