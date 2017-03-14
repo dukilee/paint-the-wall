@@ -6,15 +6,10 @@ import hero
 import pygame
 import random
 import sys
+import tools
 import vector2
 
 from pygame.locals import *
-
-def round_coord(c, t): # t = 0 or 1 (x or y)
-	return int(round(c/constants.SCALE[t]))
-
-def discretize(pos):
-	return [round_coord(pos.x, 0), round_coord(pos.y, 1)]
 
 class level_Hero(hero.Hero):
 	pass
@@ -22,21 +17,22 @@ class level_Hero(hero.Hero):
 class level_Ball(ball.Ball):
 	def update(self, grid):
 		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
-		actualGrid = discretize(self.pos)
-		nextGrid = discretize(nextPos)
+		actualGrid = tools.discretize(self.pos)
+		nextGrid = tools.discretize(nextPos)
+		
 		if grid[nextGrid[0]][actualGrid[1]] == constants.CONQUERED:
 			if nextGrid[0] > 0 and nextGrid[0] < len(grid) - 1:
 				grid[nextGrid[0]][actualGrid[1]] = constants.NOTHING
 			self.speed.x *= -1
 			nextPos.x = self.pos.x + self.speed.x
-			nextGrid[0] = round_coord(nextPos.x, 0)
+			nextGrid[0] = tools.round_coord(nextPos.x, 0)
 
 		if grid[actualGrid[0]][nextGrid[1]] == constants.CONQUERED:
 			if nextGrid[1] > 0 and nextGrid[1] < len(grid[actualGrid[0]]) - 1:
 				grid[actualGrid[0]][nextGrid[1]] = constants.NOTHING
 			self.speed.y *= -1
 			nextPos.y = self.pos.y + self.speed.y
-			nextGrid[1] = round_coord(nextPos.y, 1)
+			nextGrid[1] = tools.round_coord(nextPos.y, 1)
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
 			print("YOU LOST :(");
@@ -48,15 +44,6 @@ class level_Ball(ball.Ball):
 		return constants.UNDEFINED
 
 class Stage_10(engine.Engine):
-	def __init__(self):
-		self._hero = level_Hero() 
-		self._ball = []
-		self.cont = 500
-		self.numberBalls = 1
-		self.dx = (1, -1, 0, 0)
-		self.dy = (0, 0, 1, -1)
-		self.grid = [[0 for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
-
 	def run(self, screen):
 		self._ball = []
 		conquering = False #true if there is any process block

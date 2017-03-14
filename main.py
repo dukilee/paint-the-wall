@@ -23,11 +23,9 @@ while action != constants.QUIT:
 
 	music.load('sounds/teste_2.mid')
 	music.play(0)
-	if action == constants.STAGE_SELECT:
-		_engine = engine.Engine()
-		_engine.numberBalls = 12
-		_engine.run(screen)
-		action = constants.UNDEFINED
+	if action == constants.PLAY:
+		_engine = engine.Engine(12)
+		action = _engine.run(screen)
 
 	elif action == constants.STAGE:
 		_menu = menu.StageMenu()
@@ -36,9 +34,7 @@ while action != constants.QUIT:
 		_menu = menu.MainMenu()
 
 	elif action == constants.STAGE10:
-		_engine = stage_10.Stage_10()
-		_engine.numberBalls = 5
-		_engine.run(screen)
-		action = constants.UNDEFINED
+		_engine = stage_10.Stage_10(5)
+		action = _engine.run(screen)
 		
 	music.stop()

@@ -9,11 +9,11 @@ import menu
 from pygame.locals import *
 
 class Engine:
-	def __init__(self):
+	def __init__(self, nballs):
 		self._hero = hero.Hero() 
 		self._ball = []
 		self.cont = 500
-		self.numberBalls = 1
+		self.numberBalls = nballs
 		self.dx = (1, -1, 0, 0)
 		self.dy = (0, 0, 1, -1)
 		self.grid = [[0 for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
@@ -63,14 +63,14 @@ class Engine:
 			self.grid[constants.GRID_SIZE[0]-1][i] = constants.CONQUERED
 
 		while not doneRunning:
-
 			#handle player input
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.KEY_q:
-						doneRunning = True
+						#doneRunning = True
+						return constants.UNDEFINED
 					elif event.key == constants.KEY_p:
 						_menu = menu.PauseMenu()
 						action = _menu.update(screen)

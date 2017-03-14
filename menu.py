@@ -1,5 +1,7 @@
 import constants
 import pygame
+import sys
+
 from pygame.locals import *
 
 class Button:	
@@ -64,6 +66,7 @@ class Button:
 		return done, action
 
 class Menu:
+	# virtual method
 	def initActors(self):
 		pass
 
@@ -81,10 +84,11 @@ class Menu:
 			#player commands
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					done = True
+					#done = True
+					sys.exit()
 				elif event.type == pygame.KEYDOWN:
-					if event.key == 113:			
-						done = True
+					if event.key == constants.KEY_q:
+						return self.action
 
 			#drawing background
 			screen.fill(constants.WHITE)
@@ -98,24 +102,39 @@ class Menu:
 			pygame.display.update(self.updateRect)
 
 			clock.tick(200)
-		return action
 
+		return action
 
 class MainMenu(Menu):
 	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.QUIT
+
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
 		self.buttons = []
 		self.buttons.append(Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, 60, True, constants.WHITE, constants.BLACK))
-		self.buttons.append(Button(260, 200, 250, 70, 'PLAY', constants.STAGE_SELECT))
+		self.buttons.append(Button(260, 200, 250, 70, 'PLAY', constants.PLAY))
+		self.buttons.append(Button(260, 300, 250, 70, 'STAGES', constants.STAGE))
+		self.buttons.append(Button(260, 400, 250, 70, 'QUIT', constants.QUIT))
+
+class StageMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		self.buttons.append(Button(260, 200, 250, 70, 'PLAY', constants.PLAY))
 		self.buttons.append(Button(260, 300, 250, 70, 'STAGES', constants.STAGE))
 		self.buttons.append(Button(260, 400, 250, 70, 'QUIT', constants.QUIT))
 		
 
 class StageMenu(Menu):
 	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -123,10 +142,12 @@ class StageMenu(Menu):
 		self.buttons = [Button(260, 500, 250, 70, 'Back', constants.MAIN_MENU)]
 		for i in range(10):
 			self.buttons.append(Button(50 + (i%5)*145, 75 + int(i/5)*225, 120, 150, '{}'.format(i+1), constants.STAGE1 + i))
-				
 
 class PauseMenu(Menu):
 	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 200, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1]-400)
 
@@ -135,4 +156,4 @@ class PauseMenu(Menu):
 		self.buttons.append(Button(100, 250, 150, 100, 'Restart', constants.RESTART, 40, False))
 		self.buttons.append(Button(275, 250, 150, 100, 'Resume', constants.UNDEFINED, 40, False))
 		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
-		
+		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
