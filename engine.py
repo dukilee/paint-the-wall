@@ -18,6 +18,9 @@ class Engine:
 		self.dy = (0, 0, 1, -1)
 		self.grid = [[0 for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
 
+	def valid(self, x, y):
+		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
+
 	def DFS(self, startx, starty):
 		stack = []
 		aux = [startx, starty]
@@ -27,7 +30,7 @@ class Engine:
 			for i in range(4):
 				nx = aux[0] + self.dx[i]
 				ny = aux[1] + self.dy[i]
-				if self.grid[nx][ny] == constants.HYPER:
+				if self.valid(nx, ny) and self.grid[nx][ny] == constants.HYPER:
 					self.grid[nx][ny] = constants.NOTHING
 					stack.append([nx, ny])
 
@@ -117,9 +120,6 @@ class Engine:
 						r = Rect((_ballPos.x+i)*constants.SCALE[0], (_ballPos.y+j)*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
 						objectErase.append(r)
 						pygame.draw.rect(screen, color, r)
-
-
-
 
 			#update grid 
 			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
