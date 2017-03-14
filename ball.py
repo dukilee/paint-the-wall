@@ -6,7 +6,7 @@ import tools
 
 class Ball:
 	def __init__(self, x = 0):
-		self.pos = vector2.Vector2(100*(x+1) + random.randint(-50, 50), random.randint(50, 200))
+		self.pos = vector2.Vector2(50*(x+1) + random.randint(-10, 10), random.randint(50, 200))
 		self.speed = vector2.Vector2(3, 3)
 
 		if random.randint(-1, 1) < 0:
