@@ -76,9 +76,17 @@ class Menu:
 	
 		#actors
 		mouse = pygame.mouse
+<<<<<<< HEAD
 		self.initActors()
 
 
+=======
+		TITLE_button = Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, constants.WHITE, constants.BLACK)
+		PLAY_button = Button(260, 200, 250, 70, 'PLAY', constants.STAGE_SELECT)
+		STAGE_button = Button(260, 300, 250, 70, 'STAGES', constants.STAGE)
+		QUIT_button = Button(260, 400, 250, 70, 'QUIT', constants.QUIT)
+		
+>>>>>>> cebc1ee3cc92c0d33b3f6b94e7351c77a4462412
 		while not done:
 			#player commands
 			for event in pygame.event.get():
@@ -138,4 +146,3 @@ class PauseMenu(Menu):
 		self.buttons.append(Button(275, 250, 150, 100, 'Resume', constants.UNDEFINED, 40, False))
 		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
 		
-
