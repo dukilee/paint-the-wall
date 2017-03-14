@@ -9,7 +9,7 @@ class Button:
 		self.width = w
 		self.height = h
 		self.body = [x, y, w, h] # rectangular area of the button
-		
+
 		self.off_b_color = off_b_color # inactive button color
 		self.off_t_color = off_t_color # inactive text color
 
@@ -65,6 +65,11 @@ class Button:
 
 class Menu:
 	def update(self, screen):
+		pass	
+
+class MainMenu(Menu):
+	def update(self, screen):
+
 		#constants
 		clock = pygame.time.Clock()
 		done = False;
@@ -75,7 +80,7 @@ class Menu:
 		mouse = pygame.mouse
 		TITLE_button = Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, constants.WHITE, constants.BLACK)
 		PLAY_button = Button(260, 200, 250, 70, 'PLAY', constants.STAGE_SELECT)
-		TEST_button = Button(260, 300, 250, 70, 'Level 0', constants.LEVEL_0)
+		STAGE_button = Button(260, 300, 250, 70, 'STAGES', constants.LEVEL_0)
 		QUIT_button = Button(260, 400, 250, 70, 'QUIT', constants.QUIT)
 		
 		while not done:
@@ -94,21 +99,68 @@ class Menu:
 			done, action = PLAY_button.hover(mouse, done, action)
 
 			#button Level 0
-			done, action = TEST_button.hover(mouse, done, action)
+			done, action = STAGE_button.hover(mouse, done, action)
 
 			#button QUIT
 			done, action = QUIT_button.hover(mouse, done, action)
 
 			#draw buttons
 			PLAY_button.draw(screen)
-			TEST_button.draw(screen)
+			STAGE_button.draw(screen)
 			QUIT_button.draw(screen)
 			
 			#update buttons on screen
 			TITLE_button.blit(screen)
 			PLAY_button.blit(screen)
-			TEST_button.blit(screen)
+			STAGE_button.blit(screen)
 			QUIT_button.blit(screen)
+
+			pygame.display.flip()
+
+			clock.tick(200)
+		return action
+
+class StageMenu(Menu):
+	def update(self, screen):
+		#constants
+		clock = pygame.time.Clock()
+		done = False;
+		action = constants.QUIT
+		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+
+		#actors
+		mouse = pygame.mouse
+		STAGE_button = []
+		for i in range(10):
+			STAGE_button.append(Button(50 + (i%5)*145, 75 + int(i/5)*225, 120, 150, '{}'.format(i+1), constants.STAGE1 + i))
+		BACK_button = Button(260, 500, 250, 70, 'Back', constants.MAIN_MENU)
+				
+		while not done:
+			#player commands
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					done = True
+				elif event.type == pygame.KEYDOWN:
+					if event.key == 113:			
+						done = True
+
+			#drawing background
+			screen.fill(constants.WHITE)
+
+			#button QUIT
+			done, action = BACK_button.hover(mouse, done, action)
+			for i in range(10):
+				done, action = STAGE_button[i].hover(mouse, done, action)
+
+			#draw buttons
+			BACK_button.draw(screen)
+			for i in range(10):
+				STAGE_button[i].draw(screen)
+			
+			#update buttons on screen
+			BACK_button.blit(screen)
+			for i in range(10):
+				STAGE_button[i].blit(screen)
 
 			pygame.display.flip()
 
