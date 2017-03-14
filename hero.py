@@ -2,9 +2,10 @@ import constants
 import vector2
 
 class Hero:
-	pos = vector2.Vector2(0, 0)
-	constants.HERO_SPEED = constants.HERO_SPEED
-	direction = constants.STOP
+	def __init__(self):
+		self.pos = vector2.Vector2(0, 0)
+		#constants.HERO_SPEED = constants.HERO_SPEED
+		self.direction = constants.STOP
 	
 	def update(self, key, press):
 		if press:

@@ -1,10 +1,13 @@
 #colors
 WHITE = (255, 255, 255)
+MED_BLUE = (100, 100, 255)
 BLUE = (0, 0, 255)
-LIGHT_GREEN = (200, 255, 200)
-GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
+LIGHT_GREEN = (200, 255, 200)
+MED_GREEN = (100, 255, 100)
+DARK_GREEN = (0, 150, 0)
+GREEN = (0, 255, 0)
 
 #screen
 SCREEN_SIZE = (800, 600)
@@ -38,6 +41,12 @@ GRID_SIZE = (40, 40)
 SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
 
 #menu actions
+UNDEFINED = -1000 # for flags
+LEVEL_0 = -2 # just for testing
 UNCLICKABLE = -1
 QUIT = 0
 STAGE_SELECT = 1
+
+#states
+LOSE = 0
+WIN = 1

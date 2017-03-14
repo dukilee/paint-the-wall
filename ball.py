@@ -40,5 +40,9 @@ class Ball:
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
 			print("YOU LOST :(");
-			sys.exit()
+			#sys.exit()
+			return constants.LOSE
+
 		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
+
+		return constants.UNDEFINED

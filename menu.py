@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 
 class Button:	
-	def __init__(self, x, y, w, h, b_text = '', action = -1, off_b_color = (0, 0, 255), off_t_color = (0, 150, 0), on_b_color = (100, 100, 255), on_t_color = (100, 255, 100)):
+	def __init__(self, x, y, w, h, b_text = '', action = -1, off_b_color = constants.BLUE, off_t_color = constants.DARK_GREEN, on_b_color = constants.MED_BLUE, on_t_color = constants.MED_GREEN):
 		self.x = x
 		self.y = y
 		self.width = w
@@ -22,7 +22,7 @@ class Button:
 
 		self.b_color = off_b_color # present button color
 		self.b_text = b_text # text to be shown on button
-		self.fontButton = pygame.font.SysFont('Calibri', 80, True, False) # to create text objects
+		self.fontButton = pygame.font.SysFont('Calibri', 60, True, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
 
 		self.action = action # what will the button peform when clicked (see constants.py)
@@ -42,10 +42,7 @@ class Button:
 		pygame.draw.rect(screen, self.b_color, self.body)
 
 	# update button on screen
-	def blit(self, screen, where = [0, 0]):
-		screen.blit(self.text, where)
-
-	def other_blit(self, screen):
+	def blit(self, screen):
 		text_rect = self.text.get_rect()
 		screen.blit(self.text, [self.x + self.width/2 - text_rect.width/2, self.y + self.height/2 - text_rect.height/2])
 
@@ -55,7 +52,7 @@ class Button:
 
 	# activate button if hovering, deactivate if not
 	def hover(self, mouse, done, action):
-		if self.action >= 0 and self.ishovering(mouse.get_pos()):
+		if self.action != constants.UNCLICKABLE and self.ishovering(mouse.get_pos()):
 			if mouse.get_pressed()[0]: #on click
 				done = True
 				action = self.action
@@ -76,9 +73,10 @@ class Menu:
 
 		#actors
 		mouse = pygame.mouse
-		TITLE_button = Button(150, 100, 500, 100, 'THE GAME', constants.UNCLICKABLE, constants.WHITE, constants.BLACK)
-		PLAY_button = Button(150, 200, 500, 100, 'PLAY', constants.STAGE_SELECT)
-		QUIT_button = Button(150, 350, 500, 100, 'QUIT', constants.QUIT)
+		TITLE_button = Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, constants.WHITE, constants.BLACK)
+		PLAY_button = Button(260, 200, 250, 70, 'PLAY', constants.STAGE_SELECT)
+		TEST_button = Button(260, 300, 250, 70, 'Level 0', constants.LEVEL_0)
+		QUIT_button = Button(260, 400, 250, 70, 'QUIT', constants.QUIT)
 		
 		while not done:
 			#player commands
@@ -89,26 +87,28 @@ class Menu:
 					if event.key == 113:			
 						done = True
 
-			#drawing
+			#drawing background
 			screen.fill(constants.WHITE)
 
 			#button PLAY
 			done, action = PLAY_button.hover(mouse, done, action)
+
+			#button Level 0
+			done, action = TEST_button.hover(mouse, done, action)
 
 			#button QUIT
 			done, action = QUIT_button.hover(mouse, done, action)
 
 			#draw buttons
 			PLAY_button.draw(screen)
+			TEST_button.draw(screen)
 			QUIT_button.draw(screen)
-				
-			#TITLE_button.blit(screen, [220, 100])
-			#PLAY_button.blit(screen, [325, 215])
-			#QUIT_button.blit(screen, [320, 365])
-
-			TITLE_button.other_blit(screen)
-			PLAY_button.other_blit(screen)
-			QUIT_button.other_blit(screen)
+			
+			#update buttons on screen
+			TITLE_button.blit(screen)
+			PLAY_button.blit(screen)
+			TEST_button.blit(screen)
+			QUIT_button.blit(screen)
 
 			pygame.display.flip()
 
