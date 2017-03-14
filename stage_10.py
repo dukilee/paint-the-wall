@@ -73,8 +73,8 @@ class Stage_10(engine.Engine):
 		doneRunning = False
 		clock = pygame.time.Clock()
 
-		s_conquering = pygame.mixer.Sound('sounds\s_coin.wav')
-		s_conquered = pygame.mixer.Sound('sounds\s_up.wav')
+		s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
+		s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
 
 		for i in range (constants.GRID_SIZE[0]):
 			self.grid[i][0] = constants.CONQUERED

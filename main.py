@@ -15,14 +15,14 @@ _menu = menu.MainMenu()
 action = constants.UNDEFINED
 
 while action != constants.QUIT:
-	#pygame.mixer.music.load('sounds/teste_1.mid')
-	#music.play(0)
+	pygame.mixer.music.load('sounds/teste_1.mid')
+	music.play(0)
 	
 	action = _menu.update(screen)
-	#music.stop()
+	music.stop()
 
-	#music.load('sounds/teste_2.mid')
-	#music.play(0)
+	music.load('sounds/teste_2.mid')
+	music.play(0)
 	if action == constants.STAGE_SELECT:
 		_engine = engine.Engine()
 		_engine.numberBalls = 12
@@ -41,4 +41,4 @@ while action != constants.QUIT:
 		_engine.run(screen)
 		action = constants.UNDEFINED
 		
-	#music.stop()
+	music.stop()
