@@ -5,6 +5,7 @@ import ball
 import grid
 import vector2
 import sys
+import menu
 from pygame.locals import *
 
 class Engine:
@@ -69,8 +70,13 @@ class Engine:
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.KEY_q:
-						sys.exit()
 						doneRunning = True
+					elif event.key == constants.KEY_p:
+						_menu = menu.PauseMenu()
+						action = _menu.update(screen)
+						if action == constants.MAIN_MENU:
+							doneRunning = True
+						repint = True
 					else:
 						self._hero.update(event.key, True)
 				if event.type == pygame.KEYUP:

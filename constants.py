@@ -30,6 +30,7 @@ KEY_RIGHT = 275
 KEY_UP = 273
 KEY_LEFT = 276
 KEY_DOWN = 274
+KEY_p = 112
 KEY_q = 113
 
 #grid
@@ -43,6 +44,7 @@ SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
 #menu actions
 UNDEFINED = -1000 # for flags
 LEVEL_0 = -2 # just for testing
+RESTART = -3
 UNCLICKABLE = -1
 QUIT = 0
 MAIN_MENU = 1
