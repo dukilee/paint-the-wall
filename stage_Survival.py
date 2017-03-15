@@ -58,6 +58,45 @@ class level_Ball(ball.Ball):
 		return constants.UNDEFINED
 
 class Stage_Survival(engine.Engine):
+	def DFS(self, startx, starty):
+		stack = []
+		aux = [startx, starty]
+		stack.append(aux)
+		area = 0
+
+		val = self.grid[startx][starty]
+		if val == constants.NOTHING:
+			return 0
+
+		while not stack == []:
+			aux = stack.pop()
+			area += 1
+			for i in range(4):
+				nx = aux[0] + self.dx[i]
+				ny = aux[1] + self.dy[i]
+				if self.valid(nx, ny) and self.grid[nx][ny] == val:
+					self.grid[nx][ny] -= 1
+					stack.append([nx, ny])
+		return area
+
+	def DFS_PAINT(self, startx, starty):
+		stack = []
+		aux = [startx, starty]
+		stack.append(aux)
+		area = 0
+
+		while not stack == []:
+			aux = stack.pop()
+			area += 1
+			for i in range(4):
+				nx = aux[0] + self.dx[i]
+				ny = aux[1] + self.dy[i]
+				if self.valid(nx, ny) and self.grid[nx][ny] != constants.CONQUERED:
+					self.grid[nx][ny] = constants.CONQUERED
+					stack.append([nx, ny])
+		return area
+
+
 	def run(self, screen):
 		self._ball = []
 		conquering = False #true if there is any process block
@@ -113,9 +152,9 @@ class Stage_Survival(engine.Engine):
 				cont += self._ball[i].destructedBlocks
 
 			#draw ball
-			for i in range(self.numberBalls):
-				pygame.draw.circle(screen, constants.BLUE, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
-				
+			for b in self._ball:
+				pygame.draw.circle(screen, constants.BLUE, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
+			
 			#calculates what parts of the image needs to be redone
 			objectErase = [] 
 			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
@@ -151,13 +190,19 @@ class Stage_Survival(engine.Engine):
 					for y in range(constants.GRID_SIZE[1]):
 						for x in range(constants.GRID_SIZE[0]):
 							if self.grid[x][y] == constants.NOTHING:
-								self.grid[x][y] = constants.HYPER
+								self.grid[x][y] = constants.SHYPER
 							elif self.grid[x][y] == constants.PROCESS:
 								self.grid[x][y] = constants.CONQUERED
 								cont += 1
 								score += 1
-					for i in range(self.numberBalls):
-						self.DFS(int(round(self._ball[i].pos.x/constants.SCALE[0])), int(round(self._ball[i].pos.y/constants.SCALE[1])))
+					for b in self._ball:
+						b.area = self.DFS(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+					for b in self._ball:
+						if b.area<constants.PRISION_AREA and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))]!=constants.NOTHING:
+							self.numberBalls -= 1
+							cont += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+							self._ball.remove(b)
+							print("You are going down baby");
 			else:
 				conquering = True
 				# if self.grid[_heroPos.x][_heroPos.y] != constants.PROCESS:
@@ -172,11 +217,13 @@ class Stage_Survival(engine.Engine):
 						_color = constants.WHITE
 						if self.grid[x][y] == constants.CONQUERED:
 							_color = constants.GREEN
-						elif self.grid[x][y] == constants.HYPER:
+						elif self.grid[x][y] == constants.SHYPER:
 							_color = constants.GREEN
 							cont += 1
 							score += 1
 							self.grid[x][y] = constants.CONQUERED
+						elif self.grid[x][y] == constants.HYPER:
+							self.grid[x][y] = constants.NOTHING
 						pygame.draw.rect(screen, _color, [x*constants.SCALE[0], y*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1]])
 				pygame.display.flip()
 			

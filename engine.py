@@ -18,7 +18,7 @@ class Engine:
 		self.numberBalls = nballs
 		self.dx = (1, -1, 0, 0)
 		self.dy = (0, 0, 1, -1)
-		self.grid = [[0 for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
+		self.grid = [[constants.NOTHING for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
 
 	def valid(self, x, y):
 		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
