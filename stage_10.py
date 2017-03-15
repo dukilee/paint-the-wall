@@ -26,14 +26,14 @@ class level_Ball(ball.Ball):
 				grid[nextGrid[0]][actualGrid[1]] = constants.NOTHING
 			self.speed.x *= -1
 			nextPos.x = self.pos.x + self.speed.x
-			nextGrid[0] = tools.round_coord(nextPos.x, 0)
+			nextGrid[0] = tools.conv(nextPos.x, 0)
 
 		if grid[actualGrid[0]][nextGrid[1]] == constants.CONQUERED:
 			if nextGrid[1] > 0 and nextGrid[1] < len(grid[actualGrid[0]]) - 1:
 				grid[actualGrid[0]][nextGrid[1]] = constants.NOTHING
 			self.speed.y *= -1
 			nextPos.y = self.pos.y + self.speed.y
-			nextGrid[1] = tools.round_coord(nextPos.y, 1)
+			nextGrid[1] = tools.conv(nextPos.y, 1)
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
 			return constants.LOSE
@@ -50,7 +50,7 @@ class Stage_10(engine.Engine):
 		objectErase = [] #marks the position of everything that surrounds objects(balls or hero)
 		
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball(i))
+			self._ball.append(level_Ball())
 
 		#for i in range(self.numberBalls):
 		#	self._ball[i].pos.print()
