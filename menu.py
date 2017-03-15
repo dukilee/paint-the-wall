@@ -4,30 +4,10 @@ import sys
 
 from pygame.locals import *
 
-class Button:	
-	def __init__(self, x, y, w, h, b_text = '', action = -1, b_text_size = 60, b_bold = True, off_b_color = constants.BLUE, off_t_color = constants.DARK_GREEN, on_b_color = constants.MED_BLUE, on_t_color = constants.MED_GREEN):
-		self.x = x
-		self.y = y
-		self.width = w
-		self.height = h
-		self.body = [x, y, w, h] # rectangular area of the button
-
-		self.off_b_color = off_b_color # inactive button color
-		self.off_t_color = off_t_color # inactive text color
-
-		if action == constants.UNCLICKABLE:
-			self.on_b_color = off_b_color # color remains unchanged
-			self.on_t_color = off_t_color # color remains unchanged
-		else:
-			self.on_b_color = on_b_color # active button color
-			self.on_t_color = on_t_color # active text color
-
-		self.b_color = off_b_color # present button color
-		self.b_text = b_text # text to be shown on button
-		self.fontButton = pygame.font.SysFont('Calibri', b_text_size, b_bold, False) # to create text objects
-		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
-
-		self.action = action # what will the button peform when clicked (see constants.py)
+class Elements:	
+	#virtual constructor
+	def __init__():
+		pass
 
 	# update color: on
 	def on_color(self):
@@ -41,12 +21,42 @@ class Button:
 
 	# draw button on screen
 	def draw(self, screen):
-		pygame.draw.rect(screen, self.b_color, self.body)
+		if self.b_color != constants.NONE:
+			pygame.draw.rect(screen, self.b_color, self.body)
 
 	# update button on screen
 	def blit(self, screen):
 		text_rect = self.text.get_rect()
 		screen.blit(self.text, [self.x + self.width/2 - text_rect.width/2, self.y + self.height/2 - text_rect.height/2])
+
+
+	# checks if mouse is hovering this area
+	def ishovering(self, mouse):
+		return mouse[0]>=self.x and mouse[0]<=self.x + self.width and mouse[1]>=self.y and mouse[1]<=self.y + self.height
+
+	# activate button if hovering, deactivate if not
+	def hover(self, mouse, done, action):
+		return done, action
+
+class Button(Elements):	
+	def __init__(self, x, y, w, h, b_text = '', action = -1, b_text_size = 60, b_bold = True, off_b_color = constants.BLUE, off_t_color = constants.DARK_GREEN, on_b_color = constants.MED_BLUE, on_t_color = constants.MED_GREEN):
+		self.x = x
+		self.y = y
+		self.width = w
+		self.height = h
+		self.body = [x, y, w, h] # rectangular area of the button
+
+		self.off_b_color = off_b_color # inactive button color
+		self.off_t_color = off_t_color # inactive text color
+		self.on_b_color = on_b_color # active button color
+		self.on_t_color = on_t_color # active text color
+
+		self.b_color = off_b_color # present button color
+		self.b_text = b_text # text to be shown on button
+		self.fontButton = pygame.font.SysFont('Calibri', b_text_size, b_bold, False) # to create text objects
+		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
+
+		self.action = action # what will the button peform when clicked (see constants.py)
 
 	# checks if mouse is hovering this area
 	def ishovering(self, mouse):
@@ -64,6 +74,22 @@ class Button:
 			self.off_color()
 
 		return done, action
+
+class Label(Elements):	
+	def __init__(self, x, y, w, h, b_text = '', b_text_size = 60, b_bold = True, off_b_color = constants.NONE, off_t_color = constants.BLACK, on_b_color = constants.MED_BLUE, on_t_color = constants.MED_GREEN):
+		self.x = x
+		self.y = y
+		self.width = w
+		self.height = h
+		self.body = [x, y, w, h] # rectangular area of the button
+
+		self.off_b_color = off_b_color # inactive color
+		self.off_t_color = off_t_color # inactive text color
+
+		self.b_color = off_b_color # present color
+		self.b_text = b_text # text to be shown
+		self.fontButton = pygame.font.SysFont('Calibri', b_text_size, b_bold, False) # to create text objects
+		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
 
 class Menu:
 	# virtual method
@@ -94,7 +120,7 @@ class Menu:
 			screen.fill(constants.WHITE)
 
 			#button PLAY
-			for b in self.buttons:
+			for b in self.elements:
 				done, action = b.hover(mouse, done, action)
 				b.draw(screen)
 				b.blit(screen)
@@ -105,6 +131,32 @@ class Menu:
 
 		return action
 
+class AboutMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(260, 30, 250, 70, 'About', 45))
+		self.elements.append(Button(650, 500, 150, 100, 'BACK', constants.MAIN_MENU, 40, False))
+
+class AchievementsMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(260, 30, 250, 70, 'Achievements', 45))
+		self.elements.append(Button(650, 500, 150, 100, 'BACK', constants.MAIN_MENU, 40, False))
+
 class MainMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
@@ -114,34 +166,13 @@ class MainMenu(Menu):
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
-		self.buttons = []
-		self.buttons.append(Button(260, 100, 250, 70, 'Paint-The-Wall!', constants.UNCLICKABLE, 60, True, constants.WHITE, constants.BLACK))
-		self.buttons.append(Button(260, 200, 250, 70, 'PLAY', constants.PLAY))
-		self.buttons.append(Button(260, 300, 250, 70, 'STAGES', constants.STAGE))
-		self.buttons.append(Button(260, 400, 250, 70, 'QUIT', constants.QUIT))
-
-class StageMenu(Menu):
-	def initActors(self):
-		#where to go when quitting this menu
-		self.action = constants.MAIN_MENU
-
-		self.buttons.append(Button(260, 200, 250, 70, 'PLAY', constants.PLAY))
-		self.buttons.append(Button(260, 300, 250, 70, 'STAGES', constants.STAGE))
-		self.buttons.append(Button(260, 400, 250, 70, 'QUIT', constants.QUIT))
-		
-
-class StageMenu(Menu):
-	def initActors(self):
-		#where to go when quitting this menu
-		self.action = constants.MAIN_MENU
-
-		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
-
-		#actors
-		self.buttons = [Button(260, 500, 250, 70, 'Back', constants.MAIN_MENU)]
-		for i in range(10):
-			self.buttons.append(Button(50 + (i%5)*145, 75 + int(i/5)*225, 120, 150, '{}'.format(i+1), constants.STAGE1 + i))
+		self.elements = []
+		self.elements.append(Label(260, 100, 250, 70, 'Paint-The-Wall!'))
+		self.elements.append(Button(50, 200, 400, 50, 'STAGES', constants.STAGE_MENU))
+		self.elements.append(Button(50, 275, 400, 50, 'SURVIVAL', constants.SURVIVAL_MENU))
+		self.elements.append(Button(50, 350, 400, 50, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
+		self.elements.append(Button(50, 425, 400, 50, 'ABOUT', constants.ABOUT_MENU))
+		self.elements.append(Button(50, 500, 400, 50, 'QUIT', constants.QUIT))
 
 class PauseMenu(Menu):
 	def initActors(self):
@@ -152,7 +183,63 @@ class PauseMenu(Menu):
 		self.updateRect = Rect(0, 200, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1]-400)
 
 		#actors
-		self.buttons = []
-		self.buttons.append(Button(100, 250, 150, 100, 'Restart', constants.RESTART, 40, False))
-		self.buttons.append(Button(275, 250, 150, 100, 'Resume', constants.UNDEFINED, 40, False))
-		self.buttons.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
+		self.elements = []
+		self.elements.append(Button(100, 250, 150, 100, 'Restart', constants.RESTART, 40, False))
+		self.elements.append(Button(275, 250, 150, 100, 'Resume', constants.UNDEFINED, 40, False))
+		self.elements.append(Button(450, 250, 150, 100, 'Menu', constants.MAIN_MENU, 40, False))
+
+class StageMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = [Button(260, 500, 250, 70, 'Back', constants.MAIN_MENU)]
+		self.elements.append(Label(260, 30, 250, 70, 'Stages', 45))
+		for i in range(10):
+			self.elements.append(Button(50 + (i%5)*145, 75 + int(i/5)*225, 120, 150, '{}'.format(i+1), constants.STAGE1 + i))
+
+class StatsMenu(Menu):
+	def initActors(self):		
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(260, 30, 250, 70, 'Stats', 45))
+		self.elements.append(Button(450, 250, 150, 100, 'BACK', constants.MAIN_MENU, 40, False))
+
+class SurvivalMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(260, 30, 250, 70, 'Survival', 45))
+		self.elements.append(Button(50, 500, 150, 100, 'PLAY', constants.STAGE_SURVIVAL, 40, False))
+		self.elements.append(Button(275, 500, 150, 100, 'RANK', constants.RANK_MENU, 40, False))
+		self.elements.append(Button(450, 500, 150, 100, 'BACK', constants.MAIN_MENU, 40, False))
+
+
+class RankMenu(Menu):
+	def initActors(self):		
+		#where to go when quitting this menu
+		self.action = constants.SURVIVAL_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(260, 30, 250, 70, 'Ranking', 45))
+		self.elements.append(Button(450, 250, 150, 100, 'BACK', constants.SURVIVAL_MENU, 40, False))
