@@ -58,44 +58,6 @@ class level_Ball(ball.Ball):
 		return constants.UNDEFINED
 
 class Stage_Survival(engine.Engine):
-	def DFS(self, startx, starty):
-		stack = []
-		aux = [startx, starty]
-		stack.append(aux)
-		area = 0
-
-		val = self.grid[startx][starty]
-		if val == constants.NOTHING:
-			return 0
-
-		while not stack == []:
-			aux = stack.pop()
-			area += 1
-			for i in range(4):
-				nx = aux[0] + self.dx[i]
-				ny = aux[1] + self.dy[i]
-				if self.valid(nx, ny) and self.grid[nx][ny] == val:
-					self.grid[nx][ny] -= 1
-					stack.append([nx, ny])
-		return area
-
-	def DFS_PAINT(self, startx, starty):
-		stack = []
-		aux = [startx, starty]
-		stack.append(aux)
-		area = 0
-
-		while not stack == []:
-			aux = stack.pop()
-			area += 1
-			for i in range(4):
-				nx = aux[0] + self.dx[i]
-				ny = aux[1] + self.dy[i]
-				if self.valid(nx, ny) and self.grid[nx][ny] != constants.CONQUERED:
-					self.grid[nx][ny] = constants.CONQUERED
-					stack.append([nx, ny])
-		return area
-
 
 	def run(self, screen):
 		self._ball = []
@@ -117,26 +79,12 @@ class Stage_Survival(engine.Engine):
 		# s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
 		# s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
 
-		for i in range (constants.GRID_SIZE[0]):
-			self.grid[i][0] = constants.CONQUERED
-			self.grid[i][constants.GRID_SIZE[1]-1] = constants.CONQUERED
-		for i in range (constants.GRID_SIZE[1]):
-			self.grid[0][i] = constants.CONQUERED
-			self.grid[constants.GRID_SIZE[0]-1][i] = constants.CONQUERED
-
+		self.initGrid()
 		while not doneRunning:
 			#handle player input
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					sys.exit()
-				if event.type == pygame.KEYDOWN:
-					if event.key == constants.KEY_q:
-						sys.exit()
-						return constants.UNDEFINED
-					else:
-						self._hero.update(event.key, True)
-				if event.type == pygame.KEYUP:
-					self._hero.update(event.key, False)
+			repint, check = self.checkInput(repint, screen)
+			if check !=None:
+				return check
 
 			#update game physics
 			minimum = 500-int(96000/(4*(time.clock() - timeStart) + 120))
@@ -146,10 +94,9 @@ class Stage_Survival(engine.Engine):
 				self.numberBalls = n
 
 			self._hero.update(0, False)
-			for i in range(self.numberBalls):
-				if self._ball[i].update(self.grid) == constants.LOSE:
-					return constants.LOSE
-				cont += self._ball[i].destructedBlocks
+			lose = self.updateObjects()
+			if lose != None:
+				return lose
 
 			#draw ball
 			for b in self._ball:
@@ -205,8 +152,6 @@ class Stage_Survival(engine.Engine):
 							print("You are going down baby");
 			else:
 				conquering = True
-				# if self.grid[_heroPos.x][_heroPos.y] != constants.PROCESS:
-				# 	s_conquering.play()
 				self.grid[_heroPos.x][_heroPos.y] = constants.PROCESS
 			
 			#draw grid
