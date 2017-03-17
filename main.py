@@ -71,6 +71,5 @@ while action != constants.QUIT:
 	
 	elif action == constants.SURVIVAL_MENU:
 		_menu = menu.SurvivalMenu()
-
 	
 	#music.stop()

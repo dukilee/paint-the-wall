@@ -42,7 +42,6 @@ class Ball:
 			nextGrid[1] = tools.conv(nextPos.y, 1)
 		
 		if self.valid(nextGrid[0], nextGrid[1], grid) and grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
-			#print("YOU LOST :(");
 			return constants.LOSE
 
 		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)

@@ -5,6 +5,8 @@ import sys
 
 from pygame.locals import *
 
+# Falta o tutorial!
+
 class Elements:	
 	def __init__(self, x, y):
 		self.x = x
@@ -35,7 +37,7 @@ class Elements:
 		return done, action
 
 class Button(Elements):	
-	def __init__(self, x = None, y = None, b_text = '', action = -1, text_size = 25, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
+	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
 		self.off_t_color = off_t_color # inactive text color
 		self.on_t_color = on_t_color # active text color
 
@@ -91,7 +93,7 @@ class miniButton(Button):
 		self.present_button = self.off_button
 
 class Label(Elements):	
-	def __init__(self, x = None, y = None, b_text = '', text_size = 50, b_bold = True, b_color = constants.WHITE, t_color = constants.BLACK):
+	def __init__(self, x = None, y = None, b_text = '', text_size = constants.LABEL_FONT_SIZE, b_bold = True, b_color = constants.WHITE, t_color = constants.BLACK):
 		self.b_text = b_text # text to be shown
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, b_bold, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
@@ -163,8 +165,8 @@ class AboutMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(260, 30, 'About', 45))
-		self.elements.append(Button(650, 500, 'BACK', constants.MAIN_MENU, 40, False))
+		self.elements.append(Label(None, constants.POS['UP'], 'About'))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
 
 class AchievementsMenu(Menu):
 	def initActors(self):
@@ -176,8 +178,8 @@ class AchievementsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(260, 30, 'Achievements', 45))
-		self.elements.append(Button(650, 500, 'BACK', constants.MAIN_MENU, 40, False))
+		self.elements.append(Label(None, constants.POS['UP'], 'Achievements'))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
 
 class MainMenu(Menu):
 	def initActors(self):
@@ -189,7 +191,7 @@ class MainMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, 100, 'Paint-The-Wall!'))
+		self.elements.append(Label(None, constants.POS['UP'], 'Paint-The-Wall!'))
 		self.elements.append(Button(None, 200, 'STAGES', constants.STAGE_MENU))
 		self.elements.append(Button(None, 275, 'SURVIVAL', constants.SURVIVAL_MENU))
 		self.elements.append(Button(None, 350, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
@@ -206,9 +208,9 @@ class PauseMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Button(100, 250, 'Restart', constants.RESTART, 40, False))
-		self.elements.append(Button(275, 250, 'Resume', constants.UNDEFINED, 40, False))
-		self.elements.append(Button(450, 250, 'Menu', constants.MAIN_MENU, 40, False))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART))
+		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU))
 
 class StageMenu(Menu):
 	def initActors(self):
@@ -219,10 +221,10 @@ class StageMenu(Menu):
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
-		self.elements = [Button(260, 500, 'Back', constants.MAIN_MENU)]
-		self.elements.append(Label(260, 30, 'Stages', 45))
+		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU)]
+		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
-			self.elements.append(miniButton(80 + (i % 5) * 145, 150 + int(i / 5) * 225, '{}'.format(i + 1), constants.STAGE1 + i))
+			self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
 
 class StatsMenu(Menu):
 	def initActors(self):		
@@ -234,8 +236,8 @@ class StatsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(260, 30, 'Stats', 45))
-		self.elements.append(Button(450, 250, 'BACK', constants.MAIN_MENU, 40, False))
+		self.elements.append(Label(None, constants.POS['UP'], 'Stats'))
+		self.elements.append(Button(450, 250, 'BACK', constants.MAIN_MENU))
 
 class SurvivalMenu(Menu):
 	def initActors(self):
@@ -247,10 +249,10 @@ class SurvivalMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(260, 30, 'Survival', 45))
-		self.elements.append(Button(50, 500, 'PLAY', constants.STAGE_SURVIVAL, 40, False))
-		self.elements.append(Button(275, 500, 'RANK', constants.RANK_MENU, 40, False))
-		self.elements.append(Button(450, 500, 'BACK', constants.MAIN_MENU, 40, False))
+		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
+		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL))
+		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
 
 class RankMenu(Menu):
 	def initActors(self):		
@@ -262,5 +264,5 @@ class RankMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(260, 30, 'Ranking', 45))
-		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, 40, False))
+		self.elements.append(Label(None, constants.POS['UP'], 'Ranking'))
+		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU))

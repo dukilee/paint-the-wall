@@ -51,7 +51,10 @@ LOSE = -99
 WIN = -100
 PRISION_AREA = 500 #1445
 
-#menu actions
+#menu
+BUTTON_FONT_SIZE = 25
+LABEL_FONT_SIZE = 50
+POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]), 'LEFT': int(0.05 * SCREEN_SIZE[0]), 'UP': int(0.15 * SCREEN_SIZE[1]), 'DOWN': int(0.85 * SCREEN_SIZE[1]) }
 UNDEFINED = -1000 # for flags
 RESTART = -3
 UNCLICKABLE = -1
