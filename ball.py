@@ -48,3 +48,4 @@ class Ball:
 		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
 
 		return constants.UNDEFINED
+

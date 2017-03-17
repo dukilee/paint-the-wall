@@ -3,6 +3,7 @@ import engine
 import menu
 import pygame
 import stage_Survival
+import stage_1
 import stage_10
 
 from pygame.locals import *
@@ -34,6 +35,14 @@ while action != constants.QUIT:
 	elif action == constants.STAGE7:
 		_engine = stage_Survival.Stage_Survival(1)
 		action = _engine.run(screen)
+
+	elif action == constants.STAGE1:
+		_engine = stage_1.Stage_1(1)
+		action = _engine.run(screen)
+		if action == constants.WIN:
+			print("WON WON WON WON WON WON!  :)")
+		elif action == constants.LOSE:
+			print("SOOO SAD, YOU'VE LOST!!!  :(")
 
 	elif action == constants.STAGE10:
 		action = constants.RESTART
