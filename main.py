@@ -37,7 +37,7 @@ while action != constants.QUIT:
 		action = _engine.run(screen)
 
 	elif action == constants.STAGE1:
-		_engine = stage_1.Stage_1(1)
+		_engine = stage_1.Stage_1(4)
 		action = _engine.run(screen)
 		if action == constants.WIN:
 			print("WON WON WON WON WON WON!  :)")

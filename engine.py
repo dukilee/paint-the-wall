@@ -23,6 +23,9 @@ class Engine:
 		self.grid = [[constants.NOTHING for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
 
 		self.timerMax = -1
+		self.numberRegions = 1
+		self.ballsKilled = 0
+		self.numberMovements = 0
 
 	def valid(self, x, y):
 		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
@@ -119,6 +122,7 @@ class Engine:
 	def updateGrid(self):
 		_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 		if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
+			self.numberMovements += 1
 			if self.conquering:
 				# s_conquered.play()
 				self.conquering = False
@@ -131,11 +135,16 @@ class Engine:
 							self.grid[x][y] = constants.CONQUERED
 							self.cont += 1
 							self.score += 1
+				self.numberRegions = 0
 				for b in self._ball:
 					b.area = self.DFS(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+					if b.area > 4 and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))] == constants.HYPER:
+						self.numberRegions += 1
 				for b in self._ball:
 					if b.area<constants.PRISION_AREA and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))]!=constants.NOTHING:
+						self.numberRegions -= 1
 						self.numberBalls -= 1
+						self.ballsKilled += 1
 						self.cont += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
 						self._ball.remove(b)
 						print("You are going down baby");
