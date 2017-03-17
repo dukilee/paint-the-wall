@@ -31,11 +31,14 @@ KEY_RIGHT = 275
 KEY_UP = 273
 KEY_LEFT = 276
 KEY_DOWN = 274
-keys = { KEY_RIGHT: RIGHT, KEY_LEFT: LEFT, KEY_DOWN: DOWN, KEY_UP: UP }
+keys = { KEY_RIGHT: RIGHT, KEY_LEFT: LEFT, KEY_DOWN: DOWN, KEY_UP: UP, 'a':97, 'b':98,
+			'c':99, 'd':100, 'e':101, 'f':102, 'g':103, 'h':104, 'i':105, 'j':106,
+			'k':107, 'l':108, 'm':109, 'n':110, 'o':111, 'p':112, 'q':113, 'r':114,
+			's':115, 't':116, 'u':117, 'v':118, 'w':119, 'x':120, 'y':121, 'z':122}
 move_x = { RIGHT: HERO_SPEED, LEFT: -HERO_SPEED }
 move_y = { UP: -HERO_SPEED, DOWN: HERO_SPEED }
-KEY_p = 112
-KEY_q = 113
+
+
 
 #grid
 NOTHING = 3

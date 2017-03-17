@@ -28,6 +28,12 @@ class Stage_1(engine.Engine):
 			self._ball.append(level_Ball())
 
 	def winCondition(self):
-		if self.score>400:
+		if self.ballsKilled == 4 :
 			return True
 		return False
+
+	def writeInstructions(self, screen):
+		font = pygame.font.SysFont('Calibri', 30, True, False)
+		text = font.render("Destroy 4 balls in under 100 seconds.", True, constants.DARK_GREEN)
+		screen.blit(text, [50, 200])
+		

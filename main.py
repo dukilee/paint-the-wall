@@ -8,6 +8,7 @@ import stage_10
 
 from pygame.locals import *
 
+
 pygame.init()
 pygame.display.set_caption('THE GAME', 'The Game')
 music = pygame.mixer.music
@@ -19,7 +20,7 @@ action = constants.UNDEFINED
 while action != constants.QUIT:
 	# pygame.mixer.music.load('sounds/teste_1.mid')
 	# music.play(0)
-	
+	screen.fill(constants.WHITE)
 	action = _menu.update(screen)
 	# music.stop()
 

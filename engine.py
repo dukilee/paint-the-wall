@@ -92,12 +92,14 @@ class Engine:
 					sys.exit()
 				
 				if event.type == pygame.KEYDOWN:
-					if event.key == constants.KEY_q:
+					if event.key == constants.keys['q']:
 						return repint, constants.UNDEFINED
 
 
-					elif event.key == constants.KEY_p:
+					elif event.key == constants.keys['p']:
 						_menu = menu.PauseMenu()
+						screen.fill(constants.WHITE)
+						self.writeInstructions(screen)
 						action = _menu.update(screen)
 						if action == constants.MAIN_MENU:
 							return repint, constants.MAIN_MENU
@@ -120,6 +122,7 @@ class Engine:
 		return None
 
 	def updateGrid(self):
+		self.newBlocksConquered = 0
 		_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 		if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
 			self.numberMovements += 1
@@ -133,8 +136,7 @@ class Engine:
 							self.grid[x][y] = constants.SHYPER
 						elif self.grid[x][y] == constants.PROCESS:
 							self.grid[x][y] = constants.CONQUERED
-							self.cont += 1
-							self.score += 1
+							self.newBlocksConquered += 1
 				self.numberRegions = 0
 				for b in self._ball:
 					b.area = self.DFS(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
@@ -145,7 +147,7 @@ class Engine:
 						self.numberRegions -= 1
 						self.numberBalls -= 1
 						self.ballsKilled += 1
-						self.cont += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+						self.newBlocksConquered += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
 						self._ball.remove(b)
 						print("You are going down baby");
 		else:
@@ -160,8 +162,7 @@ class Engine:
 					_color = constants.GREEN
 				elif self.grid[x][y] == constants.SHYPER:
 					_color = constants.GREEN
-					self.cont += 1
-					self.score += 1
+					self.newBlocksConquered += 1
 					self.grid[x][y] = constants.CONQUERED
 				elif self.grid[x][y] == constants.HYPER:
 					self.grid[x][y] = constants.NOTHING
@@ -198,6 +199,9 @@ class Engine:
 	def initialSettings(self):
 		pass
 
+	def writeInstructions(self, screen):
+		pass
+
 	#Functions to check some missions
 	def timer(self, screen):
 		if time.clock() - self.timeStart > self.timerMax:
@@ -216,28 +220,41 @@ class Engine:
 		self.cont = 0
 		self.minimum = -1
 		self.score = 0
-		self.timeStart = time.clock()
 		self.createObjects()
 
 		self.initialSettings()
-
+		self.initGrid()
+		# self.updateGrid()
+		self.drawGrid(screen)
+	
 
 		pygame.init()
 		doneRunning = False
 		clock = pygame.time.Clock()
 
+
+		#startMenu
+		_menu = menu.StartMenu()
+		screen.fill(constants.WHITE)
+		self.writeInstructions(screen)
+		action = _menu.update(screen)
+		if action == constants.MAIN_MENU:
+			return constants.MAIN_MENU
+
 		# s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
 		# s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
 
-		self.initGrid()
+		self.timeStart = time.clock()
 		while not doneRunning:
 			self.objectErase = [] 
 			pygame.draw.rect(screen, constants.GREEN, [0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]])
 		
 			#handle player input
+			aux = time.clock() - self.timeStart
 			self.repint, check = self.checkInput(self.repint, screen)
 			if check !=None:
 				return check
+			self.timeStart = time.clock() - aux
 
 			#update game physics
 			self.stageDifferences()
@@ -290,6 +307,11 @@ class Engine:
 			if self.winCondition():
 				return constants.WIN
 
+			#update score
+			if self.newBlocksConquered > 0:
+				self.cont += self.newBlocksConquered
+				self.score += self.newBlocksConquered
+				
 			self.draw(screen)
 
 			clock.tick(100)

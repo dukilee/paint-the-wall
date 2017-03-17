@@ -37,7 +37,7 @@ class Elements:
 		return done, action
 
 class Button(Elements):	
-	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
+	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = constants.NOKEY, text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
 		self.off_t_color = off_t_color # inactive text color
 		self.on_t_color = on_t_color # active text color
 
@@ -59,6 +59,7 @@ class Button(Elements):
 		self.body = [x, y, self.width, self.height] # rectangular area of the element
 
 		self.action = action # what will the button peform when clicked (see constants.py)
+		self.shortcut = shortcut
 
 	def set_button_sprites(self):
 		self.off_button = sprites.sprite('grey_off_button.png')
@@ -97,7 +98,7 @@ class Label(Elements):
 		self.b_text = b_text # text to be shown
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, b_bold, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
-
+		self.shortcut = constants.NOKEY
 		rec = self.text.get_rect()
 		self.width = rec.width
 		self.height = rec.height
@@ -127,22 +128,30 @@ class Menu:
 		done = False;
 		action = constants.QUIT
 		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-	
+		listShortcut = {}
 		#actors
 		mouse = pygame.mouse
 		self.initActors()		
+
+		for e in self.elements:
+			listShortcut[e.shortcut] = e
+		if constants.NOKEY in listShortcut:
+			del listShortcut[constants.NOKEY]
+
 		while not done:
+			for b in self.elements:
+				pass
 			#player commands
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					#done = True
 					sys.exit()
 				elif event.type == pygame.KEYDOWN:
-					if event.key == constants.KEY_q:
+					if event.key == constants.keys['q']:
 						return self.action
-
-			#drawing background
-			screen.fill(constants.WHITE)
+					if event.key in listShortcut:
+						done = True
+						action = listShortcut[event.key].action
 
 			#button PLAY
 			for b in self.elements:
@@ -166,7 +175,7 @@ class AboutMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'About'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
 
 class AchievementsMenu(Menu):
 	def initActors(self):
@@ -179,7 +188,7 @@ class AchievementsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Achievements'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
 
 class MainMenu(Menu):
 	def initActors(self):
@@ -204,13 +213,26 @@ class PauseMenu(Menu):
 		self.action = constants.MAIN_MENU
 
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 200, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1]-400)
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
 		#actors
 		self.elements = []
-		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART))
-		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED))
-		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART, constants.keys['r']))
+		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED, constants.keys['p']))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, constants.keys['m']))
+
+class StartMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+
+		#actors
+		self.elements = []
+		self.elements.append(Button(None, None, 'Start', constants.UNDEFINED, constants.keys['s']))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, constants.keys['m']))
 
 class StageMenu(Menu):
 	def initActors(self):
@@ -221,7 +243,7 @@ class StageMenu(Menu):
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
-		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU)]
+		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, constants.keys['b'])]
 		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
 			self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
@@ -237,7 +259,7 @@ class StatsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Stats'))
-		self.elements.append(Button(450, 250, 'BACK', constants.MAIN_MENU))
+		self.elements.append(Button(450, 250, 'BACK', constants.MAIN_MENU, constants.keys['b']))
 
 class SurvivalMenu(Menu):
 	def initActors(self):
@@ -250,9 +272,9 @@ class SurvivalMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
-		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL))
-		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU))
+		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, constants.keys['p']))
+		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, constants.keys['r']))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
 
 class RankMenu(Menu):
 	def initActors(self):		
@@ -265,4 +287,4 @@ class RankMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Ranking'))
-		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU))
+		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, constants.keys['b']))
