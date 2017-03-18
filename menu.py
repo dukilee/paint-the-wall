@@ -1,6 +1,7 @@
 import constants
 import pygame
 import sprites
+import data
 import sys
 
 from pygame.locals import *
@@ -144,8 +145,7 @@ class Menu:
 			#player commands
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					#done = True
-					sys.exit()
+					return constants.QUIT
 				elif event.type == pygame.KEYDOWN:
 					if event.key == constants.keys['q']:
 						return self.action
@@ -204,7 +204,7 @@ class MainMenu(Menu):
 		self.elements.append(Button(None, 200, 'STAGES', constants.STAGE_MENU))
 		self.elements.append(Button(None, 275, 'SURVIVAL', constants.SURVIVAL_MENU))
 		self.elements.append(Button(None, 350, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
-		self.elements.append(Button(None, 425, 'ABOUT', constants.ABOUT_MENU))
+		self.elements.append(Button(None, 425, 'STATS', constants.STATS_MENU))
 		self.elements.append(Button(None, 500, 'QUIT', constants.QUIT))
 
 class PauseMenu(Menu):
@@ -217,6 +217,7 @@ class PauseMenu(Menu):
 
 		#actors
 		self.elements = []
+		self.elements.append(Label(None, 350, 'Press \'p\' to resume.', 30, False, constants.BLACK))
 		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART, constants.keys['r']))
 		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED, constants.keys['p']))
 		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, constants.keys['m']))
@@ -259,7 +260,17 @@ class StatsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Stats'))
-		self.elements.append(Button(450, 250, 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Label(constants.POS['LEFT'], 300, 'Time Played:', 30, False))
+		self.elements.append(Label(constants.POS['LEFT'], 350, 'Blocks Destructed:', 30, False))
+		self.elements.append(Label(constants.POS['LEFT'], 400, 'Balls Killed:', 30, False))
+		self.elements.append(Label(constants.POS['LEFT'], 450, 'Deaths:', 30, False))
+
+		self.elements.append(Label(constants.POS['RIGHT'], 300, '{}'.format(data.i['timePlayed']), 30, False))
+		self.elements.append(Label(constants.POS['RIGHT'], 350, '{}'.format(data.i['blocksConquered']), 30, False))
+		self.elements.append(Label(constants.POS['RIGHT'], 400, '{}'.format(data.i['ballsDestructed']), 30, False))
+		self.elements.append(Label(constants.POS['RIGHT'], 450, '{}'.format(data.i['deaths']), 30, False))
+
 
 class SurvivalMenu(Menu):
 	def initActors(self):

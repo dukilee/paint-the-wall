@@ -26,6 +26,7 @@ class Engine:
 		self.numberRegions = 1
 		self.ballsKilled = 0
 		self.numberMovements = 0
+		self.numberMovementsMax = -1
 
 	def valid(self, x, y):
 		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
@@ -89,7 +90,7 @@ class Engine:
 	def checkInput(self, repint, screen):
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					sys.exit()
+					return repint, constants.QUIT
 				
 				if event.type == pygame.KEYDOWN:
 					if event.key == constants.keys['q']:
@@ -125,8 +126,8 @@ class Engine:
 		self.newBlocksConquered = 0
 		_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 		if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
-			self.numberMovements += 1
 			if self.conquering:
+				self.numberMovements += 1
 				# s_conquered.play()
 				self.conquering = False
 				self.repint = True
@@ -211,6 +212,14 @@ class Engine:
 		screen.blit(text, [750, 0])
 		return None
 
+	def movesLeft(self, screen):
+		if self.numberMovements > self.numberMovementsMax:
+			return constants.LOSE
+		font = pygame.font.SysFont('Calibri', 25, True, False)
+		text = font.render("Movements Left:{}".format(int(self.numberMovementsMax - self.numberMovements)), True, constants.BLACK)
+		screen.blit(text, [600, 0])
+		return None
+
 
 	def run(self, screen):
 		self._ball = []
@@ -260,6 +269,10 @@ class Engine:
 			self.stageDifferences()
 			if self.timerMax > 0:
 				lose = self.timer(screen)
+				if lose != None:
+					return lose
+			if self.numberMovementsMax > 0:
+				lose = self.movesLeft(screen)
 				if lose != None:
 					return lose
 

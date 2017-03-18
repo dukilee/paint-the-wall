@@ -1,9 +1,10 @@
 import constants
+import dataManager
 import engine
 import menu
 import pygame
 import stage_Survival
-import stage_1
+import stage
 import stage_10
 
 from pygame.locals import *
@@ -13,6 +14,8 @@ pygame.init()
 pygame.display.set_caption('THE GAME', 'The Game')
 music = pygame.mixer.music
 screen = pygame.display.set_mode(constants.SCREEN_SIZE)
+
+dManager = dataManager.DataManager()
 
 _menu = menu.MainMenu()
 action = constants.UNDEFINED
@@ -38,7 +41,14 @@ while action != constants.QUIT:
 		action = _engine.run(screen)
 
 	elif action == constants.STAGE1:
-		_engine = stage_1.Stage_1(4)
+		_engine = stage.Stage_1(4)
+		action = _engine.run(screen)
+		if action == constants.WIN:
+			print("WON WON WON WON WON WON!  :)")
+		elif action == constants.LOSE:
+			print("SOOO SAD, YOU'VE LOST!!!  :(")
+	elif action == constants.STAGE2:
+		_engine = stage.Stage_2(2)
 		action = _engine.run(screen)
 		if action == constants.WIN:
 			print("WON WON WON WON WON WON!  :)")
@@ -74,3 +84,4 @@ while action != constants.QUIT:
 		_menu = menu.SurvivalMenu()
 	
 	#music.stop()
+	dManager.save()
