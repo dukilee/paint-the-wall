@@ -12,7 +12,7 @@ class DataManager:
 				if len(lines) != 2 or lines[0] not in data.i.keys():
 					print("Data file is corrupted :(")
 				else:
-					data.i[lines[0]] = int(lines[1])
+					data.i[lines[0]] = int(float(lines[1]))
 
 			file.close()
 		except IOError:
@@ -33,4 +33,3 @@ class DataManager:
 	def __del__(self):
 		self.save()
 		print("Data successfully saved!! :)");
-		

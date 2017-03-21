@@ -27,7 +27,7 @@ class Ball:
 		return self.valid_x(x, grid) and self.valid_y(y, grid)
 
 	def update(self, grid):
-		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
+		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*tools.sign(self.speed.x), self.pos.y + constants.BALL_RADIUS*tools.sign(self.speed.y))
 		actualGrid = tools.discretize(self.pos)
 		nextGrid = tools.discretize(nextPos)
 		

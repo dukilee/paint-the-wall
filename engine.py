@@ -7,17 +7,18 @@ import menu
 import pygame
 import vector2
 import sys
+import data
 import tools
 
 from pygame.locals import *
 
 class Engine:
 
-	def __init__(self, nballs):
+	def __init__(self):
 		self._hero = hero.Hero() 
-		self._ball = [ball.Ball() for i in range(nballs)]		
+		self._ball = []		
 		self.cont = 500
-		self.numberBalls = nballs
+		self.numberBalls = 1
 		self.dx = (1, -1, 0, 0)
 		self.dy = (0, 0, 1, -1)
 		self.grid = [[constants.NOTHING for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
@@ -25,6 +26,7 @@ class Engine:
 		self.timerMax = -1
 		self.numberRegions = 1
 		self.ballsKilled = 0
+		self.oldBallsKilled = 0
 		self.numberMovements = 0
 		self.numberMovementsMax = -1
 
@@ -93,6 +95,7 @@ class Engine:
 					return repint, constants.QUIT
 				
 				if event.type == pygame.KEYDOWN:
+
 					if event.key == constants.keys['q']:
 						return repint, constants.UNDEFINED
 
@@ -117,8 +120,8 @@ class Engine:
 
 	def updateObjects(self):
 		self._hero.update(0, False)
-		for i in range(self.numberBalls):
-			if self._ball[i].update(self.grid) == constants.LOSE:
+		for b in self._ball:
+			if b.update(self.grid) == constants.LOSE:
 				return constants.LOSE
 		return None
 
@@ -143,14 +146,20 @@ class Engine:
 					b.area = self.DFS(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
 					if b.area > 4 and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))] == constants.HYPER:
 						self.numberRegions += 1
-				for b in self._ball:
-					if b.area<constants.PRISION_AREA and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))]!=constants.NOTHING:
-						self.numberRegions -= 1
-						self.numberBalls -= 1
-						self.ballsKilled += 1
-						self.newBlocksConquered += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
-						self._ball.remove(b)
-						print("You are going down baby");
+				done = False
+				while not done:
+					done = True
+					for b in self._ball:
+						if b.area<constants.PRISION_AREA and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))]!=constants.NOTHING:
+							self.numberRegions -= 1
+							self.numberBalls -= 1
+							self.ballsKilled += 1
+							self.newBlocksConquered += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+							self._ball.remove(b)
+							done = False
+							print("You are going down baby, restarting");
+							break
+
 		else:
 			self.conquering = True
 			self.grid[_heroPos.x][_heroPos.y] = constants.PROCESS
@@ -190,6 +199,18 @@ class Engine:
 		
 		
 		pygame.display.update(self.objectErase)
+
+	def achievementsCondition(self):
+		if self.ballsKilled - self.oldBallsKilled > 1:
+			print('New Achievement: Double Kill')
+			data.i['doubleKill'] = 1
+		if self.numberMovements == 1 and self.ballsKilled > 0:
+			print('New Achievement: Yoga Master')
+			data.i['yogaMaster'] = 1
+		if self.cont + self.newBlocksConquered >= (constants.GRID_SIZE[0]-2)*(constants.GRID_SIZE[1]-2):
+			print('New Achievement: World Emperor')
+			data.i['worldEmperor'] = 1
+		self.oldBallsKilled = self.ballsKilled
 
 	def createObjects(self):
 		pass
@@ -278,6 +299,7 @@ class Engine:
 
 			lose = self.updateObjects()
 			if lose != None:
+				data.i['deaths'] += 1
 				return lose
 
 			#draw ball
@@ -317,6 +339,7 @@ class Engine:
 				self.drawGrid(screen)
 
 			#win condition
+			self.achievementsCondition()
 			if self.winCondition():
 				return constants.WIN
 
@@ -328,3 +351,7 @@ class Engine:
 			self.draw(screen)
 
 			clock.tick(100)
+
+	def __del__(self):
+		data.i['ballsDestructed'] += self.ballsKilled
+		data.i['blocksConquered'] += self.cont + self.newBlocksConquered

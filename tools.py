@@ -11,3 +11,8 @@ def conv(c, t): # t = 0 or 1 (x or y)
 
 def discretize(pos):
 	return [conv(pos.x, 0), conv(pos.y, 1)]
+
+def sign(x):
+	if x>0:
+		return 1
+	return -1

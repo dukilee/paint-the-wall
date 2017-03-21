@@ -24,6 +24,7 @@ class Stage_1(engine.Engine):
 		self.timerMax = 100
 
 	def createObjects(self):
+		self.numberBalls = 4
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball())
 
@@ -43,6 +44,7 @@ class Stage_2(engine.Engine):
 		self.numberMovementsMax = 7
 
 	def createObjects(self):
+		self.numberBalls = 2
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball())
 

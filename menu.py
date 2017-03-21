@@ -38,7 +38,7 @@ class Elements:
 		return done, action
 
 class Button(Elements):	
-	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = constants.NOKEY, text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
+	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = [constants.NOKEY], text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
 		self.off_t_color = off_t_color # inactive text color
 		self.on_t_color = on_t_color # active text color
 
@@ -99,7 +99,7 @@ class Label(Elements):
 		self.b_text = b_text # text to be shown
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, b_bold, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
-		self.shortcut = constants.NOKEY
+		self.shortcut = [constants.NOKEY]
 		rec = self.text.get_rect()
 		self.width = rec.width
 		self.height = rec.height
@@ -135,7 +135,8 @@ class Menu:
 		self.initActors()		
 
 		for e in self.elements:
-			listShortcut[e.shortcut] = e
+			for s in e.shortcut:
+				listShortcut[s] = e
 		if constants.NOKEY in listShortcut:
 			del listShortcut[constants.NOKEY]
 
@@ -175,7 +176,7 @@ class AboutMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'About'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
 
 class AchievementsMenu(Menu):
 	def initActors(self):
@@ -188,8 +189,29 @@ class AchievementsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Achievements'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
 
+		if data.i['doubleKill'] == 1:
+			self.elements.append(Label(50, 225, 'Double Kill', 30, False, constants.WHITE, constants.BLACK))
+			self.elements.append(Button(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+		else:
+			self.elements.append(Label(50, 225, 'Double Kill', 30, False, constants.WHITE, constants.GRAY))
+			self.elements.append(Button(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['worldEmperor'] == 1:
+			self.elements.append(Label(300, 225, 'World Emperor', 30, False, constants.WHITE, constants.BLACK))
+			self.elements.append(Button(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+		else:
+			self.elements.append(Label(300, 225, 'World Emperor', 30, False, constants.WHITE, constants.GRAY))
+			self.elements.append(Button(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['yogaMaster'] == 1:
+			self.elements.append(Label(550, 225, 'Yoga Master', 30, False, constants.WHITE, constants.BLACK))
+			self.elements.append(Button(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+		else:
+			self.elements.append(Label(550, 225, 'Yoga Master', 30, False, constants.WHITE, constants.GRAY))
+			self.elements.append(Button(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+		
 class MainMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
@@ -218,9 +240,9 @@ class PauseMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, 350, 'Press \'p\' to resume.', 30, False, constants.BLACK))
-		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART, constants.keys['r']))
-		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED, constants.keys['p']))
-		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, constants.keys['m']))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART, [constants.keys['r']]))
+		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['Enter']]))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
 
 class StartMenu(Menu):
 	def initActors(self):
@@ -232,8 +254,9 @@ class StartMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Button(None, None, 'Start', constants.UNDEFINED, constants.keys['s']))
-		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, constants.keys['m']))
+		self.elements.append(Label(None, 350, 'Press \'Enter\' to start.', 30, False, constants.BLACK))
+		self.elements.append(Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['Enter']]))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
 
 class StageMenu(Menu):
 	def initActors(self):
@@ -244,10 +267,13 @@ class StageMenu(Menu):
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
-		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, constants.keys['b'])]
+		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
 		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
-			self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
+			if i >= data.i['lastUnlockedStages']:
+				self.elements.append(Label(80 + (i % 5) * 145, 170 + int(i / 5) * 150,'{}'.format(i + 1), 30, False))
+			else:
+				self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
 
 class StatsMenu(Menu):
 	def initActors(self):		
@@ -260,7 +286,7 @@ class StatsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Stats'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
 		self.elements.append(Label(constants.POS['LEFT'], 300, 'Time Played:', 30, False))
 		self.elements.append(Label(constants.POS['LEFT'], 350, 'Blocks Destructed:', 30, False))
 		self.elements.append(Label(constants.POS['LEFT'], 400, 'Balls Killed:', 30, False))
@@ -283,9 +309,9 @@ class SurvivalMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
-		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, constants.keys['p']))
-		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, constants.keys['r']))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, constants.keys['b']))
+		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['Enter']]))
+		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
 class RankMenu(Menu):
 	def initActors(self):		
@@ -298,4 +324,4 @@ class RankMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Ranking'))
-		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, constants.keys['b']))
+		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, [constants.keys['b']]))
