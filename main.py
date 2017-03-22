@@ -19,6 +19,8 @@ screen = pygame.display.set_mode(constants.SCREEN_SIZE)
 startTime = time.clock()
 print("Acho que eh ", constants.GRID_SIZE[0]*constants.GRID_SIZE[1] - 2*constants.GRID_SIZE[0] - 2*constants.GRID_SIZE[1] + 4)
 dManager = dataManager.DataManager()
+data.startTime = startTime - data.i['timePlayed']
+data.actualTime = time.clock() - data.startTime
 
 _menu = menu.MainMenu()
 action = constants.UNDEFINED
@@ -43,7 +45,7 @@ while action != constants.QUIT:
 			_engine = engine.Engine()
 			action = _engine.run(screen)
 	
-	elif action == constants.STAGE7:
+	elif action == constants.STAGE_SURVIVAL:
 		_engine = stage_Survival.Stage_Survival()
 		action = _engine.run(screen)
 
@@ -52,6 +54,24 @@ while action != constants.QUIT:
 		action = _engine.run(screen)
 	elif action == constants.STAGE2:
 		_engine = stage.Stage_2()
+		action = _engine.run(screen)
+	elif action == constants.STAGE3:
+		_engine = stage.Stage_3()
+		action = _engine.run(screen)
+	elif action == constants.STAGE4:
+		_engine = stage.Stage_4()
+		action = _engine.run(screen)
+	elif action == constants.STAGE5:
+		_engine = stage.Stage_5()
+		action = _engine.run(screen)
+	elif action == constants.STAGE6:
+		_engine = stage.Stage_6()
+		action = _engine.run(screen)
+	elif action == constants.STAGE7:
+		_engine = stage.Stage_7()
+		action = _engine.run(screen)
+	elif action == constants.STAGE8:
+		_engine = stage.Stage_8()
 		action = _engine.run(screen)
 
 	elif action == constants.STAGE10:

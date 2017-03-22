@@ -215,7 +215,7 @@ class Engine:
 	def createObjects(self):
 		pass
 
-	def stageDifferences(self):
+	def stageDifferences(self, screen):
 		pass
 
 	def initialSettings(self):
@@ -287,7 +287,7 @@ class Engine:
 			self.timeStart = time.clock() - aux
 
 			#update game physics
-			self.stageDifferences()
+			self.stageDifferences(screen)
 			if self.timerMax > 0:
 				lose = self.timer(screen)
 				if lose != None:

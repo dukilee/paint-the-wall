@@ -3,6 +3,7 @@ import pygame
 import sprites
 import data
 import sys
+import time
 
 from pygame.locals import *
 
@@ -292,7 +293,8 @@ class StatsMenu(Menu):
 		self.elements.append(Label(constants.POS['LEFT'], 400, 'Balls Killed:', 30, False))
 		self.elements.append(Label(constants.POS['LEFT'], 450, 'Deaths:', 30, False))
 
-		self.elements.append(Label(constants.POS['RIGHT'], 300, '{}'.format(data.i['timePlayed']), 30, False))
+		data.actualTime = int(time.clock() - data.startTime)
+		self.elements.append(Label(constants.POS['RIGHT'], 300, '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(data.actualTime/3600), (int(data.actualTime/60))%60, (data.actualTime)%60), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 350, '{}'.format(data.i['blocksConquered']), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 400, '{}'.format(data.i['ballsDestructed']), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 450, '{}'.format(data.i['deaths']), 30, False))
