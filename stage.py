@@ -168,3 +168,88 @@ class Stage_7(engine.Engine):
 		font = pygame.font.SysFont('Calibri', 30, True, False)
 		text = font.render("Conquer 1200 blocks in under 45 seconds.", True, constants.DARK_GREEN)
 		screen.blit(text, [50, 200])
+
+
+class Stage_8(engine.Engine):
+
+	def initialSettings(self):
+		self.numberMovementsMax = 17
+
+	def createObjects(self):
+		self.numberBalls = 6
+		for i in range(self.numberBalls):
+			self._ball.append(level_Ball())
+
+	def winCondition(self):
+		if self.numberRegions == 3:
+			return True
+		return False
+
+	def writeInstructions(self, screen):
+		font = pygame.font.SysFont('Calibri', 30, True, False)
+		text = font.render("Split the balls in 3 regions with 17 moves.", True, constants.DARK_GREEN)
+		screen.blit(text, [50, 200])
+
+
+class Stage_9(engine.Engine):
+
+	def stageDifferences(self, screen):
+		r = Rect(self.x1*constants.SCALE[0], self.y1*constants.SCALE[1],
+				constants.SCALE[0], constants.SCALE[1])
+		pygame.draw.rect(screen, constants.DARK_GREEN, r)
+		self.objectErase.append(r)
+		r = Rect(self.x1*constants.SCALE[0], self.y2*constants.SCALE[1],
+				constants.SCALE[0], constants.SCALE[1])
+		pygame.draw.rect(screen, constants.DARK_GREEN, r)
+		self.objectErase.append(r)
+		r = Rect(self.x2*constants.SCALE[0], self.y1*constants.SCALE[1],
+				constants.SCALE[0], constants.SCALE[1])
+		pygame.draw.rect(screen, constants.DARK_GREEN, r)
+		self.objectErase.append(r)
+		r = Rect(self.x2*constants.SCALE[0], self.y2*constants.SCALE[1],
+				constants.SCALE[0], constants.SCALE[1])
+		pygame.draw.rect(screen, constants.DARK_GREEN, r)
+		self.objectErase.append(r)
+
+	def initialSettings(self):
+		self.x1 = int(constants.GRID_SIZE[0]/4);
+		self.y1 = int(constants.GRID_SIZE[1]/4);
+		self.x2 = int(3*constants.GRID_SIZE[0]/4);
+		self.y2 = int(3*constants.GRID_SIZE[1]/4);
+		self.timerMax = 79
+
+	def createObjects(self):
+		self.numberBalls = 10
+		for i in range(self.numberBalls):
+			self._ball.append(level_Ball())
+
+	def winCondition(self):
+		if self.grid[self.x1][self.y1] == constants.CONQUERED and self.grid[self.x1][self.y2] == constants.CONQUERED and self.grid[self.x2][self.y1] == constants.CONQUERED and self.grid[self.x2][self.y2] == constants.CONQUERED:
+			return True
+		return False
+
+	def writeInstructions(self, screen):
+		font = pygame.font.SysFont('Calibri', 30, True, False)
+		text = font.render("Conquer ALL dark green squares in less than 50 seconds.", True, constants.DARK_GREEN)
+		screen.blit(text, [50, 200])
+
+
+class Stage_10(engine.Engine):
+
+	def initialSettings(self):
+		self.timerMax = 27
+
+	def createObjects(self):
+		self.numberBalls = 10
+		for i in range(self.numberBalls):
+			self._ball.append(level_Ball())
+
+	def winCondition(self):
+		if self.ballsKilled > 0:
+			return True
+		return False
+
+	def writeInstructions(self, screen):
+		font = pygame.font.SysFont('Calibri', 30, True, False)
+		text = font.render("Destroy 1 ball in under 27 seconds.", True, constants.DARK_GREEN)
+		screen.blit(text, [50, 200])

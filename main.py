@@ -73,6 +73,12 @@ while action != constants.QUIT:
 	elif action == constants.STAGE8:
 		_engine = stage.Stage_8()
 		action = _engine.run(screen)
+	elif action == constants.STAGE9:
+		_engine = stage.Stage_9()
+		action = _engine.run(screen)
+	elif action == constants.STAGE10:
+		_engine = stage.Stage_10()
+		action = _engine.run(screen)
 
 	elif action == constants.STAGE10:
 		action = constants.RESTART
