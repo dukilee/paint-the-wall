@@ -1,7 +1,6 @@
 import ball
 import time
 import constants
-import grid
 import hero
 import menu
 import pygame
@@ -29,6 +28,7 @@ class Engine:
 		self.oldBallsKilled = 0
 		self.numberMovements = 0
 		self.numberMovementsMax = -1
+		self.newBlocksConquered = 0
 
 	def valid(self, x, y):
 		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
@@ -264,8 +264,8 @@ class Engine:
 
 
 		#startMenu
-		_menu = menu.StartMenu()
 		screen.fill(constants.WHITE)
+		_menu = menu.StartMenu()
 		self.writeInstructions(screen)
 		action = _menu.update(screen)
 		if action == constants.MAIN_MENU:
@@ -296,7 +296,6 @@ class Engine:
 				lose = self.movesLeft(screen)
 				if lose != None:
 					return lose
-
 			lose = self.updateObjects()
 			if lose != None:
 				data.i['deaths'] += 1
@@ -316,8 +315,7 @@ class Engine:
 					self.objectErase.append(r)
 					color = self.getColor(self.grid[(_heroPos.x+i)][_heroPos.y+j])
 					pygame.draw.rect(screen, color, r)
-
-			for balls in self._ball: 
+			for balls in self._ball:
 				_ballPos = vector2.Vector2(int(round(balls.pos.x/constants.SCALE[0])), int(round(balls.pos.y/constants.SCALE[1])))
 				for i in [-1, 0, 1]:
 					for j in [-1, 0, 1]:
@@ -332,7 +330,6 @@ class Engine:
 
 			#update grid 
 			self.updateGrid()
-
 			#draw grid
 			if self.repint:
 				self.repint = False

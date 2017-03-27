@@ -5,7 +5,6 @@ import menu
 import pygame
 import stage_Survival
 import stage
-import stage_10
 import time
 import data
 
@@ -17,23 +16,28 @@ pygame.display.set_caption('THE GAME', 'The Game')
 music = pygame.mixer.music
 screen = pygame.display.set_mode(constants.SCREEN_SIZE)
 startTime = time.clock()
-print("Acho que eh ", constants.GRID_SIZE[0]*constants.GRID_SIZE[1] - 2*constants.GRID_SIZE[0] - 2*constants.GRID_SIZE[1] + 4)
 dManager = dataManager.DataManager()
 data.startTime = startTime - data.i['timePlayed']
 data.actualTime = time.clock() - data.startTime
 
 _menu = menu.MainMenu()
 action = constants.UNDEFINED
-
+lastAction = constants.UNDEFINED
 while action != constants.QUIT:
 	# pygame.mixer.music.load('sounds/teste_1.mid')
 	# music.play(0)
+	# print("Lets go man action = ", action, " and lastaction = ", lastAction)
 	screen.fill(constants.WHITE)
-	if action != constants.RESTART:
-		action = _menu.update(screen)
-		lastAction = action
-	else:
-		action = lastAction
+	if action != constants.MAIN_MENU or lastAction == constants.MAIN_MENU:
+		if action != constants.RESTART:
+			action = _menu.update(screen)
+			if action == constants.NEXT:
+				action = lastAction + 1
+			elif action == constants.RESTART:
+				action = lastAction
+		else:
+			action = lastAction
+	lastAction = action
 	# music.stop()
 
 	# music.load('sounds/teste_2.mid')
@@ -80,12 +84,6 @@ while action != constants.QUIT:
 		_engine = stage.Stage_10()
 		action = _engine.run(screen)
 
-	elif action == constants.STAGE10:
-		action = constants.RESTART
-		while action == constants.RESTART:
-			_engine = stage_10.Stage_10()
-			action = _engine.run(screen)
-
 	#menus
 	elif action == constants.ABOUT_MENU:
 		_menu = menu.AboutMenu()
@@ -107,13 +105,15 @@ while action != constants.QUIT:
 	
 	elif action == constants.SURVIVAL_MENU:
 		_menu = menu.SurvivalMenu()
-	
+
 
 	if action == constants.WIN:
 		data.i['lastUnlockedStages'] = max(data.i['lastUnlockedStages'], 1 + lastAction - constants.STAGE0)
-		print("You won, can play ", data.i['lastUnlockedStages'])
+		_menu = menu.WinMenu()
+
 	elif action == constants.LOSE:
-		print("SADNESS :(")
+		_menu = menu.LoseMenu()
+
 	_engine = None
 	#music.stop()
 	dManager.save()

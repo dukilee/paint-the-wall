@@ -30,6 +30,3 @@ class DataManager:
 			file.write(s)
 		file.close()
 
-	def __del__(self):
-		self.save()
-		print("Data successfully saved!! :)");

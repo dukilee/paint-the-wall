@@ -3,5 +3,5 @@ class Vector2:
 		self.x = X
 		self.y = Y
 
-	def print(self):
+	def _print(self):
 		print("(", self.x, ", ", self.y, ")")

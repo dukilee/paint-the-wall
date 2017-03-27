@@ -38,7 +38,7 @@ class Elements:
 	def hover(self, mouse, done, action):
 		return done, action
 
-class Button(Elements):	
+class Button(Elements):
 	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = [constants.NOKEY], text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
 		self.off_t_color = off_t_color # inactive text color
 		self.on_t_color = on_t_color # active text color
@@ -46,9 +46,9 @@ class Button(Elements):
 		self.b_text = b_text # text to be shown on button
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, b_bold, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
-		
-		self.set_button_sprites()		
-		
+
+		self.set_button_sprites()
+
 		self.width = self.off_button.rec.width
 		self.height = self.off_button.rec.height
 
@@ -59,6 +59,7 @@ class Button(Elements):
 
 		Elements.__init__(self, x, y)
 		self.body = [x, y, self.width, self.height] # rectangular area of the element
+		self.pressed = False
 
 		self.action = action # what will the button peform when clicked (see constants.py)
 		self.shortcut = shortcut
@@ -67,12 +68,12 @@ class Button(Elements):
 		self.off_button = sprites.sprite('grey_off_button.png')
 		self.on_button = sprites.sprite('black_on_button.png')
 		self.present_button = self.off_button
-	
+
 	def blit(self, screen):
 		text_rect = self.text.get_rect()
 		screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
 		screen.blit(self.text, self.centralize(text_rect))
-			
+
 	def ishovering(self, mouse):
 		return mouse[0]>=self.x and mouse[0]<=self.x + self.width and mouse[1]>=self.y and mouse[1]<=self.y + self.height
 
@@ -80,11 +81,15 @@ class Button(Elements):
 	def hover(self, mouse, done, action):
 		if self.action != constants.UNCLICKABLE and self.ishovering(mouse.get_pos()):
 			if mouse.get_pressed()[0]: #on click
-				done = True
-				action = self.action
-			else: #pass over
-				self.turn_on()
-		else: #away from button 
+				self.pressed = True
+			else:
+				if self.pressed: #release
+					done = True
+					action = self.action
+				else: #pass over
+					self.turn_on()
+				self.pressed = False
+		else: #away from button
 			self.turn_off()
 
 		return done, action
@@ -241,9 +246,9 @@ class PauseMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, 350, 'Press \'p\' to resume.', 30, False, constants.BLACK))
-		self.elements.append(Button(constants.POS['LEFT'], None, 'Restart', constants.RESTART, [constants.keys['r']]))
-		self.elements.append(Button(None, None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['Enter']]))
-		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['Enter']]))
 
 class StartMenu(Menu):
 	def initActors(self):
@@ -257,7 +262,7 @@ class StartMenu(Menu):
 		self.elements = []
 		self.elements.append(Label(None, 350, 'Press \'Enter\' to start.', 30, False, constants.BLACK))
 		self.elements.append(Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['Enter']]))
-		self.elements.append(Button(constants.POS['RIGHT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
 
 class StageMenu(Menu):
 	def initActors(self):
@@ -310,6 +315,7 @@ class SurvivalMenu(Menu):
 
 		#actors
 		self.elements = []
+		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
 		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['Enter']]))
 		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
@@ -327,3 +333,34 @@ class RankMenu(Menu):
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Ranking'))
 		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, [constants.keys['b']]))
+
+class LoseMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(None, 150, 'You\'ve LOST :(', 80, False, constants.BLACK))
+		self.elements.append(Label(None, 350, 'Press \'Enter\' to restart.', 30, False, constants.BLACK))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(None, None, 'Restart', constants.RESTART, [constants.keys['r'], constants.keys['Enter']]))
+
+class WinMenu(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(None, 150, 'You\'ve WON :)', 80, False, constants.BLACK))
+		self.elements.append(Label(None, 350, 'Press \'Enter\' to start next stage.', 30, False, constants.BLACK))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
+		self.elements.append(Button(constants.POS['RIGHT'], None, 'Next', constants.NEXT, [constants.keys['Enter']]))

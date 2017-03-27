@@ -2,7 +2,6 @@ import ball
 import time
 import constants
 import engine
-import grid
 import hero
 import pygame
 import random
@@ -30,7 +29,7 @@ class Stage_1(engine.Engine):
 			self._ball.append(level_Ball())
 
 	def winCondition(self):
-		if self.cont >= 500:
+		if self.cont >= 1:
 			return True
 		return False
 
@@ -138,7 +137,6 @@ class Stage_6(engine.Engine):
 			self._ball.append(level_Ball())
 
 	def winCondition(self):
-		print(self.xx, self.yy)
 		if self.grid[self.xx][self.yy] == constants.CONQUERED:
 			return True
 		return False
