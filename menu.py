@@ -4,6 +4,7 @@ import sprites
 import data
 import sys
 import time
+import animation
 
 from pygame.locals import *
 
@@ -124,7 +125,26 @@ class Label(Elements):
 		text_rect = self.text.get_rect()
 		screen.blit(self.text, self.centralize(text_rect))	
 
+class Rectangle(Elements):
+	def __init__(self, x, y, width, height, b_color = constants.BLACK):
+		self.width = width
+		self.height = height
+		self.shortcut = [constants.NOKEY]
+
+		Elements.__init__(self, x, y)
+
+		self.b_color = b_color # inactive color
+
+	def blit(self, screen):
+		pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
+		# text_rect = self.text.get_rect()
+		# screen.blit(self.text, self.centralize(text_rect))
+
 class Menu:
+	def __init__(self):
+		self.elements = []
+		self.animations = []
+
 	# virtual method
 	def initActors(self):
 		pass
@@ -139,6 +159,8 @@ class Menu:
 		#actors
 		mouse = pygame.mouse
 		self.initActors()		
+
+		count = 0
 
 		for e in self.elements:
 			for s in e.shortcut:
@@ -161,9 +183,14 @@ class Menu:
 						action = listShortcut[event.key].action
 
 			#button PLAY
+			screen.fill(constants.WHITE)
 			for b in self.elements:
 				done, action = b.hover(mouse, done, action)
 				b.blit(screen)
+			count += 1
+			for a in self.animations:
+				a.update(screen, count)
+
 
 			pygame.display.update(self.updateRect)
 
@@ -234,6 +261,9 @@ class MainMenu(Menu):
 		self.elements.append(Button(None, 350, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
 		self.elements.append(Button(None, 425, 'STATS', constants.STATS_MENU))
 		self.elements.append(Button(None, 500, 'QUIT', constants.QUIT))
+
+		#animations
+		self.animations.append(animation.MainMenuAnimation())
 
 class PauseMenu(Menu):
 	def initActors(self):
