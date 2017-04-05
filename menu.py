@@ -1,8 +1,9 @@
 import constants
 import pygame
 import sprites
+import themeManager
+import theme
 import data
-import sys
 import time
 import animation
 
@@ -14,14 +15,16 @@ class Elements:
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
-		
+
 	def turn_on(self):
-		self.present_button = self.on_button
+		self.present_button = self.on_button_sprite
+		self.presentColor = self.onButtonColor
 		self.text = self.fontButton.render(self.b_text, True, self.on_t_color)
 
 	def turn_off(self):
 		#self.b_color = self.off_b_color
-		self.present_button = self.off_button
+		self.present_button = self.off_button_sprite
+		self.presentColor = self.offButtonColor
 		self.text = self.fontButton.render(self.b_text, True, self.off_t_color)
 
 	def centralize(self, rec):
@@ -40,7 +43,13 @@ class Elements:
 		return done, action
 
 class Button(Elements):
-	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = [constants.NOKEY], text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = constants.DARK_GREEN, on_t_color = constants.MED_GREEN):
+	def __init__(self, x = None, y = None, b_text = '', action = constants.UNCLICKABLE, shortcut = [constants.NOKEY], callAction = None, text_size = constants.BUTTON_FONT_SIZE, b_bold = True, off_t_color = None, on_t_color = None):
+		if off_t_color is None:
+			off_t_color = theme.offButtonTextColor
+		if on_t_color is None:
+			on_t_color = theme.onButtonTextColor
+
+
 		self.off_t_color = off_t_color # inactive text color
 		self.on_t_color = on_t_color # active text color
 
@@ -49,9 +58,12 @@ class Button(Elements):
 		self.text = self.fontButton.render(b_text, True, off_t_color) # text object
 
 		self.set_button_sprites()
-
-		self.width = self.off_button.rec.width
-		self.height = self.off_button.rec.height
+		if self.on_button_sprite == None:
+			self.width = 100
+			self.height = 50
+		else:
+			self.width = self.off_button_sprite.rec.width
+			self.height = self.off_button_sprite.rec.height
 
 		if x == None: # centralize x on screen
 			x = int((constants.SCREEN_SIZE[0] - self.width)/2)
@@ -64,15 +76,24 @@ class Button(Elements):
 
 		self.action = action # what will the button peform when clicked (see constants.py)
 		self.shortcut = shortcut
+		self.callAction = callAction
+		self.set_button_sprites()
+		self.update = False
 
 	def set_button_sprites(self):
-		self.off_button = sprites.sprite('grey_off_button.png')
-		self.on_button = sprites.sprite('black_on_button.png')
-		self.present_button = self.off_button
+		self.off_button_sprite = theme.offButtonSprite
+		self.on_button_sprite = theme.onButtonSprite
+		self.onButtonColor = theme.onButtonColor
+		self.offButtonColor = theme.offButtonColor
+		self.present_button = self.off_button_sprite
+
 
 	def blit(self, screen):
 		text_rect = self.text.get_rect()
-		screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
+		if self.present_button != None:
+			screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
+		else:
+			pygame.draw.rect(screen, self.presentColor, [self.x, self.y, self.width, self.height])
 		screen.blit(self.text, self.centralize(text_rect))
 
 	def ishovering(self, mouse):
@@ -87,6 +108,8 @@ class Button(Elements):
 				if self.pressed: #release
 					done = True
 					action = self.action
+					if self.callAction != None:
+						self.callAction()
 				else: #pass over
 					self.turn_on()
 				self.pressed = False
@@ -97,12 +120,25 @@ class Button(Elements):
 
 class miniButton(Button):
 	def set_button_sprites(self):
-		self.off_button = sprites.sprite('small_grey_off_button.png')
-		self.on_button = sprites.sprite('small_black_on_button.png')
-		self.present_button = self.off_button
+		self.off_button_sprite = theme.offButtonSpriteMini
+		self.on_button_sprite = theme.offButtonSpriteMini
+		self.offButtonColor = theme.offButtonColor
+		self.onButtonColor = theme.onButtonColor
+		self.present_button = self.off_button_sprite
+		self.presentColor = self.offButtonColor
+		# print("criei")
+		# if theme.offButtonSpriteMini != None:
+		# 	print("what is going on man")
+		# else:
+		# 	print("Everything is back to normal.")
 
 class Label(Elements):	
-	def __init__(self, x = None, y = None, b_text = '', text_size = constants.LABEL_FONT_SIZE, b_bold = True, b_color = constants.WHITE, t_color = constants.BLACK):
+	def __init__(self, x = None, y = None, b_text = '', text_size = constants.LABEL_FONT_SIZE, b_bold = True, b_color = None, t_color = None, update = None):
+		if t_color is None:
+			t_color = theme.labelTextColor
+		if b_color is None:
+			b_color = theme.labelBackColor
+
 		self.b_text = b_text # text to be shown
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, b_bold, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
@@ -120,8 +156,13 @@ class Label(Elements):
 
 		self.b_color = b_color # inactive color
 		self.t_color = t_color # inactive text color
+		self.update = update #if need to change while the software is running
 
 	def blit(self, screen):
+		if self.update != None:
+			print(self.update())
+			self.text = self.fontButton.render(self.update(), True, self.t_color)  # text object
+
 		text_rect = self.text.get_rect()
 		screen.blit(self.text, self.centralize(text_rect))	
 
@@ -149,16 +190,19 @@ class Menu:
 	def initActors(self):
 		pass
 
-	def update(self, screen):
+	def update(self, screen, anotherElement = None):
 		#constants
 		clock = pygame.time.Clock()
-		done = False;
+		done = False
 		action = constants.QUIT
 		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
 		listShortcut = {}
 		#actors
 		mouse = pygame.mouse
 		self.initActors()		
+
+		if anotherElement != None:
+			self.elements.append(Label(None, 200, anotherElement, 40, False, constants.BLACK))
 
 		count = 0
 
@@ -183,7 +227,7 @@ class Menu:
 						action = listShortcut[event.key].action
 
 			#button PLAY
-			screen.fill(constants.WHITE)
+			screen.fill(theme.backgroundColor)
 			for b in self.elements:
 				done, action = b.hover(mouse, done, action)
 				b.blit(screen)
@@ -249,6 +293,7 @@ class MainMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
 		self.action = constants.QUIT
+		print("(MM) theme.labelTextColor = ", theme.labelTextColor)
 
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
@@ -256,11 +301,12 @@ class MainMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Paint-The-Wall!'))
-		self.elements.append(Button(None, 200, 'STAGES', constants.STAGE_MENU))
-		self.elements.append(Button(None, 275, 'SURVIVAL', constants.SURVIVAL_MENU))
-		self.elements.append(Button(None, 350, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
-		self.elements.append(Button(None, 425, 'STATS', constants.STATS_MENU))
-		self.elements.append(Button(None, 500, 'QUIT', constants.QUIT))
+		self.elements.append(Button(None, 150, 'STAGES', constants.STAGE_MENU))
+		self.elements.append(Button(None, 225, 'SURVIVAL', constants.SURVIVAL_MENU))
+		self.elements.append(Button(None, 300, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
+		self.elements.append(Button(None, 375, 'STATS', constants.STATS_MENU))
+		self.elements.append(Button(None, 450, 'SETTINGS', constants.SETTINGS_MENU))
+		self.elements.append(Button(None, 525, 'QUIT', constants.QUIT))
 
 		#animations
 		self.animations.append(animation.MainMenuAnimation())
@@ -312,7 +358,13 @@ class StageMenu(Menu):
 				self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
 
 class StatsMenu(Menu):
-	def initActors(self):		
+	def timeText(self):
+		data.actualTime = int(time.clock() - data.startTime)
+		print(time.clock())
+		return '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(data.actualTime / 3600), (int(data.actualTime / 60)) % 60,
+											   (data.actualTime) % 60)
+
+	def initActors(self):
 		#where to go when quitting this menu
 		self.action = constants.MAIN_MENU
 
@@ -329,7 +381,7 @@ class StatsMenu(Menu):
 		self.elements.append(Label(constants.POS['LEFT'], 450, 'Deaths:', 30, False))
 
 		data.actualTime = int(time.clock() - data.startTime)
-		self.elements.append(Label(constants.POS['RIGHT'], 300, '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(data.actualTime/3600), (int(data.actualTime/60))%60, (data.actualTime)%60), 30, False))
+		self.elements.append(Label(constants.POS['RIGHT'], 300, '00:00:00', 30, False, None, None, self.timeText))
 		self.elements.append(Label(constants.POS['RIGHT'], 350, '{}'.format(data.i['blocksConquered']), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 400, '{}'.format(data.i['ballsDestructed']), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 450, '{}'.format(data.i['deaths']), 30, False))
@@ -348,6 +400,32 @@ class SurvivalMenu(Menu):
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
 		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['Enter']]))
+		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
+		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
+
+class SettingsMenu(Menu):
+
+	def toBasic(self):
+		themeManager.changeTheme(constants.BASIC_THEME)
+
+	def toDark(self):
+		themeManager.changeTheme(constants.DARK_THEME)
+
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+
+		#actors
+		self.elements = []
+		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
+		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL,[constants.keys['p'], constants.keys['Enter']]))
+		self.elements.append(Label(constants.POS['LEFT'], 400, 'Theme:', 40))
+		self.elements.append(Button(None, 400, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toBasic))
+		self.elements.append(Button(constants.POS['RIGHT'], 400, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toDark))
 		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 

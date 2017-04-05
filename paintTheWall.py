@@ -7,6 +7,8 @@ import stage_Survival
 import stage
 import time
 import data
+import themeManager
+import theme
 
 from pygame.locals import *
 
@@ -23,11 +25,14 @@ data.actualTime = time.clock() - data.startTime
 _menu = menu.MainMenu()
 action = constants.UNDEFINED
 lastAction = constants.UNDEFINED
+
+themeManager.changeTheme(data.i['theme'])
+
 while action != constants.QUIT:
 	# pygame.mixer.music.load('sounds/teste_1.mid')
 	# music.play(0)
 	# print("Lets go man action = ", action, " and lastaction = ", lastAction)
-	screen.fill(constants.WHITE)
+	screen.fill(theme.backgroundColor)
 	if action != constants.MAIN_MENU or lastAction == constants.MAIN_MENU:
 		if action != constants.RESTART:
 			action = _menu.update(screen)
@@ -102,10 +107,12 @@ while action != constants.QUIT:
 	
 	elif action == constants.STATS_MENU:
 		_menu = menu.StatsMenu()
-	
+
 	elif action == constants.SURVIVAL_MENU:
 		_menu = menu.SurvivalMenu()
 
+	elif action == constants.SETTINGS_MENU:
+		_menu = menu.SettingsMenu()
 
 	if action == constants.WIN:
 		data.i['lastUnlockedStages'] = max(data.i['lastUnlockedStages'], 1 + lastAction - constants.STAGE0)

@@ -33,11 +33,9 @@ class Stage_1(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Conquer 500 blocks in less than 60 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
-		
+	def getInstructions(self):
+		return 'Conquer 500 blocks in less than 60 seconds.'
+
 class Stage_2(engine.Engine):
 
 	def initialSettings(self):
@@ -53,10 +51,8 @@ class Stage_2(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Split the balls into two regions in under 80 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
+	def getInstructions(self):
+		return 'Split the balls into two regions in under 80 seconds.'
 
 class Stage_3(engine.Engine):
 
@@ -72,12 +68,9 @@ class Stage_3(engine.Engine):
 		if self.ballsKilled == 1 :
 			return True
 		return False
+	def getInstructions(self):
+		return 'Kill 1 ball in under 70 seconds.'
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Kill 1 ball in under 70 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
-		
 class Stage_4(engine.Engine):
 
 	def initialSettings(self):
@@ -93,10 +86,8 @@ class Stage_4(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Conquer 700 blocks in less than 5 moves.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
+	def getInstructions(self):
+		return 'Conquer 700 blocks in less than 5 moves.'
 		
 class Stage_5(engine.Engine):
 
@@ -113,10 +104,8 @@ class Stage_5(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Destroy 4 balls in under 100 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
+	def getInstructions(self):
+		return 'Destroy 4 balls in under 100 seconds.'
 
 class Stage_6(engine.Engine):
 
@@ -141,11 +130,8 @@ class Stage_6(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Conquer the central square in under 30 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
-
+	def getInstructions(self):
+		return 'Conquer the central square in under 30 seconds.'
 
 class Stage_7(engine.Engine):
 
@@ -162,11 +148,8 @@ class Stage_7(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Conquer 1200 blocks in under 45 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
-
+	def getInstructions(self):
+		return 'Conquer 1200 blocks in under 45 seconds.'
 
 class Stage_8(engine.Engine):
 
@@ -183,10 +166,8 @@ class Stage_8(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Split the balls in 3 regions with 17 moves.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
+	def getInstructions(self):
+		return 'Split the balls in 3 regions with 17 moves.'
 
 
 class Stage_9(engine.Engine):
@@ -226,11 +207,8 @@ class Stage_9(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Conquer ALL dark green squares in less than 50 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
-
+	def getInstructions(self):
+		return 'Conquer ALL dark green squares in less than 50 seconds.'
 
 class Stage_10(engine.Engine):
 
@@ -247,7 +225,5 @@ class Stage_10(engine.Engine):
 			return True
 		return False
 
-	def writeInstructions(self, screen):
-		font = pygame.font.SysFont('Calibri', 30, True, False)
-		text = font.render("Destroy 1 ball in under 27 seconds.", True, constants.DARK_GREEN)
-		screen.blit(text, [50, 200])
+	def getInstructions(self):
+		return 'Destroy 1 ball in under 27 seconds.'

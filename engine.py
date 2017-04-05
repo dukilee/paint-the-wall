@@ -7,7 +7,7 @@ import pygame
 import vector2
 import sys
 import data
-import tools
+import theme
 
 from pygame.locals import *
 
@@ -73,12 +73,12 @@ class Engine:
 
 	def getColor(self, n):
 		if n == constants.PROCESS:
-			return constants.LIGHT_GREEN
+			return theme.procColor
 		if n == constants.CONQUERED:
-			return constants.GREEN
+			return theme.conqColor
 		if n == constants.HYPER:
-			return constants.GREEN
-		return constants.WHITE
+			return theme.conqColor
+		return theme.freeColor
 
 	def initGrid(self):
 		for i in range (constants.GRID_SIZE[0]):
@@ -103,8 +103,7 @@ class Engine:
 					elif event.key == constants.keys['p']:
 						_menu = menu.PauseMenu()
 						screen.fill(constants.WHITE)
-						self.writeInstructions(screen)
-						action = _menu.update(screen)
+						action = _menu.update(screen, self.getInstructions())
 						if action == constants.MAIN_MENU:
 							return repint, constants.MAIN_MENU
 						elif action == constants.RESTART:
@@ -167,11 +166,11 @@ class Engine:
 	def drawGrid(self, screen):
 		for x in range(constants.GRID_SIZE[0]):
 			for y in range(constants.GRID_SIZE[1]):
-				_color = constants.WHITE
+				_color = theme.freeColor
 				if self.grid[x][y] == constants.CONQUERED:
-					_color = constants.GREEN
+					_color = theme.conqColor
 				elif self.grid[x][y] == constants.SHYPER:
-					_color = constants.GREEN
+					_color = theme.conqColor
 					self.newBlocksConquered += 1
 					self.grid[x][y] = constants.CONQUERED
 				elif self.grid[x][y] == constants.HYPER:
@@ -186,11 +185,11 @@ class Engine:
 		
 
 		self.objectErase.append(Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]))
-		pygame.draw.rect(screen, constants.RED, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
+		pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 
 		#draw ball
 		for i in range(self.numberBalls):
-			pygame.draw.circle(screen, constants.BLUE, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
+			pygame.draw.circle(screen, theme.ballColor, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
 
 		#Score
 		font = pygame.font.SysFont('Calibri', 25, True, False)
@@ -221,7 +220,7 @@ class Engine:
 	def initialSettings(self):
 		pass
 
-	def writeInstructions(self, screen):
+	def getInstructions(self, screen):
 		pass
 
 	#Functions to check some missions
@@ -266,8 +265,8 @@ class Engine:
 		#startMenu
 		screen.fill(constants.WHITE)
 		_menu = menu.StartMenu()
-		self.writeInstructions(screen)
-		action = _menu.update(screen)
+		# self.writeInstructions(screen)
+		action = _menu.update(screen, self.getInstructions())
 		if action == constants.MAIN_MENU:
 			return constants.MAIN_MENU
 
@@ -277,14 +276,14 @@ class Engine:
 		self.timeStart = time.clock()
 		while not doneRunning:
 			self.objectErase = [] 
-			pygame.draw.rect(screen, constants.GREEN, [0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]])
+			pygame.draw.rect(screen, theme.conqColor, [0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]])
 		
-			#handle player input
+			#handle player input(
 			aux = time.clock() - self.timeStart
 			self.repint, check = self.checkInput(self.repint, screen)
 			if check !=None:
 				return check
-			self.timeStart = time.clock() - aux
+			# self.timeStart = time.clock() - aux
 
 			#update game physics
 			self.stageDifferences(screen)
@@ -301,10 +300,6 @@ class Engine:
 				data.i['deaths'] += 1
 				return lose
 
-			#draw ball
-			for b in self._ball:
-				pygame.draw.circle(screen, constants.BLUE, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
-			
 			#calculates what parts of the image needs to be redone
 			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 			for i in [-1, 0, 1]:
@@ -322,7 +317,7 @@ class Engine:
 						if _ballPos.x+i<0 or _ballPos.x+i>=constants.GRID_SIZE[0] or _ballPos.y+j<0 or _ballPos.y+j>=constants.GRID_SIZE[1]:
 							continue
 						color = self.getColor(self.grid[(_ballPos.x+i)][_ballPos.y+j])
-						if color != constants.WHITE:
+						if color != theme.freeColor:
 							continue
 						r = Rect((_ballPos.x+i)*constants.SCALE[0], (_ballPos.y+j)*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
 						self.objectErase.append(r)
