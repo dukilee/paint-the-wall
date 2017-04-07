@@ -17,6 +17,8 @@ onButtonTextColor = constants.MED_GREEN
 #label
 labelBackColor = backgroundColor
 labelTextColor = constants.BLACK
+labelTextLowColor = constants.GRAY
+labelTextLLColor = (220, 220, 220) #Super low
 
 #engine
 conqColor = constants.GREEN

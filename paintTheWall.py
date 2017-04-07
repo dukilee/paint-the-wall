@@ -12,7 +12,6 @@ import theme
 
 from pygame.locals import *
 
-
 pygame.init()
 pygame.display.set_caption('THE GAME', 'The Game')
 music = pygame.mixer.music

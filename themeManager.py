@@ -23,6 +23,8 @@ def changeTheme(n):
         #label
         theme.labelBackColor = theme.backgroundColor
         theme.labelTextColor = constants.BLACK
+        theme.labelTextLowColor = constants.GRAY
+        theme.labelTextLLColor = (180, 180, 180)
 
         # engine
         theme.conqColor = constants.GREEN
@@ -49,7 +51,9 @@ def changeTheme(n):
 
         # label
         theme.labelBackColor = constants.WHITE#theme.backgroundColor
-        theme.labelTextColor = (100, 100, 100)#GRAY
+        theme.labelTextColor = (180, 180, 180)#GRAY
+        theme.labelTextLowColor = (80, 80, 80)
+        theme.labelTextLLColor = (30, 30, 30)
 
     elif n == constants.RESET_THEME:
         #Basic Theme
@@ -68,6 +72,8 @@ def changeTheme(n):
         #label
         theme.labelBackColor = theme.backgroundColor
         theme.labelTextColor = constants.BLACK
+        theme.labelTextLowColor = constants.GRAY
+        theme.labelTextLLColor = (220, 220, 220)
 
         # engine
         theme.conqColor = constants.GREEN
