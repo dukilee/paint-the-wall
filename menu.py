@@ -4,7 +4,6 @@ import sprites
 import themeManager
 import theme
 import data
-import time
 import animation
 
 from pygame.locals import *
@@ -382,9 +381,9 @@ class StageMenu(Menu):
 
 class StatsMenu(Menu):
 	def timeText(self):
-		data.actualTime = int(time.clock() - data.startTime)
-		return '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(data.actualTime / 3600), (int(data.actualTime / 60)) % 60,
-											   (data.actualTime) % 60)
+		actualTime = data.getActualTime()
+		return '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(actualTime / 3600), (int(actualTime / 60)) % 60,
+											   (actualTime) % 60)
 
 	def initActors(self):
 		#where to go when quitting this menu

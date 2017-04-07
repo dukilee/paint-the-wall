@@ -1,13 +1,8 @@
 import ball
-import time
 import constants
 import engine
 import hero
 import pygame
-import random
-import sys
-import tools
-import vector2
 
 from pygame.locals import *
 

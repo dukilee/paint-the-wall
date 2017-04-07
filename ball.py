@@ -1,7 +1,6 @@
 import constants
 import vector2
 import random
-import sys
 import tools
 
 class Ball:

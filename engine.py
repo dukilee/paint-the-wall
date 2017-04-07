@@ -1,11 +1,8 @@
-import ball
-import time
 import constants
 import hero
 import menu
 import pygame
 import vector2
-import sys
 import data
 import theme
 
@@ -225,10 +222,10 @@ class Engine:
 
 	#Functions to check some missions
 	def timer(self, screen):
-		if time.clock() - self.timeStart > self.timerMax:
+		if data.getActualTime() - self.timeStart > self.timerMax:
 			return constants.LOSE
 		font = pygame.font.SysFont('Calibri', 25, True, False)
-		text = font.render("{}".format(int(self.timerMax - time.clock() + self.timeStart)), True, constants.BLACK)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, constants.BLACK)
 		screen.blit(text, [750, 0])
 		return None
 
@@ -273,13 +270,12 @@ class Engine:
 		# s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
 		# s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
 
-		self.timeStart = time.clock()
+		self.timeStart = data.getActualTime()
 		while not doneRunning:
 			self.objectErase = [] 
 			pygame.draw.rect(screen, theme.conqColor, [0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]])
 		
 			#handle player input(
-			aux = time.clock() - self.timeStart
 			self.repint, check = self.checkInput(self.repint, screen)
 			if check !=None:
 				return check

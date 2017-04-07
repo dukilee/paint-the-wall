@@ -5,22 +5,16 @@ import menu
 import pygame
 import stage_Survival
 import stage
-import time
 import data
 import themeManager
 import theme
-
-from pygame.locals import *
 
 pygame.init()
 pygame.display.set_caption('THE GAME', 'The Game')
 music = pygame.mixer.music
 screen = pygame.display.set_mode(constants.SCREEN_SIZE)
-startTime = time.clock()
 dManager = dataManager.DataManager()
-data.startTime = startTime - data.i['timePlayed']
-data.actualTime = time.clock() - data.startTime
-
+data.startTime = data.getActualTime() - data.i['timePlayed']
 _menu = menu.MainMenu()
 action = constants.UNDEFINED
 lastAction = constants.UNDEFINED
@@ -124,6 +118,6 @@ while action != constants.QUIT:
 	#music.stop()
 	dManager.save()
 
-
-data.i['timePlayed'] += time.clock() - startTime
+print("fim = ", data.getActualTime())
+data.i['timePlayed'] = data.getActualTime()
 dManager.save()
