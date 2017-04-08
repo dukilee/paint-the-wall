@@ -3,13 +3,10 @@ import time
 import constants
 import engine
 import hero
-import pygame
 import random
 import tools
 import vector2
 
-from pygame.locals import *
-
 class level_Hero(hero.Hero):
 	pass
 	
@@ -18,29 +15,6 @@ class level_Ball(ball.Ball):
 		self.pos = vector2.Vector2(400, 300)
 		self.speed = vector2.Vector2(3, 3)
 		self.destructedBlocks = 0
-		
-		if random.randint(-1, 1) < 0:
-			self.speed.x *=-1
-
-		if random.randint(-1, 1) < 0:
-			self.speed.y *=-1
-
-	def update(self, grid):
-		self.destructedBlocks = 0
-		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
-		actualGrid = tools.discretize(self.pos)
-
-from pygame.locals import *
-
-class level_Hero(hero.Hero):
-	pass
-	
-class level_Ball(ball.Ball):
-	def __init__(self):
-		self.pos = vector2.Vector2(400, 300)
-		self.speed = vector2.Vector2(3, 3)
-		self.destructedBlocks = 0
-		print("grita")
 
 		if random.randint(-1, 1) < 0:
 			self.speed.x *=-1
@@ -84,6 +58,9 @@ class Stage_Survival(engine.Engine):
 	def createObjects(self):
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball())
+
+	def winCondition(self):
+		return False
 
 	def stageDifferences(self, screen):
 

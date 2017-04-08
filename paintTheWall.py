@@ -81,6 +81,36 @@ while action != constants.QUIT:
 	elif action == constants.STAGE10:
 		_engine = stage.Stage_10()
 		action = _engine.run(screen)
+	elif action == constants.STAGE11:
+		_engine = stage.Stage_11()
+		action = _engine.run(screen)
+	elif action == constants.STAGE12:
+		_engine = stage.Stage_12()
+		action = _engine.run(screen)
+	elif action == constants.STAGE13:
+		_engine = stage.Stage_13()
+		action = _engine.run(screen)
+	elif action == constants.STAGE14:
+		_engine = stage.Stage_14()
+		action = _engine.run(screen)
+	elif action == constants.STAGE15:
+		_engine = stage.Stage_15()
+		action = _engine.run(screen)
+	elif action == constants.STAGE16:
+		_engine = stage.Stage_16()
+		action = _engine.run(screen)
+	elif action == constants.STAGE17:
+		_engine = stage.Stage_17()
+		action = _engine.run(screen)
+	elif action == constants.STAGE18:
+		_engine = stage.Stage_18()
+		action = _engine.run(screen)
+	elif action == constants.STAGE19:
+		_engine = stage.Stage_19()
+		action = _engine.run(screen)
+	elif action == constants.STAGE20:
+		_engine = stage.Stage_20()
+		action = _engine.run(screen)
 
 	#menus
 	elif action == constants.ABOUT_MENU:
@@ -94,15 +124,19 @@ while action != constants.QUIT:
 	
 	elif action == constants.RANK_MENU:
 		_menu = menu.RankMenu()
-	
+
 	elif action == constants.STAGE_MENU:
 		_menu = menu.StageMenu()
+
+	elif action == constants.STAGE_MENU_2:
+		_menu = menu.StageMenu2()
 	
 	elif action == constants.STATS_MENU:
 		_menu = menu.StatsMenu()
 
 	elif action == constants.SURVIVAL_MENU:
 		_menu = menu.SurvivalMenu()
+
 
 	elif action == constants.SETTINGS_MENU:
 		_menu = menu.SettingsMenu()
@@ -118,6 +152,5 @@ while action != constants.QUIT:
 	#music.stop()
 	dManager.save()
 
-print("fim = ", data.getActualTime())
 data.i['timePlayed'] = data.getActualTime()
 dManager.save()

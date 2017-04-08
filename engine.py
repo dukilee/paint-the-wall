@@ -185,8 +185,9 @@ class Engine:
 		pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 
 		#draw ball
-		for i in range(self.numberBalls):
-			pygame.draw.circle(screen, theme.ballColor, [self._ball[i].pos.x + constants.BALL_RADIUS, self._ball[i].pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
+		for b in self._ball:
+			pygame.draw.circle(screen, theme.ballColor, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
+
 
 		#Score
 		font = pygame.font.SysFont('Calibri', 25, True, False)
@@ -217,7 +218,7 @@ class Engine:
 	def initialSettings(self):
 		pass
 
-	def getInstructions(self, screen):
+	def getInstructions(self):
 		pass
 
 	#Functions to check some missions

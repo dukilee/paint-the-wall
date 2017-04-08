@@ -315,7 +315,6 @@ class MainMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
 		self.action = constants.QUIT
-		print("(MM) theme.labelTextColor = ", theme.labelTextColor)
 
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
@@ -372,12 +371,34 @@ class StageMenu(Menu):
 
 		#actors
 		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
+		self.elements.append(miniButton(constants.POS['RIGHT']+130, 240, '>', constants.STAGE_MENU_2, [constants.KEY_RIGHT]))
 		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
 			if i >= data.i['lastUnlockedStages']:
-				self.elements.append(Label(100 + (i % 5) * 145, 190 + int(i / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+				self.elements.append(Label(170 + (i % 5) * 110, 190 + int(i / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
 			else:
-				self.elements.append(miniButton(80 + (i % 5) * 145, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
+
+class StageMenu2(Menu):
+	def initActors(self):
+		#where to go when quitting this menu
+		self.action = constants.MAIN_MENU
+
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+
+		#actors
+		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
+		self.elements.append(
+			miniButton(constants.POS['LEFT']+10, 240, '<', constants.STAGE_MENU, [constants.KEY_LEFT]))
+
+		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
+		for i in range(10, 20):
+			if i >= data.i['lastUnlockedStages']:
+				self.elements.append(Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+			else:
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
+
 
 class StatsMenu(Menu):
 	def timeText(self):
@@ -439,7 +460,7 @@ class SettingsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
+		self.elements.append(Label(None, constants.POS['UP'], 'Settings'))
 		self.elements.append(Label(constants.POS['LEFT'], 415, 'Theme:', 40, False))
 		self.elements.append(Button(None, 400, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toBasic))
 		self.elements.append(Button(constants.POS['RIGHT'], 400, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toDark))
