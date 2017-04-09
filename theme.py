@@ -1,5 +1,6 @@
 import sprites
 import constants
+import pygame
 
 #Basic Theme
 backgroundColor = constants.WHITE
@@ -19,6 +20,13 @@ labelBackColor = backgroundColor
 labelTextColor = constants.BLACK
 labelTextLowColor = constants.GRAY
 labelTextLLColor = (220, 220, 220) #Super low
+
+#Slider Bar
+sliderPointerSpriteOff = offButtonSpriteMini
+sliderPointerSpriteOn = onButtonSpriteMini
+sliderBackColor = constants.BLACK
+sliderPointerColorOn = constants.BLACK
+sliderPointerColorOff = constants.BLACK
 
 #engine
 conqColor = constants.GREEN

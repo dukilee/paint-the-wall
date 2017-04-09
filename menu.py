@@ -1,6 +1,7 @@
 import constants
 import pygame
 import sprites
+import vector2
 import themeManager
 import theme
 import data
@@ -182,8 +183,55 @@ class Rectangle(Elements):
 
 	def blit(self, screen):
 		pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
-		# text_rect = self.text.get_rect()
-		# screen.blit(self.text, self.centralize(text_rect))
+
+class SlideBar(Elements):
+	def __init__(self, x, y, width, maxValue, action, value = 0):
+		self.action = action
+		self.width = width
+		self.height = 50
+		self.maxValue = maxValue
+		self.value = value
+		self.shortcut = [constants.NOKEY]
+
+
+		Elements.__init__(self, x, y)
+
+		self.pointerPos = vector2.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
+		self.backgroundColor = theme.sliderBackColor
+		self.turn_off()
+
+	def turn_on(self):
+		self.presentSprite = theme.sliderPointerSpriteOn
+		self.presentColor = theme.sliderPointerColorOn
+
+	def turn_off(self):
+		self.presentSprite = theme.sliderPointerSpriteOff
+		self.presentColor = theme.sliderPointerColorOff
+
+	def blit(self, screen):
+		text_rect = [self.x, self.y, self.width, self.height]
+		pygame.draw.rect(screen, self.backgroundColor, [self.x, self.y +int(9*self.height/20), self.width, self.height/10])
+		if self.presentSprite != None:
+			screen.blit(self.presentSprite.img, [self.pointerPos.x - int(self.presentSprite.rec.width/2), self.y, 20, self.height])
+		else:
+			pygame.draw.rect(screen, self.presentColor, [self.pointerPos.x-10, self.y, 20, self.height])
+
+	def ishovering(self, mouse):
+		return mouse[0]>=self.x and mouse[0]<=self.x + self.width and mouse[1]>=self.y and mouse[1]<=self.y + self.height
+
+	# activate button if hovering, deactivate if not
+	def hover(self, mouse, done, action):
+		self.turn_off()
+		if self.action != constants.UNCLICKABLE and self.ishovering(mouse.get_pos()):
+			if mouse.get_pressed()[0]: #on click
+				self.turn_on()
+				self.pointerPos.x = mouse.get_pos()[0]
+				self.value = (self.pointerPos.x - self.x)*self.maxValue/self.width
+				self.action(self.value)
+
+		return done, action
+
+
 
 class Menu:
 	def __init__(self):
@@ -451,6 +499,12 @@ class SettingsMenu(Menu):
 	def toDark(self):
 		themeManager.changeTheme(constants.DARK_THEME)
 
+	def setMusicVolume(self, val):
+		data.i['musicVolume'] = val
+
+	def setEffectsVolume(self, val):
+		data.i['effectsVolume'] = val
+
 	def initActors(self):
 		#where to go when quitting this menu
 		self.action = constants.MAIN_MENU
@@ -461,9 +515,14 @@ class SettingsMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, constants.POS['UP'], 'Settings'))
-		self.elements.append(Label(constants.POS['LEFT'], 415, 'Theme:', 40, False))
-		self.elements.append(Button(None, 400, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toBasic))
-		self.elements.append(Button(constants.POS['RIGHT'], 400, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toDark))
+		self.elements.append(SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume']))
+		self.elements.append(Label(constants.POS['LEFT'], 135, 'Music Volume:', 40, False))
+		self.elements.append(SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume']))
+		self.elements.append(Label(constants.POS['LEFT'], 215, 'Effects Volume:', 40, False))
+
+		self.elements.append(Label(constants.POS['LEFT'], 295, 'Theme:', 40, False))
+		self.elements.append(Button(350, 295, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toBasic))
+		self.elements.append(Button(constants.POS['RIGHT'], 295, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toDark))
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
 class RankMenu(Menu):
