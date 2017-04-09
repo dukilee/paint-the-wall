@@ -169,7 +169,25 @@ class Label(Elements):
 			self.text = self.fontButton.render(self.update(), True, self.t_color)  # text object
 
 		text_rect = self.text.get_rect()
-		screen.blit(self.text, self.centralize(text_rect))	
+		screen.blit(self.text, self.centralize(text_rect))
+
+class Title(Label):
+	def __init__(self, x=None, y=None, b_text=''):
+		Label.__init__(self, x, y, b_text, 70)
+
+	def blit(self, screen):
+		text_rect = self.text.get_rect()
+
+		id = int((data.i['lastUnlockedStages']-1)/5)
+		print("id = ", id)
+		if id>0:
+			screen.blit(data.leftWingSprite[id-1].img, [self.x + text_rect.x-110, self.y + text_rect.y - 15])
+			screen.blit(pygame.transform.flip(data.leftWingSprite[id-1].img, True, False), [self.x + text_rect.width - 25, self.y + text_rect.y - 15])
+		pygame.draw.rect(screen, theme.titleBackColor, [text_rect.x + self.x, text_rect.y + self.y, text_rect.width, text_rect.height])
+		pygame.draw.rect(screen, theme.backgroundColor, [text_rect.x + self.x+4, 4+text_rect.y + self.y, text_rect.width-8, text_rect.height-14])
+
+		text_rect = self.text.get_rect()
+		screen.blit(self.text, self.centralize(text_rect))
 
 class Rectangle(Elements):
 	def __init__(self, x, y, width, height, b_color = constants.BLACK):
@@ -369,7 +387,8 @@ class MainMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Paint-The-Wall!'))
+		# self.elements.append(Label(None, constants.POS['UP'], 'Paint-The-Wall!'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Paint the Wall!'))
 		self.elements.append(Button(None, 150, 'STAGES', constants.STAGE_MENU))
 		self.elements.append(Button(None, 219, 'SURVIVAL', constants.SURVIVAL_MENU))
 		self.elements.append(Button(None, 288, 'ACHIEVEMENTS', constants.ACHIEVEMENTS_MENU))
@@ -378,7 +397,7 @@ class MainMenu(Menu):
 		self.elements.append(Button(None, 495, 'QUIT', constants.QUIT))
 
 		#animations
-		self.animations.append(animation.MainMenuAnimation())
+		# self.animations.append(animation.MainMenuAnimation())
 
 class PauseMenu(Menu):
 	def initActors(self):
@@ -420,10 +439,14 @@ class StageMenu(Menu):
 		#actors
 		self.elements = [Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
 		self.elements.append(miniButton(constants.POS['RIGHT']+130, 240, '>', constants.STAGE_MENU_2, [constants.KEY_RIGHT]))
-		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Stages'))
+		# self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
 			if i >= data.i['lastUnlockedStages']:
 				self.elements.append(Label(170 + (i % 5) * 110, 190 + int(i / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+			elif i == data.i['lastUnlockedStages']-1:
+																																			# Button()
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
 				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
 
@@ -444,6 +467,8 @@ class StageMenu2(Menu):
 		for i in range(10, 20):
 			if i >= data.i['lastUnlockedStages']:
 				self.elements.append(Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+			elif i==data.i['lastUnlockedStages']-1:																																			# Button()
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
 				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
 

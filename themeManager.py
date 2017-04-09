@@ -10,7 +10,7 @@ def changeTheme(n):
     data.i['theme'] = n
     if n == constants.BASIC_THEME:
         #Basic Theme
-        theme.backgroundColor = constants.WHITE
+        theme.backgroundColor = (245, 245, 255)
 
         #button
         theme.offButtonSprite = sprites.sprite('grey_off_button.png')
@@ -19,12 +19,15 @@ def changeTheme(n):
         theme.onButtonSprite = sprites.sprite('black_on_button.png')
         theme.onButtonSpriteMini = sprites.sprite('small_black_on_button.png')
         theme.onButtonTextColor = constants.MED_GREEN
+        theme.onButtonActualStage = constants.BLUE
+        theme.offButtonActualStage = (120, 120, 255)
 
         #label
         theme.labelBackColor = theme.backgroundColor
         theme.labelTextColor = constants.BLACK
         theme.labelTextLowColor = constants.GRAY
         theme.labelTextLLColor = (180, 180, 180)
+        theme.titleBackColor = (205, 255, 205)
 
         #slider Bar
         theme.sliderPointerSpriteOff =  sprites.sprite('small_grey_off_button.png')
@@ -37,14 +40,15 @@ def changeTheme(n):
         theme.ballColor = constants.BLUE
         theme.heroColor = constants.RED
     elif n == constants.DARK_THEME:
-        theme.backgroundColor = constants.BLACK
+        theme.backgroundColor = (5, 5, 5)
 
         # button
         theme.offButtonColor = (10, 10, 10)#DARK_GRAY
         theme.offButtonTextColor = (200, 200, 200)#LIGHT_GRAY
         theme.onButtonColor = constants.DARK_GREEN
         theme.onButtonTextColor = constants.WHITE
-
+        theme.onButtonActualStage = (120, 120, 250)
+        theme.offButtonActualStage = (50, 50, 150)
 
         # engine
         theme.conqColor = constants.DARK_GREEN
@@ -52,6 +56,7 @@ def changeTheme(n):
         theme.freeColor = constants.BLACK
         theme.ballColor = (90, 30, 0)
         theme.heroColor = (190, 190, 0)
+        theme.titleBackColor = (0,20,0)
 
         # label
         theme.labelBackColor = constants.WHITE#theme.backgroundColor
@@ -66,7 +71,7 @@ def changeTheme(n):
 
     elif n == constants.RESET_THEME:
         #Basic Theme
-        theme.backgroundColor = constants.WHITE
+        theme.backgroundColor = (245, 245, 255)
 
         #button
         theme.offButtonSprite = None
@@ -77,12 +82,15 @@ def changeTheme(n):
         theme.onButtonSpriteMini = None
         theme.onButtonColor = None
         theme.onButtonTextColor = constants.MED_GREEN
+        theme.onButtonActualStage = constants.BLUE
+        theme.offButtonActualStage = (120, 120, 255)
 
         #label
         theme.labelBackColor = theme.backgroundColor
         theme.labelTextColor = constants.BLACK
         theme.labelTextLowColor = constants.GRAY
         theme.labelTextLLColor = (220, 220, 220)
+        theme.titleBackColor = (249, 249, 255)
 
         #slider Bar
         theme.sliderPointerSpriteOff = None

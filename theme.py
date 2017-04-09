@@ -3,7 +3,7 @@ import constants
 import pygame
 
 #Basic Theme
-backgroundColor = constants.WHITE
+backgroundColor = (245, 245, 255)
 
 #button
 offButtonSprite = sprites.sprite('grey_off_button.png')
@@ -14,12 +14,15 @@ onButtonSprite = sprites.sprite('black_on_button.png')
 onButtonSpriteMini = sprites.sprite('small_black_on_button.png')
 onButtonColor = None
 onButtonTextColor = constants.MED_GREEN
+onButtonActualStage = constants.BLUE
+offButtonActualStage = (120, 120, 255)
 
 #label
 labelBackColor = backgroundColor
 labelTextColor = constants.BLACK
 labelTextLowColor = constants.GRAY
 labelTextLLColor = (220, 220, 220) #Super low
+titleBackColor = (240, 240, 255)
 
 #Slider Bar
 sliderPointerSpriteOff = offButtonSpriteMini
