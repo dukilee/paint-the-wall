@@ -52,7 +52,6 @@ class level_Ball(ball.Ball):
 		return constants.UNDEFINED
 
 class Stage_Survival(engine.Engine):
-
 	def createObjects(self):
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball())
@@ -61,7 +60,6 @@ class Stage_Survival(engine.Engine):
 		return False
 
 	def stageDifferences(self, screen):
-
 		for b in self._ball:
 			self.cont += b.destructedBlocks
 
@@ -70,7 +68,6 @@ class Stage_Survival(engine.Engine):
 		if n > self.numberBalls:
 			self._ball.append(level_Ball())
 			self.numberBalls = n
-
 
 	def getInstructions(self):
 		return 'Survive ;)  :b'

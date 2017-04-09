@@ -5,22 +5,14 @@ from main import engine
 from pygame.locals import *
 from resources import constants
 
-class level_Hero(hero.Hero):
-	pass
-	
-class level_Ball(ball.Ball):
-	pass
-
-		
 class Stage_1(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 60
 
 	def createObjects(self):
 		self.numberBalls = 2
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.cont >= 60:
@@ -31,14 +23,13 @@ class Stage_1(engine.Engine):
 		return 'Conquer 500 blocks in less than 60 seconds.'
 
 class Stage_2(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 80
 
 	def createObjects(self):
 		self.numberBalls = 4
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 2 :
@@ -49,14 +40,13 @@ class Stage_2(engine.Engine):
 		return 'Split the balls into two regions in under 80 seconds.'
 
 class Stage_3(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 70
 
 	def createObjects(self):
 		self.numberBalls = 2
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.ballsKilled >= 1 :
@@ -66,14 +56,13 @@ class Stage_3(engine.Engine):
 		return 'Destroy 1 ball in under 70 seconds.'
 
 class Stage_4(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 40
 
 	def createObjects(self):
 		self.numberBalls = 6
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 2:
@@ -91,7 +80,7 @@ class Stage_5(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 5
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.cont >= 501:
@@ -102,14 +91,13 @@ class Stage_5(engine.Engine):
 		return 'Conquer 501 blocks in less than 32 seconds.'
 
 class Stage_6(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 23
 
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.ballsKilled > 0:
@@ -135,7 +123,7 @@ class Stage_7(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.grid[self.xx][self.yy] == constants.CONQUERED:
@@ -146,14 +134,13 @@ class Stage_7(engine.Engine):
 		return 'Conquer the central square in under 30 seconds.'
 
 class Stage_8(engine.Engine):
-
 	def initialSettings(self):
 		self.numberMovementsMax = 9
 
 	def createObjects(self):
 		self.numberBalls = 8
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 2:
@@ -165,14 +152,13 @@ class Stage_8(engine.Engine):
 
 
 class Stage_9(engine.Engine):
-
 	def initialSettings(self):
 		self.timerMax = 32
 
 	def createObjects(self):
 		self.numberBalls = 3
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.cont >= 920:
@@ -182,7 +168,6 @@ class Stage_9(engine.Engine):
 	def getInstructions(self):
 		return 'Conquer 920 blocks in less than 32 seconds.'
 
-
 class Stage_10(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 37
@@ -190,7 +175,7 @@ class Stage_10(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 3:
@@ -200,7 +185,6 @@ class Stage_10(engine.Engine):
 	def getInstructions(self):
 		return 'Split the balls into three regions in under 37 seconds.'
 
-
 class Stage_11(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 35
@@ -208,7 +192,7 @@ class Stage_11(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 5
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.ballsKilled >= 2 :
@@ -248,7 +232,7 @@ class Stage_12(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.grid[self.x1][self.y1] == constants.CONQUERED and self.grid[self.x1][self.y2] == constants.CONQUERED and self.grid[self.x2][self.y1] == constants.CONQUERED and self.grid[self.x2][self.y2] == constants.CONQUERED:
@@ -265,7 +249,7 @@ class Stage_13(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 8
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 3:
@@ -283,7 +267,7 @@ class Stage_14(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 5
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.cont >= 600:
@@ -292,7 +276,6 @@ class Stage_14(engine.Engine):
 
 	def getInstructions(self):
 		return 'Conquer 600 blocks in less than 28 seconds.'
-
 
 class Stage_15(engine.Engine):
 	def stageDifferences(self, screen):
@@ -323,7 +306,7 @@ class Stage_15(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.grid[self.x1][self.y1] == constants.CONQUERED and self.grid[self.x1][self.y2] == constants.CONQUERED and \
@@ -335,7 +318,6 @@ class Stage_15(engine.Engine):
 	def getInstructions(self):
 		return 'Conquer ALL dark green squares in less than 10 moves.'
 
-
 class Stage_16(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 35
@@ -343,7 +325,7 @@ class Stage_16(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.ballsKilled >= 3 :
@@ -352,7 +334,6 @@ class Stage_16(engine.Engine):
 
 	def getInstructions(self):
 		return 'Destroy 3 balls in under 35 seconds.'
-
 
 class Stage_17(engine.Engine):
 	def stageDifferences(self, screen):
@@ -404,7 +385,7 @@ class Stage_17(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 9
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.grid[self.x1][self.y1] == constants.CONQUERED and self.grid[self.x1][self.y2] == constants.CONQUERED and \
@@ -418,7 +399,6 @@ class Stage_17(engine.Engine):
 	def getInstructions(self):
 		return 'Conquer ALL dark green squares in less than 25 seconds.'
 
-
 class Stage_18(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 37
@@ -426,7 +406,7 @@ class Stage_18(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 9
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.numberRegions == 4:
@@ -436,7 +416,6 @@ class Stage_18(engine.Engine):
 	def getInstructions(self):
 		return 'Split the balls into four regions in under 37 seconds.'
 
-
 class Stage_19(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 29
@@ -444,7 +423,7 @@ class Stage_19(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 7
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.cont >= 650:
@@ -454,7 +433,6 @@ class Stage_19(engine.Engine):
 	def getInstructions(self):
 		return 'Conquer 650 blocks in less than 29 seconds.'
 
-
 class Stage_20(engine.Engine):
 	def initialSettings(self):
 		self.timerMax = 31
@@ -462,7 +440,7 @@ class Stage_20(engine.Engine):
 	def createObjects(self):
 		self.numberBalls = 10
 		for i in range(self.numberBalls):
-			self._ball.append(level_Ball())
+			self._ball.append(ball.Ball())
 
 	def winCondition(self):
 		if self.ballsKilled >= 4:

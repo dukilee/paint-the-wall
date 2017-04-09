@@ -7,7 +7,7 @@ from user_data import data, dataManager
 from visual import theme, themeManager
 
 pygame.init()
-pygame.display.set_caption('THE GAME', 'The Game')
+pygame.display.set_caption('paintTheWall', 'The Game')
 music = pygame.mixer.music
 screen = pygame.display.set_mode(constants.SCREEN_SIZE)
 dManager = dataManager.DataManager()
@@ -19,7 +19,7 @@ lastAction = constants.UNDEFINED
 themeManager.changeTheme(data.i['theme'])
 
 while action != constants.QUIT:
-	# pygame.mixer.music.load('sounds/teste_1.mid')
+	# music.load('resources/sounds/teste_1.mid')
 	# music.play(0)
 	# print("Lets go man action = ", action, " and lastaction = ", lastAction)
 	screen.fill(theme.backgroundColor)
@@ -35,7 +35,7 @@ while action != constants.QUIT:
 	lastAction = action
 	# music.stop()
 
-	# music.load('sounds/teste_2.mid')
+	# music.load('resources/sounds/teste_2.mid')
 	# music.play(0)
 
 	if action == constants.PLAY:
@@ -47,66 +47,9 @@ while action != constants.QUIT:
 	elif action == constants.STAGE_SURVIVAL:
 		_engine = stage_Survival.Stage_Survival()
 		action = _engine.run(screen)
-
-	elif action == constants.STAGE1:
-		_engine = stage.Stage_1()
-		action = _engine.run(screen)
-	elif action == constants.STAGE2:
-		_engine = stage.Stage_2()
-		action = _engine.run(screen)
-	elif action == constants.STAGE3:
-		_engine = stage.Stage_3()
-		action = _engine.run(screen)
-	elif action == constants.STAGE4:
-		_engine = stage.Stage_4()
-		action = _engine.run(screen)
-	elif action == constants.STAGE5:
-		_engine = stage.Stage_5()
-		action = _engine.run(screen)
-	elif action == constants.STAGE6:
-		_engine = stage.Stage_6()
-		action = _engine.run(screen)
-	elif action == constants.STAGE7:
-		_engine = stage.Stage_7()
-		action = _engine.run(screen)
-	elif action == constants.STAGE8:
-		_engine = stage.Stage_8()
-		action = _engine.run(screen)
-	elif action == constants.STAGE9:
-		_engine = stage.Stage_9()
-		action = _engine.run(screen)
-	elif action == constants.STAGE10:
-		_engine = stage.Stage_10()
-		action = _engine.run(screen)
-	elif action == constants.STAGE11:
-		_engine = stage.Stage_11()
-		action = _engine.run(screen)
-	elif action == constants.STAGE12:
-		_engine = stage.Stage_12()
-		action = _engine.run(screen)
-	elif action == constants.STAGE13:
-		_engine = stage.Stage_13()
-		action = _engine.run(screen)
-	elif action == constants.STAGE14:
-		_engine = stage.Stage_14()
-		action = _engine.run(screen)
-	elif action == constants.STAGE15:
-		_engine = stage.Stage_15()
-		action = _engine.run(screen)
-	elif action == constants.STAGE16:
-		_engine = stage.Stage_16()
-		action = _engine.run(screen)
-	elif action == constants.STAGE17:
-		_engine = stage.Stage_17()
-		action = _engine.run(screen)
-	elif action == constants.STAGE18:
-		_engine = stage.Stage_18()
-		action = _engine.run(screen)
-	elif action == constants.STAGE19:
-		_engine = stage.Stage_19()
-		action = _engine.run(screen)
-	elif action == constants.STAGE20:
-		_engine = stage.Stage_20()
+	elif action in constants.STAGE_INDEX:
+		selector = str(action - constants.STAGE_INDEX[0])
+		_engine = eval("stage.Stage_" + selector)()
 		action = _engine.run(screen)
 
 	#menus
@@ -133,7 +76,6 @@ while action != constants.QUIT:
 
 	elif action == constants.SURVIVAL_MENU:
 		_menu = menu.SurvivalMenu()
-
 
 	elif action == constants.SETTINGS_MENU:
 		_menu = menu.SettingsMenu()

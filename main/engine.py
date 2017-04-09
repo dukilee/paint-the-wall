@@ -17,6 +17,7 @@ class Engine:
 		self.dy = (0, 0, 1, -1)
 		self.grid = [[constants.NOTHING for i in range(constants.GRID_SIZE[0])] for j in range (constants.GRID_SIZE[1])]
 
+		self.action = constants.STAGE_MENU
 		self.timerMax = -1
 		self.numberRegions = 1
 		self.ballsKilled = 0
@@ -90,17 +91,14 @@ class Engine:
 					return repint, constants.QUIT
 				
 				if event.type == pygame.KEYDOWN:
-
 					if event.key == constants.keys['q']:
-						return repint, constants.UNDEFINED
-
-
+						return repint, self.action
 					elif event.key == constants.keys['p']:
 						_menu = menu.PauseMenu()
 						screen.fill(constants.WHITE)
 						action = _menu.update(screen, self.getInstructions())
-						if action == constants.MAIN_MENU:
-							return repint, constants.MAIN_MENU
+						if action == constants.STAGE_MENU:
+							return repint, constants.STAGE_MENU
 						elif action == constants.RESTART:
 							return repint, constants.RESTART
 						repint = True
@@ -177,8 +175,6 @@ class Engine:
 		return self.cont <= self.minimum
 
 	def draw(self, screen):
-		
-
 		self.objectErase.append(Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]))
 		pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 
@@ -186,12 +182,10 @@ class Engine:
 		for b in self._ball:
 			pygame.draw.circle(screen, theme.ballColor, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
 
-
 		#Score
 		font = pygame.font.SysFont('Calibri', 25, True, False)
 		text = font.render("Left: {}  Minimum: {}  Score: {}".format(self.cont, self.minimum, self.score), True, constants.BLACK)
 		screen.blit(text, [0, 0])
-		
 		
 		pygame.display.update(self.objectErase)
 
@@ -236,7 +230,6 @@ class Engine:
 		screen.blit(text, [600, 0])
 		return None
 
-
 	def run(self, screen):
 		self._ball = []
 		self.conquering = False #true if there is any process block
@@ -251,20 +244,18 @@ class Engine:
 		self.initGrid()
 		# self.updateGrid()
 		self.drawGrid(screen)
-	
 
-		pygame.init()
+#		pygame.init()
 		doneRunning = False
 		clock = pygame.time.Clock()
-
 
 		#startMenu
 		screen.fill(constants.WHITE)
 		_menu = menu.StartMenu()
 		# self.writeInstructions(screen)
 		action = _menu.update(screen, self.getInstructions())
-		if action == constants.MAIN_MENU:
-			return constants.MAIN_MENU
+		if action == constants.STAGE_MENU:
+			return constants.STAGE_MENU
 
 		# s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
 		# s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
@@ -305,6 +296,7 @@ class Engine:
 					self.objectErase.append(r)
 					color = self.getColor(self.grid[(_heroPos.x+i)][_heroPos.y+j])
 					pygame.draw.rect(screen, color, r)
+
 			for balls in self._ball:
 				_ballPos = tools.Vector2(int(round(balls.pos.x/constants.SCALE[0])), int(round(balls.pos.y/constants.SCALE[1])))
 				for i in [-1, 0, 1]:
