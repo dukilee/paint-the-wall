@@ -62,7 +62,11 @@ BUTTON_WIDTH = 198
 BUTTON_MINI_HEIGHT = 57
 BUTTON_MINI_WIDTH = 57
 LABEL_FONT_SIZE = 50
-POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]), 'LEFT': int(0.05 * SCREEN_SIZE[0]), 'UP': int(0.08 * SCREEN_SIZE[1]), 'DOWN': int(0.85 * SCREEN_SIZE[1]) }
+POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]),
+        'LEFT': int(0.05 * SCREEN_SIZE[0]),
+        'UP': int(0.08 * SCREEN_SIZE[1]),
+        'DOWN': int(0.85 * SCREEN_SIZE[1]) }
+
 UNDEFINED = -1000 # for flags
 NEXT = -999
 RESTART = -3
@@ -78,6 +82,9 @@ STATS_MENU = 6
 SURVIVAL_MENU = 7
 SETTINGS_MENU = 8
 STAGE_MENU_2 = 121
+MENU_INDEX = { ABOUT_MENU: "About", ACHIEVEMENTS_MENU: "Achievements",
+               MAIN_MENU: "Main", RANK_MENU: "Rank", STAGE_MENU: "Stage",
+               STATS_MENU: "Stats", SURVIVAL_MENU: "Survival", SETTINGS_MENU: "Settings" }
 
 #stages
 PLAY = 9

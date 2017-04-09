@@ -52,33 +52,9 @@ while action != constants.QUIT:
 		_engine = eval("stage.Stage_" + selector)()
 		action = _engine.run(screen)
 
-	#menus
-	elif action == constants.ABOUT_MENU:
-		_menu = menu.AboutMenu()
-	
-	elif action == constants.ACHIEVEMENTS_MENU:
-		_menu = menu.AchievementsMenu()
-	
-	elif action == constants.MAIN_MENU:
-		_menu = menu.MainMenu()
-	
-	elif action == constants.RANK_MENU:
-		_menu = menu.RankMenu()
-
-	elif action == constants.STAGE_MENU:
-		_menu = menu.StageMenu()
-
-	elif action == constants.STAGE_MENU_2:
-		_menu = menu.StageMenu2()
-	
-	elif action == constants.STATS_MENU:
-		_menu = menu.StatsMenu()
-
-	elif action == constants.SURVIVAL_MENU:
-		_menu = menu.SurvivalMenu()
-
-	elif action == constants.SETTINGS_MENU:
-		_menu = menu.SettingsMenu()
+	elif action in constants.MENU_INDEX:
+		selector = str("menu." + constants.MENU_INDEX[action] + "Menu")
+		_menu = eval(selector)()
 
 	if action == constants.WIN:
 		data.i['lastUnlockedStages'] = max(data.i['lastUnlockedStages'], 1 + lastAction - constants.STAGE0)

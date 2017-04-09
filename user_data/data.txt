@@ -1,9 +1,9 @@
-timePlayed: 611
-blocksConquered: 506
-deaths: 2
+timePlayed: 674
+blocksConquered: 580
+deaths: 3
 ballsDestructed: 0
 lastUnlockedStages: 10
-theme: 1
+theme: 0
 doubleKill: 0
 worldEmperor: 0
 yogaMaster: 0
