@@ -1,10 +1,9 @@
-import ball
-import constants
-import engine
-import hero
 import pygame
 
+from actors import ball, hero
+from main import engine
 from pygame.locals import *
+from resources import constants
 
 class level_Hero(hero.Hero):
 	pass

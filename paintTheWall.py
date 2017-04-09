@@ -1,13 +1,10 @@
-import constants
-import dataManager
-import engine
-import menu
 import pygame
-import stage_Survival
-import stage
-import data
-import themeManager
-import theme
+
+from main import engine, menu
+from resources import constants
+from stages import stage, stage_Survival
+from user_data import data, dataManager
+from visual import theme, themeManager
 
 pygame.init()
 pygame.display.set_caption('THE GAME', 'The Game')

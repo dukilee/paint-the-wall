@@ -1,9 +1,9 @@
-import data
+from user_data import data
 
 class DataManager:
 	def __init__(self):
 		try:
-			file = open('data.txt', 'r')
+			file = open('user_data\data.txt', 'r')
 			
 			content = file.readlines()
 			for x in content:
@@ -15,18 +15,17 @@ class DataManager:
 					data.i[lines[0]] = int(float(lines[1]))
 
 			file.close()
+
 		except IOError:
 			print("Creating a new data file...")
 			self.save()
-
 
 	def load(self, file):
 		return val
 
 	def save(self):
-		file = open('data.txt', 'w')
+		file = open('user_data\data.txt', 'w')
 		for name, val in data.i.items():
 			s = name + ": " + str(val) + "\n"
 			file.write(s)
 		file.close()
-

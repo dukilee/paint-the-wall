@@ -1,5 +1,5 @@
-import menu
-import constants
+from main import menu
+from resources import constants
 
 class Animation:
     def interpolate(self, s, f, finalFrame, actualFrame, startingFrame = 0):

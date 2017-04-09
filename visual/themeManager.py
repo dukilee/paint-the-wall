@@ -1,7 +1,6 @@
-import theme
-import sprites
-import constants
-import data
+from resources import constants, tools
+from user_data import data
+from visual import theme
 
 def changeTheme(n):
     if n!= constants.RESET_THEME:
@@ -13,11 +12,11 @@ def changeTheme(n):
         theme.backgroundColor = (245, 245, 255)
 
         #button
-        theme.offButtonSprite = sprites.sprite('grey_off_button.png')
-        theme.offButtonSpriteMini = sprites.sprite('small_grey_off_button.png')
+        theme.offButtonSprite = tools.sprite('grey_off_button.png')
+        theme.offButtonSpriteMini = tools.sprite('small_grey_off_button.png')
         theme.offButtonTextColor = constants.DARK_GREEN
-        theme.onButtonSprite = sprites.sprite('black_on_button.png')
-        theme.onButtonSpriteMini = sprites.sprite('small_black_on_button.png')
+        theme.onButtonSprite = tools.sprite('black_on_button.png')
+        theme.onButtonSpriteMini = tools.sprite('small_black_on_button.png')
         theme.onButtonTextColor = constants.MED_GREEN
         theme.onButtonActualStage = constants.BLUE
         theme.offButtonActualStage = (120, 120, 255)
@@ -30,8 +29,8 @@ def changeTheme(n):
         theme.titleBackColor = (205, 255, 205)
 
         #slider Bar
-        theme.sliderPointerSpriteOff =  sprites.sprite('small_grey_off_button.png')
-        theme.sliderPointerSpriteOn = sprites.sprite('small_black_on_button.png')
+        theme.sliderPointerSpriteOff =  tools.sprite('small_grey_off_button.png')
+        theme.sliderPointerSpriteOn = tools.sprite('small_black_on_button.png')
 
         # engine
         theme.conqColor = constants.GREEN

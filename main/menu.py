@@ -1,13 +1,9 @@
-import constants
 import pygame
-import sprites
-import vector2
-import themeManager
-import theme
-import data
-import animation
 
 from pygame.locals import *
+from resources import constants, tools
+from user_data import data
+from visual import animation, theme, themeManager
 
 # Falta o tutorial!
 
@@ -214,7 +210,7 @@ class SlideBar(Elements):
 
 		Elements.__init__(self, x, y)
 
-		self.pointerPos = vector2.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
+		self.pointerPos = tools.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
 		self.backgroundColor = theme.sliderBackColor
 		self.turn_off()
 

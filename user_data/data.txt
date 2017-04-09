@@ -1,0 +1,11 @@
+timePlayed: 99
+blocksConquered: 93
+deaths: 0
+ballsDestructed: 0
+lastUnlockedStages: 10
+theme: 0
+doubleKill: 0
+worldEmperor: 0
+yogaMaster: 0
+musicVolume: 100
+effectsVolume: 51

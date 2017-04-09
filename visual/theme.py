@@ -1,17 +1,17 @@
-import sprites
-import constants
 import pygame
+
+from resources import constants, tools
 
 #Basic Theme
 backgroundColor = (245, 245, 255)
 
 #button
-offButtonSprite = sprites.sprite('grey_off_button.png')
-offButtonSpriteMini = sprites.sprite('small_grey_off_button.png')
+offButtonSprite = tools.sprite('grey_off_button.png')
+offButtonSpriteMini = tools.sprite('small_grey_off_button.png')
 offButtonColor = None
 offButtonTextColor = constants.DARK_GREEN
-onButtonSprite = sprites.sprite('black_on_button.png')
-onButtonSpriteMini = sprites.sprite('small_black_on_button.png')
+onButtonSprite = tools.sprite('black_on_button.png')
+onButtonSpriteMini = tools.sprite('small_black_on_button.png')
 onButtonColor = None
 onButtonTextColor = constants.MED_GREEN
 onButtonActualStage = constants.BLUE

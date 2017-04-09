@@ -1,15 +1,13 @@
-import constants
-import hero
-import menu
 import pygame
-import vector2
-import data
-import theme
 
+from actors import hero
+from main import menu
 from pygame.locals import *
+from resources import constants, tools
+from user_data import data
+from visual import theme
 
 class Engine:
-
 	def __init__(self):
 		self._hero = hero.Hero() 
 		self._ball = []		
@@ -123,7 +121,7 @@ class Engine:
 
 	def updateGrid(self):
 		self.newBlocksConquered = 0
-		_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
+		_heroPos = tools.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 		if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
 			if self.conquering:
 				self.numberMovements += 1
@@ -298,7 +296,7 @@ class Engine:
 				return lose
 
 			#calculates what parts of the image needs to be redone
-			_heroPos = vector2.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
+			_heroPos = tools.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 			for i in [-1, 0, 1]:
 				for j in [-1, 0, 1]:
 					if _heroPos.x+i<0 or _heroPos.x+i>=constants.GRID_SIZE[0] or _heroPos.y+j<0 or _heroPos.y+j>=constants.GRID_SIZE[1]:
@@ -308,7 +306,7 @@ class Engine:
 					color = self.getColor(self.grid[(_heroPos.x+i)][_heroPos.y+j])
 					pygame.draw.rect(screen, color, r)
 			for balls in self._ball:
-				_ballPos = vector2.Vector2(int(round(balls.pos.x/constants.SCALE[0])), int(round(balls.pos.y/constants.SCALE[1])))
+				_ballPos = tools.Vector2(int(round(balls.pos.x/constants.SCALE[0])), int(round(balls.pos.y/constants.SCALE[1])))
 				for i in [-1, 0, 1]:
 					for j in [-1, 0, 1]:
 						if _ballPos.x+i<0 or _ballPos.x+i>=constants.GRID_SIZE[0] or _ballPos.y+j<0 or _ballPos.y+j>=constants.GRID_SIZE[1]:
