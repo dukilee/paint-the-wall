@@ -179,7 +179,6 @@ class Title(Label):
 		text_rect = self.text.get_rect()
 
 		id = int((data.i['lastUnlockedStages']-1)/5)
-		print("id = ", id)
 		if id>0:
 			screen.blit(data.leftWingSprite[id-1].img, [self.x + text_rect.x-110, self.y + text_rect.y - 15])
 			screen.blit(pygame.transform.flip(data.leftWingSprite[id-1].img, True, False), [self.x + text_rect.width - 25, self.y + text_rect.y - 15])
@@ -333,7 +332,25 @@ class AchievementsMenu(Menu):
 		self.overString = 'Kill a ball with only the first move.'
 
 	def toWE(self): #World Emperor
-		self.overString = 'Conquer the hole screen'
+		self.overString = 'Conquer the hole screen.'
+
+	def toIM(self):#Immortal
+		self.overString = 'Do 666 points in survival mode.'
+
+	def toJE(self):#Jedi
+		self.overString = 'Conquer all achievements.'
+
+	def toPI(self):#Pilgrim
+		self.overString = 'Complete stage 10.'
+
+	def toHA(self):#hacker
+		self.overString = 'Complete all stages. :D'
+
+	def toPA(self):#Pacifist
+		self.overString = 'Complete stage x without killing balls'
+
+	def toSK(self):#Serial Killer
+		self.overString = 'Kill 42 balls.'
 
 	def instructionsText(self):
 		copy = self.overString
@@ -350,33 +367,114 @@ class AchievementsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Achievements'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Achievements'))
 		self.elements.append(Rectangle(10, constants.POS['DOWN'], 460, 50, theme.labelTextLLColor))
 		self.elements.append(Label(130, constants.POS['DOWN']+15, 'Instructions a lot of it', 30, False, None, None, self.instructionsText))
 		# self.elements.append(Label(constants.POS['RIGHT'], 300, '00:00:00'             ,    30, False, None, None, self.timeText))
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
 
 		if data.i['doubleKill'] == 1:
-			self.elements.append(Label(50, 225, 'Double Kill', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK, constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+			self.elements.append(Label(50, 210, 'Double Kill', 30, False, None, None))
+			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
 		else:
-			self.elements.append(Label(50, 225, 'Double Kill', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK, constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(
+				Label(50, 210, 'Double Kill', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
 
 		if data.i['worldEmperor'] == 1:
-			self.elements.append(Label(300, 225, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE, constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+			self.elements.append(
+				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
 		else:
-			self.elements.append(Label(300, 225, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE, constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(
+				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
 
 		if data.i['yogaMaster'] == 1:
-			self.elements.append(Label(550, 225, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM, constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN, constants.DARK_GREEN))
+			self.elements.append(Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
 		else:
-			self.elements.append(Label(550, 225, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM, constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
-		
+			self.elements.append(
+				Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['pacifist'] == 1:
+			self.elements.append(Label(50, 310, 'Pacifist', 30, False, None, None))
+			self.elements.append(ButtonOver(50, 250, 'PA', constants.UNCLICKABLE, [constants.NOKEY], self.toPA,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(50, 310, 'Pacifist', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(50, 250, 'PA', constants.UNCLICKABLE, [constants.NOKEY], self.toPA,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['serialKiller'] == 1:
+			self.elements.append(Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(550, 250, 'SK', constants.UNCLICKABLE, [constants.NOKEY], self.toSK,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(550, 250, 'SK', constants.UNCLICKABLE, [constants.NOKEY], self.toSK,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['immortal'] == 1:
+			self.elements.append(Label(50, 410, 'Immortal', 30, False, None, None))
+			self.elements.append(ButtonOver(50, 350, 'IM', constants.UNCLICKABLE, [constants.NOKEY], self.toIM,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(50, 410, 'Immortal', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(50, 350, 'IM', constants.UNCLICKABLE, [constants.NOKEY], self.toIM,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['pilgrim'] == 1:
+			self.elements.append(
+				Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(300, 350, 'PI', constants.UNCLICKABLE, [constants.NOKEY], self.toPI,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(300, 350, 'PI', constants.UNCLICKABLE, [constants.NOKEY], self.toPI,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['hacker'] == 1:
+			self.elements.append(Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(550, 350, 'HA', constants.UNCLICKABLE, [constants.NOKEY], self.toHA,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(550, 350, 'HA', constants.UNCLICKABLE, [constants.NOKEY], self.toHA,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
+		if data.i['jedi'] == 1:
+			self.elements.append(
+				Label(300, 310, 'Jedi', 30, False, theme.labelBackColor, theme.labelTextColor))
+			self.elements.append(ButtonOver(300, 250, 'JE', constants.UNCLICKABLE, [constants.NOKEY], self.toJE,
+											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
+											constants.DARK_GREEN))
+		else:
+			self.elements.append(
+				Label(300, 310, 'Jedi', 30, False, theme.labelBackColor, theme.labelTextLowColor))
+			self.elements.append(ButtonOver(300, 250, 'JE', constants.UNCLICKABLE, [constants.NOKEY], self.toJE,
+											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+
 class MainMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
@@ -463,7 +561,7 @@ class StageMenu2(Menu):
 		self.elements.append(
 			miniButton(constants.POS['LEFT']+10, 240, '<', constants.STAGE_MENU, [constants.KEY_LEFT]))
 
-		self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Stages'))
 		for i in range(10, 20):
 			if i >= data.i['lastUnlockedStages']:
 				self.elements.append(Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
@@ -488,7 +586,7 @@ class StatsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Stats'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Stats'))
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
 		self.elements.append(Label(constants.POS['LEFT'], 300, 'Time Played:', 30, False))
 		self.elements.append(Label(constants.POS['LEFT'], 350, 'Blocks Destructed:', 30, False))
@@ -511,7 +609,7 @@ class SurvivalMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Survival'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Survival'))
 		self.elements.append(Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['Enter']]))
 		self.elements.append(Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
@@ -539,7 +637,7 @@ class SettingsMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Settings'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Settings'))
 		self.elements.append(SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume']))
 		self.elements.append(Label(constants.POS['LEFT'], 135, 'Music Volume:', 40, False))
 		self.elements.append(SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume']))
@@ -560,7 +658,7 @@ class RankMenu(Menu):
 
 		#actors
 		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'Ranking'))
+		self.elements.append(Title(None, constants.POS['UP'], 'Ranking'))
 		self.elements.append(Button(450, 250, 'BACK', constants.SURVIVAL_MENU, [constants.keys['b']]))
 
 class LoseMenu(Menu):

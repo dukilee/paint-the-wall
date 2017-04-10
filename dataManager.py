@@ -19,9 +19,28 @@ class DataManager:
 			print("Creating a new data file...")
 			self.save()
 
+	def updateData(self):
+		if data.i['lastUnlockedStages']>20:
+			data.i['hacker'] = 1
+		else:
+			data.i['hacker'] = 0
 
-	def load(self, file):
-		return val
+		if data.i['lastUnlockedStages']>10:
+			data.i['pilgrim'] = 1
+		else:
+			data.i['pilgrim'] = 0
+
+		if data.i['ballsDestructed'] > 42: #universe age
+			data.i['serialKiller'] = 1
+		else:
+			data.i['serialKiller'] = 0
+
+		if data.i['hacker']==1 and data.i['pilgrim']==1 and data.i['serialKiller']==1 and \
+			data.i['worldEmperor']==1 and data.i['immortal']==1 and data.i['pacifist']==1 and \
+			data.i['yogaMaster']==1 and data.i['doubleKill']==1:
+			data.i['jedi'] = 1
+		else:
+			data.i['jedi'] = 0
 
 	def save(self):
 		file = open('data.txt', 'w')
