@@ -1,19 +1,17 @@
-import ball
-import time
-import constants
-import engine
-import hero
 import random
-import tools
-import vector2
+import time
+
+from actors import ball, hero
+from main import engine
+from resources import constants, tools
 
 class level_Hero(hero.Hero):
 	pass
 	
 class level_Ball(ball.Ball):
 	def __init__(self):
-		self.pos = vector2.Vector2(400, 300)
-		self.speed = vector2.Vector2(3, 3)
+		self.pos = tools.Vector2(400, 300)
+		self.speed = tools.Vector2(3, 3)
 		self.destructedBlocks = 0
 
 		if random.randint(-1, 1) < 0:
@@ -24,7 +22,7 @@ class level_Ball(ball.Ball):
 
 	def update(self, grid):
 		self.destructedBlocks = 0
-		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
+		nextPos = tools.Vector2(self.pos.x + constants.BALL_RADIUS*(self.speed.x/abs(self.speed.x)), self.pos.y + constants.BALL_RADIUS*self.speed.y/abs(self.speed.y))
 		actualGrid = tools.discretize(self.pos)
 		nextGrid = tools.discretize(nextPos)
 		
@@ -49,12 +47,11 @@ class level_Ball(ball.Ball):
 			#sys.exit()
 			return constants.LOSE
 
-		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
+		self.pos = tools.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
 
 		return constants.UNDEFINED
 
 class Stage_Survival(engine.Engine):
-
 	def createObjects(self):
 		for i in range(self.numberBalls):
 			self._ball.append(level_Ball())
@@ -63,7 +60,6 @@ class Stage_Survival(engine.Engine):
 		return False
 
 	def stageDifferences(self, screen):
-
 		for b in self._ball:
 			self.cont += b.destructedBlocks
 
@@ -72,7 +68,6 @@ class Stage_Survival(engine.Engine):
 		if n > self.numberBalls:
 			self._ball.append(level_Ball())
 			self.numberBalls = n
-
 
 	def getInstructions(self):
 		return 'Survive ;)  :b'

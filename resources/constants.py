@@ -22,6 +22,8 @@ LEFT = 3
 DOWN = 4
 HERO_SPEED = 2
 HERO_SIZE = (20, 20)
+move_x = { RIGHT: HERO_SPEED, LEFT: -HERO_SPEED }
+move_y = { UP: -HERO_SPEED, DOWN: HERO_SPEED }
 
 #ball
 BALL_RADIUS = 7
@@ -38,10 +40,6 @@ keys = { KEY_RIGHT: RIGHT, KEY_LEFT: LEFT, KEY_DOWN: DOWN, KEY_UP: UP, 'a':97, '
 			's':115, 't':116, 'u':117, 'v':118, 'w':119, 'x':120, 'y':121, 'z':122,
 			'0':48, '1':49, '2':50, '3':51, '4':52, '5':53, '6':54, '7':55, '8':56, 
 			'9':57, 'Enter': 13, 'backspace': 8, 'space': 32}
-move_x = { RIGHT: HERO_SPEED, LEFT: -HERO_SPEED }
-move_y = { UP: -HERO_SPEED, DOWN: HERO_SPEED }
-
-
 
 #grid
 NOTHING = 3
@@ -64,7 +62,11 @@ BUTTON_WIDTH = 198
 BUTTON_MINI_HEIGHT = 57
 BUTTON_MINI_WIDTH = 57
 LABEL_FONT_SIZE = 50
-POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]), 'LEFT': int(0.05 * SCREEN_SIZE[0]), 'UP': int(0.08 * SCREEN_SIZE[1]), 'DOWN': int(0.85 * SCREEN_SIZE[1]) }
+POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]),
+        'LEFT': int(0.05 * SCREEN_SIZE[0]),
+        'UP': int(0.08 * SCREEN_SIZE[1]),
+        'DOWN': int(0.85 * SCREEN_SIZE[1]) }
+
 UNDEFINED = -1000 # for flags
 NEXT = -999
 RESTART = -3
@@ -80,31 +82,16 @@ STATS_MENU = 6
 SURVIVAL_MENU = 7
 SETTINGS_MENU = 8
 STAGE_MENU_2 = 121
+MENU_INDEX = { ABOUT_MENU: "About", ACHIEVEMENTS_MENU: "Achievements",
+               MAIN_MENU: "Main", RANK_MENU: "Rank", STAGE_MENU: "Stage", STAGE_MENU_2: "Stage2",
+               STATS_MENU: "Stats", SURVIVAL_MENU: "Survival", SETTINGS_MENU: "Settings" }
 
+#stages
 PLAY = 9
-STAGE = 10
 STAGE_SURVIVAL = 99
-STAGE0 = 100
-STAGE1 = STAGE0 + 1
-STAGE2 = STAGE1 + 1
-STAGE3 = STAGE2 + 1
-STAGE4 = STAGE3 + 1
-STAGE5 = STAGE4 + 1
-STAGE6 = STAGE5 + 1
-STAGE7 = STAGE6 + 1
-STAGE8 = STAGE7 + 1
-STAGE9 = STAGE8 + 1
-STAGE10 = STAGE9 + 1
-STAGE11 = STAGE10 + 1
-STAGE12 = STAGE11 + 1
-STAGE13 = STAGE12 + 1
-STAGE14 = STAGE13 + 1
-STAGE15 = STAGE14 + 1
-STAGE16 = STAGE15 + 1
-STAGE17 = STAGE16 + 1
-STAGE18 = STAGE17 + 1
-STAGE19 = STAGE18 + 1
-STAGE20 = STAGE19 + 1
+STAGE_0 = 100
+N_OF_STAGES = 20
+STAGE_INDEX = [STAGE_0 + k for k in range(N_OF_STAGES + 1)]
 
 #themes
 RESET_THEME = -1

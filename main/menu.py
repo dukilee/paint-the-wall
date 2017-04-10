@@ -1,15 +1,9 @@
-import constants
 import pygame
-import sprites
-import vector2
-import themeManager
-import theme
-import data
-import animation
 
 from pygame.locals import *
-
-# Falta o tutorial!
+from resources import constants, tools
+from user_data import data
+from visual import animation, theme, themeManager
 
 class Elements:	
 	def __init__(self, x, y):
@@ -213,7 +207,7 @@ class SlideBar(Elements):
 
 		Elements.__init__(self, x, y)
 
-		self.pointerPos = vector2.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
+		self.pointerPos = tools.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
 		self.backgroundColor = theme.sliderBackColor
 		self.turn_off()
 
@@ -247,8 +241,6 @@ class SlideBar(Elements):
 				self.action(self.value)
 
 		return done, action
-
-
 
 class Menu:
 	def __init__(self):
@@ -500,7 +492,7 @@ class MainMenu(Menu):
 class PauseMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
-		self.action = constants.MAIN_MENU
+		self.action = constants.STAGE_MENU
 
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
@@ -508,14 +500,14 @@ class PauseMenu(Menu):
 		#actors
 		self.elements = []
 		self.elements.append(Label(None, 350, 'Press \'p\' to resume.', 30, False, constants.BLACK))
-		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.STAGE_MENU, [constants.keys['m']]))
 		self.elements.append(Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
 		self.elements.append(Button(constants.POS['RIGHT'], None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['Enter']]))
 
 class StartMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
-		self.action = constants.MAIN_MENU
+		self.action = constants.STAGE_MENU
 
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
@@ -524,7 +516,7 @@ class StartMenu(Menu):
 		self.elements = []
 		self.elements.append(Label(None, 350, 'Press \'Enter\' to start.', 30, False, constants.BLACK))
 		self.elements.append(Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['Enter']]))
-		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.MAIN_MENU, [constants.keys['m']]))
+		self.elements.append(Button(constants.POS['LEFT'], None, 'Menu', constants.STAGE_MENU, [constants.keys['m']]))
 
 class StageMenu(Menu):
 	def initActors(self):
@@ -542,13 +534,12 @@ class StageMenu(Menu):
 		for i in range(10):
 			if i >= data.i['lastUnlockedStages']:
 				self.elements.append(Label(170 + (i % 5) * 110, 190 + int(i / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
-			elif i == data.i['lastUnlockedStages']-1:
-																																			# Button()
-				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
+			elif i == data.i['lastUnlockedStages']-1: #Button()
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[i + 1], [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
-				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[i + 1]))
 
-class StageMenu2(Menu):
+class Stage2Menu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
 		self.action = constants.MAIN_MENU
@@ -566,10 +557,9 @@ class StageMenu2(Menu):
 			if i >= data.i['lastUnlockedStages']:
 				self.elements.append(Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
 			elif i==data.i['lastUnlockedStages']-1:																																			# Button()
-				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[1] + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
-				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE1 + i))
-
+				self.elements.append(miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[1] + i))
 
 class StatsMenu(Menu):
 	def timeText(self):
@@ -597,7 +587,6 @@ class StatsMenu(Menu):
 		self.elements.append(Label(constants.POS['RIGHT'], 400, '{}'.format(data.i['ballsDestructed']), 30, False))
 		self.elements.append(Label(constants.POS['RIGHT'], 450, '{}'.format(data.i['deaths']), 30, False))
 
-
 class SurvivalMenu(Menu):
 	def initActors(self):
 		#where to go when quitting this menu
@@ -615,7 +604,6 @@ class SurvivalMenu(Menu):
 		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
 class SettingsMenu(Menu):
-
 	def toBasic(self):
 		themeManager.changeTheme(constants.BASIC_THEME)
 

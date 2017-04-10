@@ -1,9 +1,8 @@
-import constants
-import vector2
+from resources import constants, tools
 
 class Hero:
 	def __init__(self):
-		self.pos = vector2.Vector2(0, 0)
+		self.pos = tools.Vector2(0, 0)
 		self.direction = constants.STOP
 	
 	def able_to_move_x(self, where):
@@ -17,14 +16,14 @@ class Hero:
 		return self.pos.y > 0	
 
 	def update(self, key, press):
-		if press: # press button
+		if press: #press button
 			if key in constants.keys:
 				self.direction = constants.keys[key]
-		else: # release button
+		else: #release button
 			if key in constants.keys and constants.keys[key] == self.direction:
 				self.direction = constants.STOP
 
-		# moving hero
+		#moving hero
 		if self.direction in constants.move_x and self.able_to_move_x(constants.move_x[self.direction]):
 			self.pos.x += constants.move_x[self.direction]
 		elif self.direction in constants.move_y and self.able_to_move_y(constants.move_y[self.direction]):

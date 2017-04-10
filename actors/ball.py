@@ -1,12 +1,11 @@
-import constants
-import vector2
 import random
-import tools
+
+from resources import constants, tools
 
 class Ball:
 	def __init__(self):
 		self.pos = tools.random_pos() # random position on screen
-		self.speed = vector2.Vector2(3, 3)
+		self.speed = tools.Vector2(3, 3)
 
 		if random.randint(-1, 1) < 0:
 			self.speed.x *=-1
@@ -26,7 +25,7 @@ class Ball:
 		return self.valid_x(x, grid) and self.valid_y(y, grid)
 
 	def update(self, grid):
-		nextPos = vector2.Vector2(self.pos.x + constants.BALL_RADIUS*tools.sign(self.speed.x), self.pos.y + constants.BALL_RADIUS*tools.sign(self.speed.y))
+		nextPos = tools.Vector2(self.pos.x + constants.BALL_RADIUS*tools.sign(self.speed.x), self.pos.y + constants.BALL_RADIUS*tools.sign(self.speed.y))
 		actualGrid = tools.discretize(self.pos)
 		nextGrid = tools.discretize(nextPos)
 		
@@ -43,6 +42,6 @@ class Ball:
 		if self.valid(nextGrid[0], nextGrid[1], grid) and grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
 			return constants.LOSE
 
-		self.pos = vector2.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
+		self.pos = tools.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
 
 		return constants.UNDEFINED

@@ -1,4 +1,4 @@
-import data
+from user_data import data
 
 class DataManager:
 	def __init__(self):
@@ -19,7 +19,8 @@ class DataManager:
 			print("Creating a new data file...")
 			self.save()
 
-	def updateData(self):
+	@staticmethod
+	def updateData():
 		if data.i['lastUnlockedStages']>20:
 			data.i['hacker'] = 1
 		else:
@@ -42,7 +43,8 @@ class DataManager:
 		else:
 			data.i['jedi'] = 0
 
-	def save(self):
+	@staticmethod
+	def save():
 		file = open('data.txt', 'w')
 		for name, val in data.i.items():
 			s = name + ": " + str(val) + "\n"
