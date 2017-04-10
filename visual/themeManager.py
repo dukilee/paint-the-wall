@@ -55,7 +55,7 @@ def changeTheme(n):
         theme.freeColor = constants.BLACK
         theme.ballColor = (90, 30, 0)
         theme.heroColor = (190, 190, 0)
-        theme.titleBackColor = (0,20,0)
+        theme.titleBackColor = (7,35,7)
 
         # label
         theme.labelBackColor = constants.WHITE#theme.backgroundColor

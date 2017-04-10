@@ -115,6 +115,11 @@ class Button(Elements):
 		return done, action
 
 class ButtonOver(Button):
+	def __init__(self, x, y, callAction, imageName):
+		Button.__init__(self, x, y, '', constants.UNCLICKABLE, [constants.NOKEY],
+					 callAction, constants.BUTTON_FONT_SIZE, True, None, None)
+		self.present_button = tools.sprite(imageName)
+
 	# activate button if hovering, deactivate if not
 	def hover(self, mouse, done, action):
 		if self.ishovering(mouse.get_pos()):
@@ -183,17 +188,22 @@ class Title(Label):
 		screen.blit(self.text, self.centralize(text_rect))
 
 class Rectangle(Elements):
-	def __init__(self, x, y, width, height, b_color = constants.BLACK):
+	def __init__(self, x, y, width, height, b_color = constants.BLACK, thickness = -1):
 		self.width = width
 		self.height = height
 		self.shortcut = [constants.NOKEY]
+		self.thickness = thickness
 
 		Elements.__init__(self, x, y)
 
 		self.b_color = b_color # inactive color
 
 	def blit(self, screen):
-		pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
+		if self.thickness > 0:
+			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height], self.thickness)
+		else:
+			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
+
 
 class SlideBar(Elements):
 	def __init__(self, x, y, width, maxValue, action, value = 0):
@@ -367,105 +377,88 @@ class AchievementsMenu(Menu):
 
 		if data.i['doubleKill'] == 1:
 			self.elements.append(Label(50, 210, 'Double Kill', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(50, 150, self.toDK, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(50, 210, 'Double Kill', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(50, 150, 'DK', constants.UNCLICKABLE, [constants.NOKEY], self.toDK,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(50, 150, self.toDK, 'unknown.png'))
+		self.elements.append(Rectangle(50, 150, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['worldEmperor'] == 1:
 			self.elements.append(
 				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(300, 150, self.toWE, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(300, 150, 'WE', constants.UNCLICKABLE, [constants.NOKEY], self.toWE,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(300, 150, self.toWE, 'unknown.png'))
+		self.elements.append(Rectangle(300, 150, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['yogaMaster'] == 1:
 			self.elements.append(Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(550, 150, self.toYM, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(550, 150, 'YM', constants.UNCLICKABLE, [constants.NOKEY], self.toYM,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(550, 150, self.toYM, 'unknown.png'))
+		self.elements.append(Rectangle(550, 150, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['pacifist'] == 1:
 			self.elements.append(Label(50, 310, 'Pacifist', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 250, 'PA', constants.UNCLICKABLE, [constants.NOKEY], self.toPA,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(50, 250, self.toSK, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(50, 310, 'Pacifist', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(50, 250, 'PA', constants.UNCLICKABLE, [constants.NOKEY], self.toPA,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(50, 250, self.toSK, 'unknown.png'))
+		self.elements.append(Rectangle(50, 250, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['serialKiller'] == 1:
 			self.elements.append(Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 250, 'SK', constants.UNCLICKABLE, [constants.NOKEY], self.toSK,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(550, 250, self.toSK, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(550, 250, 'SK', constants.UNCLICKABLE, [constants.NOKEY], self.toSK,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(550, 250, self.toSK, 'unknown.png'))
+		self.elements.append(Rectangle(550, 250, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['immortal'] == 1:
 			self.elements.append(Label(50, 410, 'Immortal', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 350, 'IM', constants.UNCLICKABLE, [constants.NOKEY], self.toIM,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(50, 350, self.toIM, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(50, 410, 'Immortal', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(50, 350, 'IM', constants.UNCLICKABLE, [constants.NOKEY], self.toIM,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(50, 350, self.toIM, 'unknown.png'))
+		self.elements.append(Rectangle(50, 350, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['pilgrim'] == 1:
 			self.elements.append(
 				Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(300, 350, 'PI', constants.UNCLICKABLE, [constants.NOKEY], self.toPI,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(300, 350, self.toPI, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(300, 350, 'PI', constants.UNCLICKABLE, [constants.NOKEY], self.toPI,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(300, 350, self.toPI, 'unknown.png'))
+		self.elements.append(Rectangle(300, 350, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['hacker'] == 1:
 			self.elements.append(Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 350, 'HA', constants.UNCLICKABLE, [constants.NOKEY], self.toHA,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(550, 350, self.toHA, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(550, 350, 'HA', constants.UNCLICKABLE, [constants.NOKEY], self.toHA,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(550, 350, self.toHA, 'unknown.png'))
+		self.elements.append(Rectangle(550, 350, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['jedi'] == 1:
 			self.elements.append(
 				Label(300, 310, 'Jedi', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(300, 250, 'JE', constants.UNCLICKABLE, [constants.NOKEY], self.toJE,
-											constants.BUTTON_FONT_SIZE, True, constants.DARK_GREEN,
-											constants.DARK_GREEN))
+			self.elements.append(ButtonOver(300, 250, self.toJE, 'jedi.png'))
 		else:
 			self.elements.append(
 				Label(300, 310, 'Jedi', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(300, 250, 'JE', constants.UNCLICKABLE, [constants.NOKEY], self.toJE,
-											constants.BUTTON_FONT_SIZE, True, constants.RED, constants.RED))
+			self.elements.append(ButtonOver(300, 250, self.toJE, 'unknown.png'))
+		self.elements.append(Rectangle(300, 250, 197, 57, theme.titleBackColor, 5))
+
 
 class MainMenu(Menu):
 	def initActors(self):
