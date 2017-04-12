@@ -1,5 +1,5 @@
 import random
-import time
+from user_data import data
 
 from actors import ball, hero
 from main import engine
@@ -43,8 +43,7 @@ class level_Ball(ball.Ball):
 			nextGrid[1] = tools.conv(nextPos.y, 1)
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
-			print("YOU LOST :(");
-			#sys.exit()
+			print("YOU LOST :(")
 			return constants.LOSE
 
 		self.pos = tools.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)
@@ -63,7 +62,7 @@ class Stage_Survival(engine.Engine):
 		for b in self._ball:
 			self.cont += b.destructedBlocks
 
-		self.minimum = 500-int(96000/(4*(time.clock() - self.timeStart) + 120))
+		self.minimum = 500-int(96000/(4*(data.getActualTime() - self.timeStart) + 120))
 		n = int((self.minimum+300)/100)
 		if n > self.numberBalls:
 			self._ball.append(level_Ball())

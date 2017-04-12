@@ -36,7 +36,7 @@ class DataManager:
 			else:
 				data.i['pilgrim'] = 0
 
-			if data.i['ballsDestructed'] > 42:  # universe age
+			if data.i['ballsDestructed'] >= 42:  # universe age
 				data.i['serialKiller'] = 1
 			else:
 				data.i['serialKiller'] = 0

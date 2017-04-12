@@ -325,7 +325,7 @@ class Engine:
 			#update score
 			if self.newBlocksConquered > 0:
 				self.cont += self.newBlocksConquered
-				self.score += self.newBlocksConquered
+				self.score += self.newBlocksConquered/2
 				
 			self.draw(screen)
 

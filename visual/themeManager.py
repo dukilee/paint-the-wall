@@ -37,7 +37,6 @@ def changeTheme(n):
         theme.procColor = constants.LIGHT_GREEN
         theme.freeColor = constants.WHITE
         theme.ballColor = constants.BLUE
-        theme.heroColor = constants.RED
     elif n == constants.DARK_THEME:
         theme.backgroundColor = (5, 5, 5)
 
@@ -54,7 +53,6 @@ def changeTheme(n):
         theme.procColor = constants.GREEN
         theme.freeColor = constants.BLACK
         theme.ballColor = (90, 30, 0)
-        theme.heroColor = (190, 190, 0)
         theme.titleBackColor = (7,35,7)
 
         # label
@@ -103,4 +101,4 @@ def changeTheme(n):
         theme.procColor = constants.LIGHT_GREEN
         theme.freeColor = constants.WHITE
         theme.ballColor = constants.BLUE
-        theme.heroColor = constants.RED
+        theme.heroColor = (220, 0, 0)

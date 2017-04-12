@@ -4,6 +4,7 @@ from actors import ball, hero
 from main import engine
 from pygame.locals import *
 from resources import constants
+from user_data import data
 
 class Stage_1(engine.Engine):
 	def initialSettings(self):
@@ -116,8 +117,8 @@ class Stage_7(engine.Engine):
 		self.objectErase.append(r)
 
 	def initialSettings(self):
-		self.xx = int(constants.GRID_SIZE[0]/2);
-		self.yy = int(constants.GRID_SIZE[1]/2);
+		self.xx = int(constants.GRID_SIZE[0]/2)
+		self.yy = int(constants.GRID_SIZE[1]/2)
 		self.timerMax = 30
 
 	def createObjects(self):
@@ -162,6 +163,9 @@ class Stage_9(engine.Engine):
 
 	def winCondition(self):
 		if self.cont >= 920:
+			if self.ballsKilled==0:
+				print("Pacifist Unlocked")
+				data.i['pacifist'] = 1
 			return True
 		return False
 

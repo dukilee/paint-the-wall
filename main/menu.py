@@ -349,7 +349,7 @@ class AchievementsMenu(Menu):
 		self.overString = 'Complete all stages. :D'
 
 	def toPA(self):#Pacifist
-		self.overString = 'Complete stage x without killing balls'
+		self.overString = 'Complete stage 9 without killing balls'
 
 	def toSK(self):#Serial Killer
 		self.overString = 'Kill 42 balls.'
@@ -377,7 +377,7 @@ class AchievementsMenu(Menu):
 
 		if data.i['doubleKill'] == 1:
 			self.elements.append(Label(50, 210, 'Double Kill', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 150, self.toDK, 'jedi.png'))
+			self.elements.append(ButtonOver(50, 150, self.toDK, 'doubleKillMini.png'))
 		else:
 			self.elements.append(
 				Label(50, 210, 'Double Kill', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -387,7 +387,7 @@ class AchievementsMenu(Menu):
 		if data.i['worldEmperor'] == 1:
 			self.elements.append(
 				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(300, 150, self.toWE, 'jedi.png'))
+			self.elements.append(ButtonOver(300, 150, self.toWE, 'worldEmperorMini.png'))
 		else:
 			self.elements.append(
 				Label(300, 210, 'World Emperor', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -396,7 +396,7 @@ class AchievementsMenu(Menu):
 
 		if data.i['yogaMaster'] == 1:
 			self.elements.append(Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 150, self.toYM, 'jedi.png'))
+			self.elements.append(ButtonOver(550, 150, self.toYM, 'yogaMasterMini.png'))
 		else:
 			self.elements.append(
 				Label(550, 210, 'Yoga Master', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -405,16 +405,16 @@ class AchievementsMenu(Menu):
 
 		if data.i['pacifist'] == 1:
 			self.elements.append(Label(50, 310, 'Pacifist', 30, False, None, None))
-			self.elements.append(ButtonOver(50, 250, self.toSK, 'jedi.png'))
+			self.elements.append(ButtonOver(50, 250, self.toPA, 'pacifistMini.png'))
 		else:
 			self.elements.append(
 				Label(50, 310, 'Pacifist', 30, False, theme.labelBackColor, theme.labelTextLowColor))
-			self.elements.append(ButtonOver(50, 250, self.toSK, 'unknown.png'))
+			self.elements.append(ButtonOver(50, 250, self.toPA, 'unknown.png'))
 		self.elements.append(Rectangle(50, 250, 197, 57, theme.titleBackColor, 5))
 
 		if data.i['serialKiller'] == 1:
 			self.elements.append(Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(ButtonOver(550, 250, self.toSK, 'jedi.png'))
+			self.elements.append(ButtonOver(550, 250, self.toSK, 'serialKillerMini.png'))
 		else:
 			self.elements.append(
 				Label(550, 310, 'Serial Killer', 30, False, theme.labelBackColor, theme.labelTextLowColor))
