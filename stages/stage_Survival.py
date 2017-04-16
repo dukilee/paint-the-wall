@@ -58,6 +58,9 @@ class Stage_Survival(engine.Engine):
 	def winCondition(self):
 		return False
 
+	def initialSettings(self):
+		self.action = constants.SURVIVAL_MENU
+
 	def stageDifferences(self, screen):
 		for b in self._ball:
 			self.cont += b.destructedBlocks

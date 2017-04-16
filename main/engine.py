@@ -87,26 +87,26 @@ class Engine:
 
 	def checkInput(self, repint, screen):
 		for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					return repint, constants.QUIT
-				
-				if event.type == pygame.KEYDOWN:
-					if event.key == constants.keys['q']:
+			if event.type == pygame.QUIT:
+				return repint, constants.QUIT
+			
+			if event.type == pygame.KEYDOWN:
+				if event.key == constants.keys['q']:
+					return repint, self.action
+				elif event.key == constants.keys['p']:
+					_menu = menu.PauseMenu(self.action)
+					screen.fill(constants.WHITE)
+					action = _menu.update(screen, self.getInstructions())
+					if action == self.action:
 						return repint, self.action
-					elif event.key == constants.keys['p']:
-						_menu = menu.PauseMenu()
-						screen.fill(constants.WHITE)
-						action = _menu.update(screen, self.getInstructions())
-						if action == constants.STAGE_MENU:
-							return repint, constants.STAGE_MENU
-						elif action == constants.RESTART:
-							return repint, constants.RESTART
-						repint = True
-					else:
-						self._hero.update(event.key, True)
+					elif action == constants.RESTART:
+						return repint, constants.RESTART
+					repint = True
+				else:
+					self._hero.update(event.key, True)
 
-				if event.type == pygame.KEYUP:
-					self._hero.update(event.key, False)
+			if event.type == pygame.KEYUP:
+				self._hero.update(event.key, False)
 
 		return repint, None
 
@@ -245,17 +245,16 @@ class Engine:
 		# self.updateGrid()
 		self.drawGrid(screen)
 
-#		pygame.init()
 		doneRunning = False
 		clock = pygame.time.Clock()
 
 		#startMenu
 		screen.fill(constants.WHITE)
-		_menu = menu.StartMenu()
+		_menu = menu.StartMenu(self.action)
 		# self.writeInstructions(screen)
 		action = _menu.update(screen, self.getInstructions())
-		if action == constants.STAGE_MENU:
-			return constants.STAGE_MENU
+		if action == self.action:
+			return self.action
 
 		# s_conquering = pygame.mixer.Sound('sounds/s_coin.wav')
 		# s_conquered = pygame.mixer.Sound('sounds/s_up.wav')
@@ -267,7 +266,7 @@ class Engine:
 		
 			#handle player input(
 			self.repint, check = self.checkInput(self.repint, screen)
-			if check !=None:
+			if check != None:
 				return check
 			# self.timeStart = time.clock() - aux
 
