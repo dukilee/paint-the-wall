@@ -2,6 +2,9 @@ from user_data import data
 
 class DataManager:
 	def __init__(self):
+		self.rank_tam = 10
+		self.ranking = [('-', 0) for k in range(self.rank_tam)]
+
 		try:
 			file = open('data.txt', 'r')
 			
@@ -18,6 +21,11 @@ class DataManager:
 		except IOError:
 			print("Creating a new data file...")
 			self.save()
+
+	def insert_rank(self, new_score):
+		self.ranking.append(new_score)
+		self.ranking = sorted(self.ranking, lambda x: x[1])
+		self.ranking.pop(-1)
 
 	@staticmethod
 	def updateData():

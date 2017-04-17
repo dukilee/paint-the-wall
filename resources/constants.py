@@ -34,12 +34,15 @@ KEY_RIGHT = 275
 KEY_UP = 273
 KEY_LEFT = 276
 KEY_DOWN = 274
-keys = { KEY_RIGHT: RIGHT, KEY_LEFT: LEFT, KEY_DOWN: DOWN, KEY_UP: UP, 'a':97, 'b':98,
-			'c':99, 'd':100, 'e':101, 'f':102, 'g':103, 'h':104, 'i':105, 'j':106,
-			'k':107, 'l':108, 'm':109, 'n':110, 'o':111, 'p':112, 'q':113, 'r':114,
-			's':115, 't':116, 'u':117, 'v':118, 'w':119, 'x':120, 'y':121, 'z':122,
-			'0':48, '1':49, '2':50, '3':51, '4':52, '5':53, '6':54, '7':55, '8':56, 
-			'9':57, 'Enter': 13, 'backspace': 8, 'space': 32}
+
+keys = { KEY_RIGHT: RIGHT, KEY_LEFT: LEFT, KEY_DOWN: DOWN, KEY_UP: UP,
+		 'enter': 13, 'backspace': 8, 'space': 32, 'shift_in': 15, 'shift_out': 14}
+		 
+for k in range(ord('a'), ord('z') + 1): # adding letters to keys
+	keys[chr(k)] = k
+
+for k in range(ord('0'), ord('9') + 1): # adding numbers to keys
+	keys[chr(k)] = k
 
 #grid
 NOTHING = 3
@@ -76,18 +79,19 @@ QUIT = 0
 ABOUT_MENU = 1
 ACHIEVEMENTS_MENU = 2
 MAIN_MENU = 3
-RANK_MENU = 4
+# ??? NO RANK ANYMORE, LABEL AVAILABLE
 STAGE_MENU = 5
 STATS_MENU = 6
 SURVIVAL_MENU = 7
 SETTINGS_MENU = 8
 STAGE_MENU_2 = 121
 MENU_INDEX = { ABOUT_MENU: "About", ACHIEVEMENTS_MENU: "Achievements",
-               MAIN_MENU: "Main", RANK_MENU: "Rank", STAGE_MENU: "Stage", STAGE_MENU_2: "Stage2",
+               MAIN_MENU: "Main", STAGE_MENU: "Stage", STAGE_MENU_2: "Stage2",
                STATS_MENU: "Stats", SURVIVAL_MENU: "Survival", SETTINGS_MENU: "Settings" }
 
 #stages
 PLAY = 9
+RANK_INSERT = 98
 STAGE_SURVIVAL = 99
 STAGE_0 = 100
 N_OF_STAGES = 20

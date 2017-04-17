@@ -1,3 +1,4 @@
+import dataManager
 import pygame
 
 from pygame.locals import *
@@ -6,13 +7,14 @@ from user_data import data
 from visual import animation, theme, themeManager
 
 class Menu:
-	def __init__(self, parent = constants.MAIN_MENU):
+	def __init__(self, parent = constants.MAIN_MENU, dataM = None):
 		self.elements = []
 		self.animations = []
 		self.parent_menu = parent #where to go when quitting this menu
+		self.dataM = dataM
 
 	# virtual method
-	def initActors(self):
+	def initActors(self, dataM = None):
 		pass
 
 	def update(self, screen, anotherElement = None):
@@ -25,7 +27,7 @@ class Menu:
 		
 		#actors
 		mouse = pygame.mouse
-		self.initActors()		
+		self.initActors(self.dataM)
 
 		if anotherElement != None:
 			self.elements.append(elements.Label(None, 200, anotherElement, 40, False, constants.BLACK))
@@ -64,7 +66,7 @@ class Menu:
 		return action
 
 class AboutMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -106,7 +108,7 @@ class AchievementsMenu(Menu):
 		self.overString = '<Pass mouse over achievements to get info>'
 		return copy
 
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 		self.overString = '<Pass mouse over achievements>'
@@ -204,7 +206,7 @@ class AchievementsMenu(Menu):
 		self.elements.append(elements.Rectangle(300, 250, 197, 57, theme.titleBackColor, 5))
 
 class MainMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#where to go when quitting this menu
 		self.parent_menu = constants.QUIT
 
@@ -226,7 +228,7 @@ class MainMenu(Menu):
 		# self.animations.append(animation.MainMenuAnimation())
 
 class PauseMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
@@ -235,22 +237,22 @@ class PauseMenu(Menu):
 		self.elements.append(elements.Label(None, 350, 'Press \'p\' to resume.', 30, False, constants.BLACK))
 		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', self.parent_menu, [constants.keys['m']]))
 		self.elements.append(elements.Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
-		self.elements.append(elements.Button(constants.POS['RIGHT'], None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['Enter']]))
+		self.elements.append(elements.Button(constants.POS['RIGHT'], None, 'Resume', constants.UNDEFINED, [constants.keys['p'], constants.keys['enter']]))
 
 class StartMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
 		#actors
 		self.elements = []
 		self.elements.append(elements.Label(None, 350, 'Press \'Enter\' to start.', 30, False, constants.BLACK))
-		self.elements.append(elements.Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['Enter']]))
+		self.elements.append(elements.Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['enter']]))
 		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', self.parent_menu, [constants.keys['m']]))
 
 #incluir shortcuts pras fases!
 class StageMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -268,7 +270,7 @@ class StageMenu(Menu):
 				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[i + 1]))
 
 class Stage2Menu(Menu):
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -292,7 +294,7 @@ class StatsMenu(Menu):
 		return '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(actualTime / 3600), (int(actualTime / 60)) % 60,
 											   (actualTime) % 60)
 
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -310,16 +312,20 @@ class StatsMenu(Menu):
 		self.elements.append(elements.Label(constants.POS['RIGHT'], 450, '{}'.format(data.i['deaths']), 30, False))
 
 class SurvivalMenu(Menu):
-	def initActors(self):
+	def initActors(self, dataM):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
 		#actors
 		self.elements = []
-		self.elements = []
+
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Survival'))
-		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['Enter']]))
-		self.elements.append(elements.Button(None, constants.POS['DOWN'], 'RANK', constants.RANK_MENU, [constants.keys['r']]))
+
+		for k in range(len(dataM.ranking)):
+			self.elements.append(elements.Label(300, 150 + 35 * k, dataM.ranking[k][0], 30, False))
+			self.elements.append(elements.Label(500, 150 + 35 * k, str(dataM.ranking[k][1]), 30, False))
+
+		self.elements.append(elements.Button(None, constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['enter']]))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
 class SettingsMenu(Menu):
@@ -335,7 +341,7 @@ class SettingsMenu(Menu):
 	def setEffectsVolume(self, val):
 		data.i['effectsVolume'] = val
 
-	def initActors(self):
+	def initActors(self, dataM = None):
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
 
@@ -348,24 +354,53 @@ class SettingsMenu(Menu):
 		self.elements.append(elements.Label(constants.POS['LEFT'], 215, 'Effects Volume:', 40, False))
 
 		self.elements.append(elements.Label(constants.POS['LEFT'], 295, 'Theme:', 40, False))
-		self.elements.append(elements.Button(350, 295, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toBasic))
-		self.elements.append(elements.Button(constants.POS['RIGHT'], 295, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['Enter']], self.toDark))
+		self.elements.append(elements.Button(350, 295, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['enter']], self.toBasic))
+		self.elements.append(elements.Button(constants.POS['RIGHT'], 295, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['enter']], self.toDark))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
-class RankMenu(Menu):
-	def initActors(self):
+class LoseMenu(Menu):
+	def initActors(self, dataM = None):
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+
+		#actors
+		self.elements = []
+		self.elements.append(elements.Label(None, 150, 'You\'ve LOST :(', 80, False, constants.BLACK))
+		self.elements.append(elements.Label(None, 350, 'Press \'Enter\' to restart.', 30, False, constants.BLACK))
+		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', self.parent_menu, [constants.keys['m']]))
+		self.elements.append(elements.Button(None, None, 'Restart', constants.RESTART, [constants.keys['r'], constants.keys['enter']]))
+
+class WinMenu(Menu):
+	def initActors(self, dataM = None):
+		#where to go when quitting this menu
+		self.parent_menu = constants.STAGE_MENU
+		
+		#part of the screen that this menu uses
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+
+		#actors
+		self.elements = []
+		self.elements.append(elements.Label(None, 150, 'You\'ve WON :)', 80, False, constants.BLACK))
+		self.elements.append(elements.Label(None, 350, 'Press \'Enter\' to start next stage.', 30, False, constants.BLACK))
+		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', constants.STAGE_MENU, [constants.keys['m']]))
+		self.elements.append(elements.Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
+		self.elements.append(elements.Button(constants.POS['RIGHT'], None, 'Next', constants.NEXT, [constants.keys['enter']]))
+
+class InsertRankMenu(Menu):
+	def initActors(self, dataM):
+		self.player_name = ''
+
 		#where to go when quitting this menu
 		self.parent_menu = constants.SURVIVAL_MENU
 
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
 		#actors
 		self.elements = []
-		self.elements.append(elements.Title(None, constants.POS['UP'], 'Ranking'))
-		self.elements.append(elements.Button(500, 250, 'BACK', constants.SURVIVAL_MENU, [constants.keys['b']]))
+		self.elements.append(elements.Label(None, 350, 'Type in your name.', 30, False, constants.BLACK))
 		
-		self.TB = elements.TextBox(250, 250)
+		self.TB = elements.TextBox(250, 250)		
 
 	def update(self, screen):
 		#constants
@@ -377,7 +412,7 @@ class RankMenu(Menu):
 		
 		#actors
 		mouse = pygame.mouse
-		self.initActors()		
+		self.initActors(self.dataM)
 
 		count = 0
 
@@ -389,21 +424,26 @@ class RankMenu(Menu):
 
 		while not done:
 			letter = None
-			
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					return constants.QUIT
 				elif event.type == pygame.KEYDOWN:
-					if event.key != 8:
+					if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT and event.key != constants.keys['enter']:
 						letter = event.key
+					elif event.key == constants.keys['enter']:
+						self.player_name = self.TB.b_text
+						return self.parent_menu
 					else:
-						letter = -1
+						letter = constants.keys['shift_in']
 					#if event.key == constants.keys['q']:
 					#	return self.parent_menu
 					#if event.key in listShortcut:
 					#	done = True
 					#	action = listShortcut[event.key].action
-
+				elif event.type == pygame.KEYUP:
+					if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+						letter = constants.keys['shift_out']
+		
 			#button PLAY
 			screen.fill(theme.backgroundColor)
 			for b in self.elements:
@@ -417,31 +457,3 @@ class RankMenu(Menu):
 			clock.tick(200)
 
 		return action
-
-class LoseMenu(Menu):
-	def initActors(self):
-		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
-
-		#actors
-		self.elements = []
-		self.elements.append(elements.Label(None, 150, 'You\'ve LOST :(', 80, False, constants.BLACK))
-		self.elements.append(elements.Label(None, 350, 'Press \'Enter\' to restart.', 30, False, constants.BLACK))
-		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', self.parent_menu, [constants.keys['m']]))
-		self.elements.append(elements.Button(None, None, 'Restart', constants.RESTART, [constants.keys['r'], constants.keys['Enter']]))
-
-class WinMenu(Menu):
-	def initActors(self):
-		#where to go when quitting this menu
-		self.parent_menu = constants.STAGE_MENU
-		
-		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
-
-		#actors
-		self.elements = []
-		self.elements.append(elements.Label(None, 150, 'You\'ve WON :)', 80, False, constants.BLACK))
-		self.elements.append(elements.Label(None, 350, 'Press \'Enter\' to start next stage.', 30, False, constants.BLACK))
-		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', constants.STAGE_MENU, [constants.keys['m']]))
-		self.elements.append(elements.Button(None, None, 'Restart', constants.RESTART, [constants.keys['r']]))
-		self.elements.append(elements.Button(constants.POS['RIGHT'], None, 'Next', constants.NEXT, [constants.keys['Enter']]))

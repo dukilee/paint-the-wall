@@ -257,6 +257,8 @@ class TextBox(Elements):
 		self.b_text = b_text # text to be shown on button
 		self.fontButton = pygame.font.SysFont('Calibri', text_size, True, False) # to create text objects
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
+		self.shift = False
+		self.MAX_TAM = 15
 
 		self.width = constants.BUTTON_WIDTH
 		self.height = constants.BUTTON_HEIGHT
@@ -269,12 +271,24 @@ class TextBox(Elements):
 		self.body = [x, y, self.width, self.height]
 		self.update = False
 
+	#need to enable more "shiftted" keys
 	def blit(self, screen, letter):
 		if letter != None:
-			if letter == -1 and len(self.b_text) > 0:
+			if letter == constants.keys['backspace'] and len(self.b_text) > 0:
 				self.b_text = self.b_text[0:-1]
-			elif letter >= 32 and letter <= 254:
-				self.b_text += chr(letter)
+			elif letter == constants.keys['shift_in']:
+				self.shift = True
+			elif letter == constants.keys['shift_out']:
+				self.shift = False			
+			elif letter >= 32 and letter <= 254 and len(self.b_text) < self.MAX_TAM: # (extended) ascii limits
+				if self.shift:
+					if letter >= ord('a') and letter <= ord('z'):
+						self.b_text += chr(letter).upper()
+					elif letter == ord('-'):
+						self.b_text += '_'
+				else:
+					self.b_text += chr(letter)
+			
 			self.text = self.fontButton.render(self.b_text, True, self.t_color)
 		text_rect = self.text.get_rect()
 		pygame.draw.rect(screen, constants.WHITE, [self.x, self.y, self.width, self.height])

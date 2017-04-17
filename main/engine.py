@@ -324,10 +324,10 @@ class Engine:
 			#update score
 			if self.newBlocksConquered > 0:
 				self.cont += self.newBlocksConquered
-				self.score += self.newBlocksConquered/2
-				
-			self.draw(screen)
+				self.score += self.newBlocksConquered//2
 
+			#take time into account for score !
+			self.draw(screen)
 			clock.tick(100)
 
 	def __del__(self):

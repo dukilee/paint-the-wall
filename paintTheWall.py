@@ -8,12 +8,14 @@ from visual import theme, themeManager
 
 #enviroment init
 pygame.init()
+pygame.key.set_repeat(1, 100) # turn on "repeat" functionality
 pygame.display.set_caption('paintTheWall', 'The Game')
 screen = pygame.display.set_mode(constants.SCREEN_SIZE)
 
 #data init
 dManager = dataManager.DataManager()
 data.startTime = data.getActualTime() - data.i['timePlayed']
+score = 0
 
 #elements init
 _menu = menu.MainMenu(constants.QUIT)
@@ -32,7 +34,11 @@ while action != constants.QUIT:
 
 	if action != constants.MAIN_MENU or lastAction == constants.MAIN_MENU:
 		if action != constants.RESTART:
-			action = _menu.update(screen)
+			if action == constants.RANK_INSERT:
+				action = _menu.update(screen)
+				dManager.insert_rank((_menu.player_name, score))
+			else:
+				action = _menu.update(screen)
 			if action == constants.NEXT:
 				action = lastAction + 1
 			elif action == constants.RESTART:
@@ -50,7 +56,9 @@ while action != constants.QUIT:
 		_engine = stage_Survival.Stage_Survival()
 		action = _engine.run(screen)
 		if action == constants.LOSE:
-			_menu = menu.LoseMenu(constants.SURVIVAL_MENU)
+			score = _engine.score
+			_menu = menu.InsertRankMenu(constants.MAIN_MENU, dManager)
+			action = constants.RANK_INSERT
 	
 	elif action in constants.STAGE_INDEX:
 		selector = str(action - constants.STAGE_INDEX[0])
@@ -61,10 +69,10 @@ while action != constants.QUIT:
 	
 	elif action in constants.MENU_INDEX:
 		selector = str("menu." + constants.MENU_INDEX[action] + "Menu")
-		if action != constants.RANK_MENU:
+		if action != constants.SURVIVAL_MENU:
 			_menu = eval(selector)()
 		else:
-			_menu = eval(selector)(constants.SURVIVAL_MENU)
+			_menu = eval(selector)(constants.MAIN_MENU, dManager)
 
 	if action == constants.WIN:
 		data.i['lastUnlockedStages'] = max(data.i['lastUnlockedStages'], 1 + lastAction - constants.STAGE_0)
