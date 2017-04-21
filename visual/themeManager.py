@@ -37,6 +37,7 @@ def changeTheme(n):
         theme.procColor = constants.LIGHT_GREEN
         theme.freeColor = constants.WHITE
         theme.ballColor = constants.BLUE
+    
     elif n == constants.DARK_THEME:
         theme.backgroundColor = (5, 5, 5)
 
@@ -65,6 +66,40 @@ def changeTheme(n):
         theme.sliderBackColor = (180, 180, 180)
         theme.sliderPointerColorOn = (80, 80, 80)
         theme.sliderPointerColorOff = (150, 150, 150)
+
+    elif n == constants.MARIO_THEME:
+        theme.backgroundColor = (255, 255, 255)
+
+        #button
+        theme.offButtonSprite = tools.sprite('SMB/off_button.png')
+        theme.offButtonSpriteMini = tools.sprite('SMB/mini_off_button.png')
+        theme.offButtonColor = None
+        theme.offButtonTextColor = constants.BLACK
+        theme.offButtonActualStage = (120, 120, 255)
+
+        theme.onButtonSprite = tools.sprite('SMB/on_button.png')
+        theme.onButtonSpriteMini = tools.sprite('SMB/mini_on_button.png')
+        theme.onButtonColor = None
+        theme.onButtonTextColor = constants.WHITE
+        theme.onButtonActualStage = constants.BLUE
+        
+		#label
+        theme.labelTextColor = constants.BLACK
+        theme.labelTextLowColor = constants.GRAY
+        theme.labelTextLLColor = (220, 220, 220) #Super low
+        theme.titleBackColor = (240, 240, 255)
+
+		#Slider Bar
+        theme.sliderPointerSpriteOff = tools.sprite('SMB/mini_off_button.png')
+        theme.sliderPointerSpriteOn = tools.sprite('SMB/mini_on_button.png')
+        theme.sliderBackColor = constants.BLACK
+        theme.sliderPointerColorOn = constants.BLACK
+        theme.sliderPointerColorOff = constants.BLACK
+
+		#engine
+        theme.conqColor = constants.BLACK
+        theme.procColor = constants.GRAY
+        theme.freeColor = constants.WHITE
 
     elif n == constants.RESET_THEME:
         #Basic Theme

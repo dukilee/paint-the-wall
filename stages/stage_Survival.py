@@ -10,15 +10,9 @@ class level_Hero(hero.Hero):
 	
 class level_Ball(ball.Ball):
 	def __init__(self):
+		ball.Ball.__init__(self)
 		self.pos = tools.Vector2(400, 300)
-		self.speed = tools.Vector2(3, 3)
 		self.destructedBlocks = 0
-
-		if random.randint(-1, 1) < 0:
-			self.speed.x *=-1
-
-		if random.randint(-1, 1) < 0:
-			self.speed.y *=-1
 
 	def update(self, grid):
 		self.destructedBlocks = 0

@@ -14,10 +14,11 @@ class Vector2:
 
 #for creating sprites
 class sprite(pygame.sprite.Sprite):
-	def __init__(self, path):
+	def __init__(self, path, scale = 1.0):
 		# pygame.sprite.Sprite.__init__(self) # not sure if needed. leave it commented for now
 		self.img = pygame.image.load('resources/sprites/' + path)
 		self.rec = self.img.get_rect()
+		self.img = pygame.transform.scale(self.img, (int(self.rec.width * scale), int(self.rec.height * scale)))
 
 # - - - - -
 

@@ -4,9 +4,6 @@ from user_data import data
 
 class DataManager:
 	def __init__(self):
-		self.rank_tam = 10
-		self.ranking = [('-', 0) for k in range(self.rank_tam)]
-
 		try:
 			file = open('user_data\\user_data.bin', 'rb')
 			
@@ -27,11 +24,6 @@ class DataManager:
 		except IOError:
 			print("Creating a new data file...")
 			self.save()
-
-	def insert_rank(self, new_score):
-		self.ranking.append(new_score)
-		self.ranking = sorted(self.ranking, key = lambda x: x[1])[::-1]
-		self.ranking.pop(-1)
 
 	def updateData(self):
 			if data.i['lastUnlockedStages'] > 20:
@@ -55,8 +47,6 @@ class DataManager:
 				data.i['jedi'] = 1
 			else:
 				data.i['jedi'] = 0
-
-
 
 	def save(self):
 		file = open('user_data\\user_data.bin', 'wb')

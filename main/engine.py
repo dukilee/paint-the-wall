@@ -176,15 +176,19 @@ class Engine:
 
 	def draw(self, screen):
 		self.objectErase.append(Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]))
-		pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
+		
+		#draw hero
+		#pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
+		screen.blit(self._hero.sprite.img, [self._hero.pos.x, self._hero.pos.y])
 
 		#draw ball
 		for b in self._ball:
-			pygame.draw.circle(screen, theme.ballColor, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS)
+			#pygame.draw.circle(screen, theme.ballColor, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS) #without sprites
+			screen.blit(b.sprite.img, [b.pos.x, b.pos.y])
 
 		#Score
 		font = pygame.font.SysFont('Calibri', 25, True, False)
-		text = font.render("Left: {}  Minimum: {}  Score: {}".format(self.cont, self.minimum, self.score), True, constants.BLACK)
+		text = font.render("Left: {}  Minimum: {}  Score: {}".format(self.cont, self.minimum, self.score), True, constants.WHITE)
 		screen.blit(text, [0, 0])
 		
 		pygame.display.update(self.objectErase)
@@ -239,6 +243,7 @@ class Engine:
 		self.minimum = -1
 		self.score = 0
 		self.createObjects()
+		data.new_score = 0
 
 		self.initialSettings()
 		self.initGrid()
@@ -268,7 +273,7 @@ class Engine:
 			self.repint, check = self.checkInput(self.repint, screen)
 			if check != None:
 				return check
-			# self.timeStart = time.clock() - aux
+			#self.timeStart = time.clock() - aux
 
 			#update game physics
 			self.stageDifferences(screen)
@@ -311,6 +316,7 @@ class Engine:
 
 			#update grid 
 			self.updateGrid()
+			
 			#draw grid
 			if self.repint:
 				self.repint = False
@@ -325,6 +331,7 @@ class Engine:
 			if self.newBlocksConquered > 0:
 				self.cont += self.newBlocksConquered
 				self.score += self.newBlocksConquered//2
+				data.new_score += self.newBlocksConquered//2
 
 			#take time into account for score !
 			self.draw(screen)

@@ -61,7 +61,6 @@ class SlideBar(Elements):
 		self.value = value
 		self.shortcut = [constants.NOKEY]
 
-
 		Elements.__init__(self, x, y)
 
 		self.pointerPos = tools.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
@@ -241,7 +240,7 @@ class ButtonOver(Button):
 class miniButton(Button):
 	def set_button_sprites(self):
 		self.off_button_sprite = theme.offButtonSpriteMini
-		self.on_button_sprite = theme.offButtonSpriteMini
+		self.on_button_sprite = theme.onButtonSpriteMini
 		self.offButtonColor = theme.offButtonColor
 		self.onButtonColor = theme.onButtonColor
 		self.present_button = self.off_button_sprite

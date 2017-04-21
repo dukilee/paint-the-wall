@@ -4,6 +4,7 @@ class Hero:
 	def __init__(self):
 		self.pos = tools.Vector2(0, 0)
 		self.direction = constants.STOP
+		self.sprite = tools.sprite('default/hero.png', 0.4)
 	
 	def able_to_move_x(self, where):
 		if where > 0:

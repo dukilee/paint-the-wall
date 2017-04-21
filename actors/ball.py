@@ -6,6 +6,7 @@ class Ball:
 	def __init__(self):
 		self.pos = tools.random_pos() # random position on screen
 		self.speed = tools.Vector2(3, 3)
+		self.sprite = tools.sprite('default/ball.png', 0.4)
 
 		if random.randint(-1, 1) < 0:
 			self.speed.x *=-1

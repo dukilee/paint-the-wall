@@ -3,6 +3,10 @@ import time
 
 from resources import tools
 
+rank_tam = 10
+ranking = [('-', 0) for k in range(rank_tam)]
+new_score, new_player = 0, '-'
+
 i = {'timePlayed': 0, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': 0,
 		'lastUnlockedStages': 10, 'theme':0,
 		#achievements
@@ -18,3 +22,9 @@ leftWingSprite = [tools.sprite('wing1Mini.png'), tools.sprite('wing2Mini.png'),
 startTime = 0
 def getActualTime():
 	return int(time.mktime(time.localtime( )) - startTime)
+
+def insert_rank():
+	global ranking, new_score, new_player
+	ranking.append((new_player, new_score))
+	ranking = sorted(ranking, key = lambda x: x[1])[::-1]
+	ranking.pop(-1)
