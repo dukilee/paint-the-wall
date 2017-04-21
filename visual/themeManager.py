@@ -74,14 +74,14 @@ def changeTheme(n):
         theme.offButtonSprite = tools.sprite('SMB/off_button.png')
         theme.offButtonSpriteMini = tools.sprite('SMB/mini_off_button.png')
         theme.offButtonColor = None
-        theme.offButtonTextColor = constants.BLACK
-        theme.offButtonActualStage = (120, 120, 255)
+        theme.offButtonTextColor = constants.DARK_GREEN
+        theme.offButtonActualStage = constants.MED_BLUE
 
         theme.onButtonSprite = tools.sprite('SMB/on_button.png')
         theme.onButtonSpriteMini = tools.sprite('SMB/mini_on_button.png')
         theme.onButtonColor = None
         theme.onButtonTextColor = constants.WHITE
-        theme.onButtonActualStage = constants.BLUE
+        theme.onButtonActualStage = constants.WHITE
         
 		#label
         theme.labelTextColor = constants.BLACK
