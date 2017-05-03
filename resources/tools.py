@@ -3,7 +3,7 @@ import random
 
 from resources import constants
 
-#bidimentional vector class
+#bidimensional vector class
 class Vector2:
 	def __init__(self, X, Y):
 		self.x = X
@@ -12,19 +12,33 @@ class Vector2:
 	def _print(self):
 		print("(", self.x, ", ", self.y, ")")
 
-#for creating sprites
+	def Dx(self): #discretize 'x' coordinate
+		return conv(self.x, 0)
+
+	def Dy(self): #discretize 'y' coordinate
+		return conv(self.y, 1)
+	
 class sprite(pygame.sprite.Sprite):
 	def __init__(self, path, scale = 1.0):
-		# pygame.sprite.Sprite.__init__(self) # not sure if needed. leave it commented for now
 		self.img = pygame.image.load('resources/sprites/' + path)
 		self.rec = self.img.get_rect()
 		self.img = pygame.transform.scale(self.img, (int(self.rec.width * scale), int(self.rec.height * scale)))
 
 # - - - - -
 
-#for ball generation
-def random_pos():
-	return Vector2(random.randint(1 + int(0.1 * constants.SCREEN_SIZE[0]), int(0.9 * constants.SCREEN_SIZE[0])), random.randint(int(1 + 0.1 * constants.SCREEN_SIZE[1]), int(0.9 * constants.SCREEN_SIZE[1])))
+#checks if 'x' coordinate is valid
+def valid_x(x, grid):
+	return x >= 0 and x < len(grid)
+
+#checks if 'y' coordinate is valid
+def valid_y(y, grid):
+	if len(grid) > 0:
+		return y >= 0 and y < len(grid[0])
+	return False
+
+#checks if (x, y) position is valid
+def valid(x, y, grid):
+	return valid_x(x, grid) and valid_y(y, grid)
 
 #scale converter
 def conv(c, t): # t = 0 (x) or 1 (y)

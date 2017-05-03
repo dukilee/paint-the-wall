@@ -67,7 +67,7 @@ class Menu:
 class AboutMenu(Menu):
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = []
@@ -109,7 +109,7 @@ class AchievementsMenu(Menu):
 
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 		self.overString = '<Pass mouse over achievements>'
 
 		#actors
@@ -210,7 +210,7 @@ class MainMenu(Menu):
 		self.parent_menu = constants.QUIT
 
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = []
@@ -253,7 +253,7 @@ class StartMenu(Menu):
 class StageMenu(Menu):
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
@@ -271,7 +271,7 @@ class StageMenu(Menu):
 class Stage2Menu(Menu):
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
@@ -295,7 +295,7 @@ class StatsMenu(Menu):
 
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = []
@@ -313,7 +313,7 @@ class StatsMenu(Menu):
 class SurvivalMenu(Menu):
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = []
@@ -345,7 +345,7 @@ class SettingsMenu(Menu):
 
 	def initActors(self):
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCREEN_SIZE[1])
+		self.updateRect = constants.SCR
 
 		#actors
 		self.elements = []

@@ -1,3 +1,5 @@
+import pygame
+
 #colors
 NONE = (-1, -1, -1)
 WHITE = (255, 255, 255)
@@ -14,6 +16,16 @@ GRAY = (120, 120, 120)
 #screen
 SCREEN_SIZE = (800, 600)
 
+#grid
+NOTHING = 3
+PROCESS = 2
+CONQUERED = 1
+HYPER = NOTHING + 1
+SHYPER = HYPER + 1
+GRID_SIZE = (40, 40)
+SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
+SCR = pygame.Rect(0, 0, SCREEN_SIZE[0], SCALE[1])
+
 #hero
 STOP = 0
 RIGHT = 1
@@ -22,11 +34,15 @@ LEFT = 3
 DOWN = 4
 HERO_SPEED = 2
 HERO_SIZE = (20, 20)
+DEF_Px = 0 #default initial 'x' position
+DEF_Py = 0 #default initial 'y' position
 move_x = { RIGHT: HERO_SPEED, LEFT: -HERO_SPEED }
 move_y = { UP: -HERO_SPEED, DOWN: HERO_SPEED }
 
 #ball
 BALL_RADIUS = 7
+DEF_Vx = 3 #default horizontal velocity
+DEF_Vy = 3 #default vertical velocity
 
 #arrows
 NOKEY = -1
@@ -43,15 +59,6 @@ for k in range(ord('a'), ord('z') + 1): # adding letters to keys
 
 for k in range(ord('0'), ord('9') + 1): # adding numbers to keys
 	keys[chr(k)] = k
-
-#grid
-NOTHING = 3
-PROCESS = 2
-CONQUERED = 1
-HYPER = NOTHING + 1
-SHYPER = HYPER + 1
-GRID_SIZE = (40, 40)
-SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
 
 #states
 LOSE = -99
@@ -79,7 +86,6 @@ QUIT = 0
 ABOUT_MENU = 1
 ACHIEVEMENTS_MENU = 2
 MAIN_MENU = 3
-# ??? NO RANK ANYMORE, LABEL AVAILABLE
 STAGE_MENU = 5
 STATS_MENU = 6
 SURVIVAL_MENU = 7

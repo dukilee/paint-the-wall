@@ -26,9 +26,6 @@ class Engine:
 		self.numberMovementsMax = -1
 		self.newBlocksConquered = 0
 
-	def valid(self, x, y):
-		return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[x])
-
 	def DFS(self, startx, starty):
 		stack = []
 		aux = [startx, starty]
@@ -45,7 +42,7 @@ class Engine:
 			for i in range(4):
 				nx = aux[0] + self.dx[i]
 				ny = aux[1] + self.dy[i]
-				if self.valid(nx, ny) and self.grid[nx][ny] == val:
+				if tools.valid(nx, ny, self.grid) and self.grid[nx][ny] == val:
 					self.grid[nx][ny] -= 1
 					stack.append([nx, ny])
 		return area
@@ -62,7 +59,7 @@ class Engine:
 			for i in range(4):
 				nx = aux[0] + self.dx[i]
 				ny = aux[1] + self.dy[i]
-				if self.valid(nx, ny) and self.grid[nx][ny] != constants.CONQUERED:
+				if tools.valid(nx, ny, self.grid) and self.grid[nx][ny] != constants.CONQUERED:
 					self.grid[nx][ny] = constants.CONQUERED
 					stack.append([nx, ny])
 		return area
@@ -119,8 +116,8 @@ class Engine:
 
 	def updateGrid(self):
 		self.newBlocksConquered = 0
-		_heroPos = tools.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
-		if self.grid[_heroPos.x][_heroPos.y] == constants.CONQUERED:
+		
+		if self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] == constants.CONQUERED:
 			if self.conquering:
 				self.numberMovements += 1
 				# s_conquered.play()
@@ -135,26 +132,25 @@ class Engine:
 							self.newBlocksConquered += 1
 				self.numberRegions = 0
 				for b in self._ball:
-					b.area = self.DFS(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
-					if b.area > 4 and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))] == constants.HYPER:
+					b.area = self.DFS(b.pos.Dx(), b.pos.Dy())
+					if b.area > 4 and self.grid[b.pos.Dx()][b.pos.Dy()] == constants.HYPER:
 						self.numberRegions += 1
 				done = False
 				while not done:
 					done = True
 					for b in self._ball:
-						if b.area<constants.PRISION_AREA and self.grid[int(round(b.pos.x/constants.SCALE[0]))][int(round(b.pos.y/constants.SCALE[1]))]!=constants.NOTHING:
+						if b.area < constants.PRISION_AREA and self.grid[b.pos.Dx()][b.pos.Dy()]!=constants.NOTHING:
 							self.numberRegions -= 1
 							self.numberBalls -= 1
 							self.ballsKilled += 1
-							self.newBlocksConquered += self.DFS_PAINT(int(round(b.pos.x/constants.SCALE[0])), int(round(b.pos.y/constants.SCALE[1])))
+							self.newBlocksConquered += self.DFS_PAINT(b.pos.Dx(), b.pos.Dy())
 							self._ball.remove(b)
 							done = False
-							print("You are going down baby, restarting");
 							break
 
 		else:
 			self.conquering = True
-			self.grid[_heroPos.x][_heroPos.y] = constants.PROCESS
+			self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] = constants.PROCESS
 
 	def drawGrid(self, screen):
 		for x in range(constants.GRID_SIZE[0]):
@@ -175,15 +171,13 @@ class Engine:
 		return self.cont <= self.minimum
 
 	def draw(self, screen):
-		self.objectErase.append(Rect(0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]))
+		self.objectErase.append(constants.SCR)
 		
 		#draw hero
-		#pygame.draw.rect(screen, theme.heroColor, [self._hero.pos.x, self._hero.pos.y, constants.HERO_SIZE[0], constants.HERO_SIZE[1]])
 		screen.blit(self._hero.sprite.img, [self._hero.pos.x, self._hero.pos.y])
 
 		#draw ball
 		for b in self._ball:
-			#pygame.draw.circle(screen, theme.ballColor, [b.pos.x + constants.BALL_RADIUS, b.pos.y + constants.BALL_RADIUS], constants.BALL_RADIUS) #without sprites
 			screen.blit(b.sprite.img, [b.pos.x, b.pos.y])
 
 		#Score
@@ -247,7 +241,6 @@ class Engine:
 
 		self.initialSettings()
 		self.initGrid()
-		# self.updateGrid()
 		self.drawGrid(screen)
 
 		doneRunning = False
@@ -269,7 +262,7 @@ class Engine:
 			self.objectErase = [] 
 			pygame.draw.rect(screen, theme.conqColor, [0, 0, constants.SCREEN_SIZE[0], constants.SCALE[1]])
 		
-			#handle player input(
+			#handle player input
 			self.repint, check = self.checkInput(self.repint, screen)
 			if check != None:
 				return check
@@ -291,26 +284,24 @@ class Engine:
 				return lose
 
 			#calculates what parts of the image needs to be redone
-			_heroPos = tools.Vector2(int(round(self._hero.pos.x/constants.SCALE[0])), int(round(self._hero.pos.y/constants.SCALE[1])))
 			for i in [-1, 0, 1]:
 				for j in [-1, 0, 1]:
-					if _heroPos.x+i<0 or _heroPos.x+i>=constants.GRID_SIZE[0] or _heroPos.y+j<0 or _heroPos.y+j>=constants.GRID_SIZE[1]:
+					if not tools.valid(self._hero.pos.Dx() + i, self._hero.pos.Dy() + j, self.grid):
 						continue
-					r = Rect((_heroPos.x+i)*constants.SCALE[0], (_heroPos.y+j)*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
+					r = Rect((self._hero.pos.Dx() + i) * constants.SCALE[0], (self._hero.pos.Dy() + j) * constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
 					self.objectErase.append(r)
-					color = self.getColor(self.grid[(_heroPos.x+i)][_heroPos.y+j])
+					color = self.getColor(self.grid[(self._hero.pos.Dx() + i)][self._hero.pos.Dy() + j])
 					pygame.draw.rect(screen, color, r)
 
 			for balls in self._ball:
-				_ballPos = tools.Vector2(int(round(balls.pos.x/constants.SCALE[0])), int(round(balls.pos.y/constants.SCALE[1])))
 				for i in [-1, 0, 1]:
 					for j in [-1, 0, 1]:
-						if _ballPos.x+i<0 or _ballPos.x+i>=constants.GRID_SIZE[0] or _ballPos.y+j<0 or _ballPos.y+j>=constants.GRID_SIZE[1]:
+						if not tools.valid(balls.pos.Dx(), balls.pos.Dy(), self.grid):
 							continue
-						color = self.getColor(self.grid[(_ballPos.x+i)][_ballPos.y+j])
+						color = self.getColor(self.grid[(balls.pos.Dx() + i)][balls.pos.Dy() + j])
 						if color != theme.freeColor:
 							continue
-						r = Rect((_ballPos.x+i)*constants.SCALE[0], (_ballPos.y+j)*constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
+						r = Rect((balls.pos.Dx() + i) * constants.SCALE[0], (balls.pos.Dy() + j) * constants.SCALE[1], constants.SCALE[0], constants.SCALE[1])
 						self.objectErase.append(r)
 						pygame.draw.rect(screen, color, r)
 
@@ -333,10 +324,10 @@ class Engine:
 				self.score += self.newBlocksConquered//2
 				data.new_score += self.newBlocksConquered//2
 
-			#take time into account for score !
+			#take time into account for score!
 			self.draw(screen)
 			clock.tick(100)
 
 	def __del__(self):
 		data.i['ballsDestructed'] += self.ballsKilled
-		data.i['blocksConquered'] += self.cont + self.newBlocksConquered
+		data.i['blocksConquered'] += self.cont + self.newBlocksConquered	

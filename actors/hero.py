@@ -2,7 +2,7 @@ from resources import constants, tools
 
 class Hero:
 	def __init__(self):
-		self.pos = tools.Vector2(0, 0)
+		self.pos = tools.Vector2(constants.DEF_Px, constants.DEF_Py)
 		self.direction = constants.STOP
 		self.sprite = tools.sprite('default/hero.png', 0.4)
 	
