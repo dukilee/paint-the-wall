@@ -97,6 +97,7 @@ def changeTheme(n):
         theme.sliderPointerColorOff = constants.BLACK
 
 		#engine
+        theme.text_color = constants.WHITE
         theme.conqColor = constants.BLACK
         theme.procColor = constants.GRAY
         theme.freeColor = constants.WHITE

@@ -1,4 +1,3 @@
-#new menu
 import dataManager
 import pygame
 
@@ -250,7 +249,6 @@ class StartMenu(Menu):
 		self.elements.append(elements.Button(None, None, 'Start', constants.UNDEFINED, [constants.keys['s'], constants.keys['enter']]))
 		self.elements.append(elements.Button(constants.POS['LEFT'], None, 'Menu', self.parent_menu, [constants.keys['m']]))
 
-#incluir shortcuts pras fases!
 class StageMenu(Menu):
 	def initActors(self):
 		#part of the screen that this menu uses
@@ -263,11 +261,11 @@ class StageMenu(Menu):
 		# self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
 		for i in range(10):
 			if i >= data.i['lastUnlockedStages']:
-				self.elements.append(elements.Label(170 + (i % 5) * 110, 190 + int(i / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+				self.elements.append(elements.Label(170 + (i % 5) * 110, 190 + int(i / 5) * 150,'{}'.format(i), 30, False, constants.BLACK, theme.labelTextLLColor))
 			elif i == data.i['lastUnlockedStages']-1: #Button()
-				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[i + 1], [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
+				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i), constants.STAGE_INDEX[i + 1], [constants.keys[str(i)]], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
-				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[i + 1]))
+				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int(i / 5) * 150, '{}'.format(i), constants.STAGE_INDEX[i + 1], [constants.keys[str(i)]]))
 
 class Stage2Menu(Menu):
 	def initActors(self):
@@ -282,11 +280,11 @@ class Stage2Menu(Menu):
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Stages'))
 		for i in range(10, 20):
 			if i >= data.i['lastUnlockedStages']:
-				self.elements.append(elements.Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i + 1), 30, False, constants.BLACK, theme.labelTextLLColor))
+				self.elements.append(elements.Label(170 + (i % 5) * 110, 190 + int((i-10) / 5) * 150,'{}'.format(i), 30, False, constants.BLACK, theme.labelTextLLColor))
 			elif i==data.i['lastUnlockedStages']-1:																																			# Button()
-				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[1] + i, [constants.NOKEY], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
+				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i), constants.STAGE_INDEX[1] + i, [constants.keys[str(i - 10)]], None, constants.BUTTON_FONT_SIZE, True, theme.offButtonActualStage, theme.onButtonActualStage))
 			else:
-				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i + 1), constants.STAGE_INDEX[1] + i))
+				self.elements.append(elements.miniButton(150 + (i % 5) * 110, 170 + int((i-10) / 5) * 150, '{}'.format(i), constants.STAGE_INDEX[1] + i, [constants.keys[str(i - 10)]]))
 
 class StatsMenu(Menu):
 	def timeText(self):
@@ -317,13 +315,11 @@ class SurvivalMenu(Menu):
 		self.updateRect = constants.SCR
 
 		#actors
-		self.elements = []
-
-		self.elements.append(elements.Title(None, constants.POS['UP'], 'Survival'))
-
-		for k in range(len(data.ranking)):
-			self.elements.append(elements.Label(300, 150 + 35 * k, data.ranking[k][0], 30, False))
-			self.elements.append(elements.Label(500, 150 + 35 * k, str(data.ranking[k][1]), 30, False))
+		self.elements = [elements.Title(None, constants.POS['UP'], 'Survival')]
+		
+		for k in range(len(data.i['rank'])):
+			self.elements.append(elements.Label(300, 150 + 35 * k, data.i['rank'][k][0], 30, False))
+			self.elements.append(elements.Label(500, 150 + 35 * k, str(data.i['rank'][k][1]), 30, False))
 
 		self.elements.append(elements.Button(None, constants.POS['DOWN'], 'PLAY', constants.STAGE_SURVIVAL, [constants.keys['p'], constants.keys['enter']]))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
@@ -438,11 +434,6 @@ class InsertRankMenu(Menu):
 						return self.parent_menu
 					else:
 						letter = constants.keys['shift_in']
-					#if event.key == constants.keys['q']:
-					#	return self.parent_menu
-					#if event.key in listShortcut:
-					#	done = True
-					#	action = listShortcut[event.key].action
 				elif event.type == pygame.KEYUP:
 					if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
 						letter = constants.keys['shift_out']

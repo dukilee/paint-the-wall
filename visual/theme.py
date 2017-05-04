@@ -17,6 +17,9 @@ onButtonTextColor = constants.MED_GREEN
 onButtonActualStage = constants.BLUE
 offButtonActualStage = (120, 120, 255)
 
+#engine
+text_color = constants.BLACK
+
 #label
 labelBackColor = backgroundColor
 labelTextColor = constants.BLACK

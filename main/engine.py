@@ -4,8 +4,19 @@ from actors import hero
 from main import menu
 from pygame.locals import *
 from resources import constants, tools
-from user_data import data
-from visual import theme
+from user_data import data, dataManager
+from visual import theme, themeManager
+
+def set_environment():
+	pygame.init()
+	pygame.key.set_repeat(1, 200) # turn on "repeat" functionality
+	pygame.display.set_caption('paintTheWall', 'The Game')
+
+	dManager = dataManager.DataManager()
+	data.startTime = data.getActualTime() - data.i['timePlayed']
+	themeManager.changeTheme(data.i['theme'])
+
+	return pygame.display.set_mode(constants.SCREEN_SIZE), dManager, menu.MainMenu(constants.QUIT), pygame.mixer.music
 
 class Engine:
 	def __init__(self):
@@ -216,7 +227,7 @@ class Engine:
 		if data.getActualTime() - self.timeStart > self.timerMax:
 			return constants.LOSE
 		font = pygame.font.SysFont('Calibri', 25, True, False)
-		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, constants.BLACK)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, theme.text_color)
 		screen.blit(text, [750, 0])
 		return None
 

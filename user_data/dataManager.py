@@ -19,7 +19,10 @@ class DataManager:
 				if len(lines) != 2 or lines[0] not in data.i.keys():
 					print("Data file is corrupted :(")
 				else:
-					data.i[lines[0]] = int(float(lines[1]))
+					if lines[0] != 'rank':
+						data.i[lines[0]] = int(float(lines[1]))
+					else:
+						data.i[lines[0]] = eval(lines[1])
 
 		except IOError:
 			print("Creating a new data file...")

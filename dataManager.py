@@ -22,11 +22,6 @@ class DataManager:
 			print("Creating a new data file...")
 			self.save()
 
-	def insert_rank(self, new_score):
-		self.ranking.append(new_score)
-		self.ranking = sorted(self.ranking, lambda x: x[1])
-		self.ranking.pop(-1)
-
 	@staticmethod
 	def updateData():
 		if data.i['lastUnlockedStages']>20:
@@ -58,4 +53,3 @@ class DataManager:
 			s = name + ": " + str(val) + "\n"
 			file.write(s)
 		file.close()
-
