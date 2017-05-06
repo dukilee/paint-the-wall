@@ -1,6 +1,7 @@
 import pygame
 import random
 
+from audiovisual import theme
 from resources import constants
 
 #bidimensional vector class
@@ -18,12 +19,6 @@ class Vector2:
 	def Dy(self): #discretize 'y' coordinate
 		return conv(self.y, 1)
 	
-class sprite(pygame.sprite.Sprite):
-	def __init__(self, path, scale = 1.0):
-		self.img = pygame.image.load('resources/sprites/' + path)
-		self.rec = self.img.get_rect()
-		self.img = pygame.transform.scale(self.img, (int(self.rec.width * scale), int(self.rec.height * scale)))
-
 # - - - - -
 
 #checks if 'x' coordinate is valid

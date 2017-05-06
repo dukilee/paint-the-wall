@@ -1,10 +1,12 @@
+from audiovisual import theme
 from resources import constants, tools
 
+#the player
 class Hero:
 	def __init__(self):
 		self.pos = tools.Vector2(constants.DEF_Px, constants.DEF_Py)
 		self.direction = constants.STOP
-		self.sprite = tools.sprite('default/hero.png', 0.4)
+		self.sprite = theme.sprite('default/hero.png', 0.4)
 	
 	def able_to_move_x(self, where):
 		if where > 0:
@@ -16,13 +18,14 @@ class Hero:
 			return self.pos.y < constants.SCREEN_SIZE[1] - constants.HERO_SIZE[1]	
 		return self.pos.y > 0	
 
+	#update position on screen
 	def update(self, key, press):
 		if press: #press button
 			if key in constants.keys:
-				self.direction = constants.keys[key]
+				self.direction = constants.keys[key] #change direction of movement
 		else: #release button
 			if key in constants.keys and constants.keys[key] == self.direction:
-				self.direction = constants.STOP
+				self.direction = constants.STOP #stop movement
 
 		#moving hero
 		if self.direction in constants.move_x and self.able_to_move_x(constants.move_x[self.direction]):

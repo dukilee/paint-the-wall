@@ -25,6 +25,8 @@ SHYPER = HYPER + 1
 GRID_SIZE = (40, 40)
 SCALE = (int(SCREEN_SIZE[0]/GRID_SIZE[0]), int(SCREEN_SIZE[1]/GRID_SIZE[1]))
 SCR = pygame.Rect(0, 0, SCREEN_SIZE[0],  SCREEN_SIZE[1])
+dx = (1, -1, 0, 0)
+dy = (0, 0, 1, -1)
 
 #hero
 STOP = 0
@@ -80,6 +82,7 @@ POS = { 'RIGHT': int(0.7 * SCREEN_SIZE[0]),
 UNDEFINED = -1000 # for flags
 NEXT = -999
 RESTART = -3
+SPECIAL = -2
 UNCLICKABLE = -1
 QUIT = 0
 
@@ -102,6 +105,7 @@ STAGE_SURVIVAL = 99
 STAGE_0 = 100
 N_OF_STAGES = 20
 STAGE_INDEX = [STAGE_0 + k for k in range(N_OF_STAGES + 1)]
+ACHIEVE_DURATION = 3
 
 #themes
 RESET_THEME = -1

@@ -1,7 +1,7 @@
 import pygame
 import time
 
-from resources import tools
+from audiovisual import theme
 
 new_score, new_player = 0, '-'
 
@@ -17,8 +17,8 @@ i = {'timePlayed': 0, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': 0,
 		#settings
 		'musicVolume': 100, 'effectsVolume':100, 'rank': [('-', 0) for k in range(10)]}
 
-leftWingSprite = [tools.sprite('wing1Mini.png'), tools.sprite('wing2Mini.png'),
-				  	tools.sprite('wing3Mini.png'), tools.sprite('fullWingMini.png')]
+leftWingSprite = [theme.sprite('wing1Mini.png'), theme.sprite('wing2Mini.png'),
+				  	theme.sprite('wing3Mini.png'), theme.sprite('fullWingMini.png')]
 
 def insert_rank():
 	i['rank'].append((new_player, new_score))

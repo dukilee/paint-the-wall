@@ -37,7 +37,6 @@ class level_Ball(ball.Ball):
 			nextGrid[1] = tools.conv(nextPos.y, 1)
 
 		if grid[nextGrid[0]][nextGrid[1]] == constants.PROCESS:
-			print("YOU LOST :(")
 			return constants.LOSE
 
 		self.pos = tools.Vector2(self.pos.x + self.speed.x, self.pos.y + self.speed.y)

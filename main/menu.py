@@ -1,10 +1,10 @@
 import dataManager
 import pygame
 
+from audiovisual import animation, theme, themeManager
 from pygame.locals import *
 from resources import constants, elements, tools
 from user_data import data
-from visual import animation, theme, themeManager
 
 class Menu:
 	def __init__(self, parent = constants.MAIN_MENU):
@@ -12,19 +12,16 @@ class Menu:
 		self.animations = []
 		self.parent_menu = parent #where to go when quitting this menu
 
-	# virtual method
 	def initActors(self, ):
 		pass
 
 	def update(self, screen, anotherElement = None):
-		#constants
 		clock = pygame.time.Clock()
 		done = False
 		action = self.parent_menu
 		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
 		listShortcut = {}
 		
-		#actors
 		mouse = pygame.mouse
 		self.initActors()
 
@@ -49,6 +46,8 @@ class Menu:
 					if event.key in listShortcut:
 						done = True
 						action = listShortcut[event.key].action
+						if action == constants.SPECIAL:
+							listShortcut[event.key].callAction()
 
 			#button PLAY
 			screen.fill(theme.backgroundColor)
@@ -256,6 +255,7 @@ class StageMenu(Menu):
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.UNDEFINED, [constants.keys['t']]))
 		self.elements.append(elements.miniButton(constants.POS['RIGHT']+130, 240, '>', constants.STAGE_MENU_2, [constants.KEY_RIGHT]))
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Stages'))
 		# self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
@@ -274,6 +274,7 @@ class Stage2Menu(Menu):
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.UNDEFINED, [constants.keys['t']]))
 		self.elements.append(
 			elements.miniButton(constants.POS['LEFT']+10, 240, '<', constants.STAGE_MENU, [constants.KEY_LEFT]))
 
@@ -336,6 +337,8 @@ class SettingsMenu(Menu):
 
 	def setMusicVolume(self, val):
 		data.i['musicVolume'] = val
+		theme.vol_max = val / 100.0
+		theme.music.set_volume(theme.vol_max * theme.menu_vol)
 
 	def setEffectsVolume(self, val):
 		data.i['effectsVolume'] = val
@@ -353,9 +356,9 @@ class SettingsMenu(Menu):
 		self.elements.append(elements.Label(constants.POS['LEFT'], 215, 'Effects Volume:', 40, False))
 
 		self.elements.append(elements.Label(constants.POS['LEFT'], 295, 'Theme:', 40, False))
-		self.elements.append(elements.Button(170, 295, 'BASIC', constants.RESTART, [constants.keys['p'], constants.keys['enter']], self.toBasic))
-		self.elements.append(elements.Button(385, 295, 'DARK', constants.RESTART, [constants.keys['p'], constants.keys['enter']], self.toDark))
-		self.elements.append(elements.Button(600, 295, 'SMW', constants.RESTART, [constants.keys['p'], constants.keys['enter']], self.toSMW))
+		self.elements.append(elements.Button(170, 295, 'BASIC', constants.SPECIAL, [constants.keys['a']], self.toBasic))
+		self.elements.append(elements.Button(385, 295, 'DARK', constants.SPECIAL, [constants.keys['d']], self.toDark))
+		self.elements.append(elements.Button(600, 295, 'SMW', constants.SPECIAL, [constants.keys['s']], self.toSMW))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
 
 class LoseMenu(Menu):
@@ -392,23 +395,21 @@ class InsertRankMenu(Menu):
 		self.parent_menu = constants.SURVIVAL_MENU
 
 		#part of the screen that this menu uses
-		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
+		self.updateRect = Rect(0, 200, constants.SCREEN_SIZE[0], 200)
 
 		#actors
 		self.elements = []
 		self.elements.append(elements.Label(None, 350, 'Type in your name.', 30, False, constants.BLACK))
 		
-		self.TB = elements.TextBox(250, 250)		
+		self.text_box = elements.TextBox()
 
 	def update(self, screen):
-		#constants
 		done = False
 		action = self.parent_menu
 		clock = pygame.time.Clock()
 		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
 		listShortcut = {}
 		
-		#actors
 		mouse = pygame.mouse
 		self.initActors()
 
@@ -429,7 +430,7 @@ class InsertRankMenu(Menu):
 					if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT and event.key != constants.keys['enter']:
 						letter = event.key
 					elif event.key == constants.keys['enter']:
-						data.new_player = self.TB.b_text
+						data.new_player = self.text_box.b_text
 						data.insert_rank()
 						return self.parent_menu
 					else:
@@ -445,7 +446,7 @@ class InsertRankMenu(Menu):
 				b.blit(screen)
 			count += 1
 
-			self.TB.blit(screen, letter)
+			self.text_box.blit(screen, letter)
 
 			pygame.display.update(self.updateRect)
 			clock.tick(200)

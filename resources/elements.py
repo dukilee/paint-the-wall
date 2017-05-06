@@ -1,8 +1,8 @@
 import pygame
 
+from audiovisual import theme
 from resources import constants, tools
 from user_data import data
-from visual import theme
 
 class Elements:	
 	def __init__(self, x, y):
@@ -181,7 +181,7 @@ class Button(Elements):
 		self.body = [x, y, self.width, self.height] # rectangular area of the element
 		self.pressed = False
 
-		self.action = action # what will the button peform when clicked (see constants.py)
+		self.action = action # what will the button peform when clicked
 		self.shortcut = shortcut
 		self.callAction = callAction
 		self.set_button_sprites()
@@ -193,7 +193,6 @@ class Button(Elements):
 		self.onButtonColor = theme.onButtonColor
 		self.offButtonColor = theme.offButtonColor
 		self.present_button = self.off_button_sprite
-
 
 	def blit(self, screen):
 		text_rect = self.text.get_rect()
@@ -229,7 +228,7 @@ class ButtonOver(Button):
 	def __init__(self, x, y, callAction, imageName):
 		Button.__init__(self, x, y, '', constants.UNCLICKABLE, [constants.NOKEY],
 					 callAction, constants.BUTTON_FONT_SIZE, True, None, None)
-		self.present_button = tools.sprite(imageName)
+		self.present_button = theme.sprite(imageName)
 
 	# activate button if hovering, deactivate if not
 	def hover(self, mouse, done, action):
@@ -250,6 +249,13 @@ class miniButton(Button):
 
 class TextBox(Elements):
 	def __init__(self, x = None, y = None, b_text = '', text_size = constants.BUTTON_FONT_SIZE, t_color = constants.BLACK):
+		self.width = constants.BUTTON_WIDTH
+		self.height = constants.BUTTON_HEIGHT
+	
+		if x == None:
+			x = int((constants.SCREEN_SIZE[0] - self.width)/2)
+		if y == None:
+			y = int((constants.SCREEN_SIZE[1] - self.height)/2)
 		Elements.__init__(self, x, y)
 		
 		self.t_color = t_color
@@ -258,14 +264,6 @@ class TextBox(Elements):
 		self.text = self.fontButton.render(b_text, True, t_color) # text object
 		self.shift = False
 		self.MAX_TAM = 15
-
-		self.width = constants.BUTTON_WIDTH
-		self.height = constants.BUTTON_HEIGHT
-
-		if x == None:
-			x = int((constants.SCREEN_SIZE[0] - self.width)/2)
-		if y == None:
-			y = int((constants.SCREEN_SIZE[1] - self.height)/2)
 
 		self.body = [x, y, self.width, self.height]
 		self.update = False
