@@ -40,14 +40,18 @@ class Menu:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					return constants.QUIT
-				elif event.type == pygame.KEYDOWN:
+				elif event.type == pygame.KEYUP:
 					if event.key == constants.keys['q']:
 						return self.parent_menu
 					if event.key in listShortcut:
 						done = True
 						action = listShortcut[event.key].action
 						if action == constants.SPECIAL:
-							listShortcut[event.key].callAction()
+							spcial = listShortcut[event.key]
+							if type(spcial) is elements.Icon:
+								spcial.is_on = spcial.callAction(spcial, spcial.is_on)
+							else:
+								spcial.callAction()
 
 			#button PLAY
 			screen.fill(theme.backgroundColor)
@@ -342,6 +346,23 @@ class SettingsMenu(Menu):
 
 	def setEffectsVolume(self, val):
 		data.i['effectsVolume'] = val
+		theme.sfx_max = val / 100.0
+		for k in theme.sfx_list:
+			theme.sfx_list[k].set_volume(theme.sfx_max)
+		theme.sfx_list['conquering'].play()
+
+	def mute(self, icon, is_on):
+		if not is_on:
+			icon.turn_on()
+			theme.music.set_volume(theme.vol_max * theme.menu_vol)
+			for k in theme.sfx_list:
+				theme.sfx_list[k].set_volume(theme.sfx_max)
+		else:
+			icon.turn_off()
+			theme.music.set_volume(0)
+			for k in theme.sfx_list:
+				theme.sfx_list[k].set_volume(0)
+		return not is_on
 
 	def initActors(self):
 		#part of the screen that this menu uses
@@ -360,6 +381,8 @@ class SettingsMenu(Menu):
 		self.elements.append(elements.Button(385, 295, 'DARK', constants.SPECIAL, [constants.keys['d']], self.toDark))
 		self.elements.append(elements.Button(600, 295, 'SMW', constants.SPECIAL, [constants.keys['s']], self.toSMW))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
+
+		self.elements.append(elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], self.mute))
 
 class LoseMenu(Menu):
 	def initActors(self):

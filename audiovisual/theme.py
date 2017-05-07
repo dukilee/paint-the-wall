@@ -2,6 +2,8 @@ import pygame
 
 from resources import constants
 
+pygame.init()
+
 class sprite(pygame.sprite.Sprite):
 	def __init__(self, path, scale = 1.0):
 		self.img = pygame.image.load('resources/sprites/' + path)
@@ -30,9 +32,6 @@ onButtonTextColor = constants.MED_GREEN
 onButtonActualStage = constants.BLUE
 offButtonActualStage = (120, 120, 255)
 
-#engine
-text_color = constants.BLACK
-
 #label
 labelBackColor = backgroundColor
 labelTextColor = constants.BLACK
@@ -48,15 +47,22 @@ sliderPointerColorOn = constants.BLACK
 sliderPointerColorOff = constants.BLACK
 
 #engine
+text_color = constants.BLACK
 conqColor = constants.GREEN
 procColor = constants.LIGHT_GREEN
 freeColor = constants.WHITE
 ballColor = constants.BLUE
 heroColor = constants.RED
 
+#icons
+sound_on = sprite('sound_on.png')
+sound_off = sprite('sound_off.png')
+
 #sounds
 music = pygame.mixer.music
+sfx = pygame.mixer
 vol_max = 1.0
+sfx_max = 1.0
 menu_song = 'resources/sounds/menu.mid'
 menu_vol = 1.0
 game_song = 'resources/sounds/game.mid'
@@ -64,5 +70,5 @@ game_vol = 1.0
 rank_song = 'resources/sounds/rank.mid'
 lose_song = 'resources/sounds/lose.mid'
 win_song = 'resources/sounds/win.mid'
-conquering_sfx = 'resources/sounds/conquering.wav'
-conquered_sfx = 'resources/sounds/conquered.wav'
+sfx_arq = { 'conquering': 'resources/sounds/conquering.wav', 'conquered': 'resources/sounds/conquered.wav' }
+sfx_list = { k: pygame.mixer.Sound(sfx_arq[k]) for k in sfx_arq }

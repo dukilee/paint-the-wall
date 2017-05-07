@@ -34,10 +34,7 @@ class Engine:
 		self.numberMovements = 0 #number of movements made by the player
 		self.numberMovementsMax = -1
 		self.newBlocksConquered = 0
-
-		self.s_conquered = pygame.mixer.Sound(theme.conquered_sfx)
-		self.s_conquering = pygame.mixer.Sound(theme.conquering_sfx)
-
+		
 	#depth first search, to paint new conquered perimeter
 	#mode: True - painting the screen; False - looking for HYPER blocks
 	def DFS(self, startx, starty, mode = False):
@@ -127,7 +124,7 @@ class Engine:
 			#if it happened when hero was conquering area ...
 			if self.conquering:
 				self.numberMovements += 1
-				self.s_conquered.play()
+				theme.sfx_list['conquered'].play()
 				self.conquering = False #end of conquering
 				self.repint = True #screen need to be entirely updated
 				
@@ -165,7 +162,7 @@ class Engine:
 			#continues to conquer
 			self.conquering = True
 			if self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] == constants.NOTHING:
-				self.s_conquering.play()
+				theme.sfx_list['conquering'].play()
 			self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] = constants.PROCESS
 			
 	#paint the wall!

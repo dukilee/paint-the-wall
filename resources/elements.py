@@ -52,6 +52,55 @@ class Rectangle(Elements):
 		else:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
 
+class Icon(Elements):
+	def __init__(self, x = None, y = None, action = constants.UNCLICKABLE, shortcut = [constants.NOKEY], callAction = None):
+		self.set_button_sprites()
+
+		self.width = self.present_button.rec.width
+		self.height = self.present_button.rec.height
+
+		Elements.__init__(self, x, y)
+		self.body = [x, y, self.width, self.height] # rectangular area of the element
+		self.pressed = False
+
+		self.action = action # what will the button peform when clicked
+		self.shortcut = shortcut
+		self.callAction = callAction
+		self.is_on = True
+
+	def set_button_sprites(self):
+		self.off_button_sprite = theme.sound_off
+		self.on_button_sprite = theme.sound_on
+		self.present_button = self.on_button_sprite
+
+	def turn_on(self):
+		self.present_button = self.on_button_sprite
+
+	def turn_off(self):
+		self.present_button = self.off_button_sprite
+
+	def centralize(self, rec):
+		return [self.x + int((self.width - rec.width)/2), self.y + int((self.height - rec.height)/2)]
+
+	def blit(self, screen):
+		screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
+
+	def ishovering(self, mouse):
+		return mouse[0]>=self.x and mouse[0]<=self.x + self.width and mouse[1]>=self.y and mouse[1]<=self.y + self.height
+
+	# activate button if hovering, deactivate if not
+	def hover(self, mouse, done, action):
+		if self.ishovering(mouse.get_pos()):
+			if mouse.get_pressed()[0]: #on click
+				self.pressed = True
+			else:
+				if self.pressed: #release
+					action = self.action
+					self.is_on = self.callAction(self, self.is_on)
+				self.pressed = False
+
+		return done, action
+
 class SlideBar(Elements):
 	def __init__(self, x, y, width, maxValue, action, value = 0):
 		self.action = action

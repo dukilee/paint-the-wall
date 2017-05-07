@@ -1,9 +1,11 @@
+import pygame
+
 from audiovisual import theme
 from resources import constants, tools
 from user_data import data
 
 def changeTheme(n):
-    if n!= constants.RESET_THEME:
+    if n != constants.RESET_THEME:
         changeTheme(constants.RESET_THEME)
 
     data.i['theme'] = n
@@ -37,6 +39,10 @@ def changeTheme(n):
         theme.procColor = constants.LIGHT_GREEN
         theme.freeColor = constants.WHITE
         theme.ballColor = constants.BLUE
+
+        #icons
+        theme.sound_on = theme.sprite('sound_on.png')
+        theme.sound_off = theme.sprite('sound_off.png')
     
     elif n == constants.DARK_THEME:
         theme.backgroundColor = (5, 5, 5)
@@ -66,6 +72,10 @@ def changeTheme(n):
         theme.sliderBackColor = (180, 180, 180)
         theme.sliderPointerColorOn = (80, 80, 80)
         theme.sliderPointerColorOff = (150, 150, 150)
+
+        #icons
+        theme.sound_on = theme.sprite('Dark/sound_on.png')
+        theme.sound_off = theme.sprite('Dark/sound_off.png')
 
     elif n == constants.MARIO_THEME:
         theme.backgroundColor = (255, 255, 255)
@@ -101,6 +111,10 @@ def changeTheme(n):
         theme.conqColor = constants.BLACK
         theme.procColor = constants.GRAY
         theme.freeColor = constants.WHITE
+
+        #icons
+        theme.sound_on = theme.sprite('sound_on.png')
+        theme.sound_off = theme.sprite('sound_off.png')
 
     elif n == constants.RESET_THEME:
         #Basic Theme
@@ -141,12 +155,13 @@ def changeTheme(n):
 
         #sounds
         theme.vol_max = 1.0
-        theme.menu_song = 'resources/sounds/SMW/menu.mid'
+        theme.sfx_max = 1.0
+        theme.menu_song = 'resources/sounds/menu.mid'
         theme.menu_vol = 1.0
-        theme.game_song = 'resources/sounds/SMW/game.mid'
-        theme.game_vol = 0.3
+        theme.game_song = 'resources/sounds/game.mid'
+        theme.game_vol = 1.0
         theme.rank_song = 'resources/sounds/rank.mid'
         theme.lose_song = 'resources/sounds/lose.mid'
         theme.win_song = 'resources/sounds/win.mid'
-        theme.conquering_sfx = 'resources/sounds/SMW/conquering.wav'
-        theme.conquered_sfx = 'resources/sounds/SMW/conquered.wav'
+        theme.sfx_arq = { 'conquering': 'resources/sounds/conquering.wav', 'conquered': 'resources/sounds/conquered.wav' }
+        theme.sfx_list = { k: pygame.mixer.Sound(theme.sfx_arq[k]) for k in theme.sfx_arq }
