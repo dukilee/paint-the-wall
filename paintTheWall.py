@@ -8,7 +8,7 @@ from user_data import data, dataManager
 
 screen, dManager, _menu = engine.set_environment()
 
-action = constants.MAIN_MENU
+action = constants.MAIN_MENU #flag
 lastAction = constants.UNDEFINED
 
 theme.play_music(theme.menu_song, theme.menu_vol)
