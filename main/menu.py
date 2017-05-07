@@ -339,26 +339,44 @@ class SettingsMenu(Menu):
 	def toSMW(self):
 		themeManager.changeTheme(constants.MARIO_THEME)
 
-	def setMusicVolume(self, val):
+	def setMusicVolume(self, val, icon):
 		data.i['musicVolume'] = val
 		theme.vol_max = val / 100.0
+		theme.old_music = val / 100.0
 		theme.music.set_volume(theme.vol_max * theme.menu_vol)
-
-	def setEffectsVolume(self, val):
+		if theme.vol_max == 0.0 and theme.sfx_max == 0.0:
+			icon.turn_off()
+			icon.is_on = False
+		else:
+			icon.turn_on()
+			icon.is_on = True
+		
+	def setEffectsVolume(self, val, icon):
 		data.i['effectsVolume'] = val
 		theme.sfx_max = val / 100.0
+		theme.old_sfx = val / 100.0
 		for k in theme.sfx_list:
 			theme.sfx_list[k].set_volume(theme.sfx_max)
 		theme.sfx_list['conquering'].play()
+		if theme.vol_max < 0.05 and theme.sfx_max < 0.05:
+			icon.turn_off()
+			icon.is_on = False
+		else:
+			icon.turn_on()
+			icon.is_on = True
 
 	def mute(self, icon, is_on):
 		if not is_on:
 			icon.turn_on()
+			theme.vol_max = theme.old_music
+			theme.sfx_max = theme.old_sfx
 			theme.music.set_volume(theme.vol_max * theme.menu_vol)
 			for k in theme.sfx_list:
 				theme.sfx_list[k].set_volume(theme.sfx_max)
 		else:
 			icon.turn_off()
+			theme.vol_max = 0.0
+			theme.sfx_max = 0.0
 			theme.music.set_volume(0)
 			for k in theme.sfx_list:
 				theme.sfx_list[k].set_volume(0)
@@ -370,10 +388,15 @@ class SettingsMenu(Menu):
 
 		#actors
 		self.elements = []
+		icon = elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], self.mute)
+		slide_1 = elements.SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume'], icon)
+		slide_2 = elements.SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume'], icon)
+		icon.slide_1, icon.slide_2 = slide_1, slide_2
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Settings'))
-		self.elements.append(elements.SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume']))
+		self.elements.append(icon)
+		self.elements.append(slide_1)
 		self.elements.append(elements.Label(constants.POS['LEFT'], 135, 'Music Volume:', 40, False))
-		self.elements.append(elements.SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume']))
+		self.elements.append(slide_2)
 		self.elements.append(elements.Label(constants.POS['LEFT'], 215, 'Effects Volume:', 40, False))
 
 		self.elements.append(elements.Label(constants.POS['LEFT'], 295, 'Theme:', 40, False))
@@ -381,8 +404,6 @@ class SettingsMenu(Menu):
 		self.elements.append(elements.Button(385, 295, 'DARK', constants.SPECIAL, [constants.keys['d']], self.toDark))
 		self.elements.append(elements.Button(600, 295, 'SMW', constants.SPECIAL, [constants.keys['s']], self.toSMW))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b']]))
-
-		self.elements.append(elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], self.mute))
 
 class LoseMenu(Menu):
 	def initActors(self):

@@ -61,12 +61,12 @@ sound_off = sprite('sound_off.png')
 #sounds
 music = pygame.mixer.music
 sfx = pygame.mixer
-vol_max = 1.0
-sfx_max = 1.0
+old_music, old_sfx = 1.0, 1.0
+vol_max, sfx_max = 1.0, 1.0
 menu_song = 'resources/sounds/menu.mid'
 menu_vol = 1.0
 game_song = 'resources/sounds/game.mid'
-game_vol = 1.0
+game_vol = 0.4
 rank_song = 'resources/sounds/rank.mid'
 lose_song = 'resources/sounds/lose.mid'
 win_song = 'resources/sounds/win.mid'

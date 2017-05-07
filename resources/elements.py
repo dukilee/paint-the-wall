@@ -15,7 +15,6 @@ class Elements:
 		self.text = self.fontButton.render(self.b_text, True, self.on_t_color)
 
 	def turn_off(self):
-		#self.b_color = self.off_b_color
 		self.present_button = self.off_button_sprite
 		self.presentColor = self.offButtonColor
 		self.text = self.fontButton.render(self.b_text, True, self.off_t_color)
@@ -66,12 +65,22 @@ class Icon(Elements):
 		self.action = action # what will the button peform when clicked
 		self.shortcut = shortcut
 		self.callAction = callAction
-		self.is_on = True
+
+		self.slide_1 = None
+		self.slide_2 = None
+		
+		if theme.vol_max > 0.0 or theme.sfx_max > 0.0:
+			self.is_on = True
+		else:
+			self.is_on = False
 
 	def set_button_sprites(self):
 		self.off_button_sprite = theme.sound_off
 		self.on_button_sprite = theme.sound_on
-		self.present_button = self.on_button_sprite
+		if theme.vol_max > 0.0:
+			self.present_button = self.on_button_sprite
+		else:
+			self.present_button = self.off_button_sprite
 
 	def turn_on(self):
 		self.present_button = self.on_button_sprite
@@ -97,23 +106,31 @@ class Icon(Elements):
 				if self.pressed: #release
 					action = self.action
 					self.is_on = self.callAction(self, self.is_on)
+					if not self.is_on:
+						self.slide_1.old_value = self.slide_1.value
+						self.slide_1.value = 0.0
+						self.slide_2.old_value = self.slide_2.value
+						self.slide_2.value = 0.0
+
 				self.pressed = False
 
 		return done, action
 
 class SlideBar(Elements):
-	def __init__(self, x, y, width, maxValue, action, value = 0):
+	def __init__(self, x, y, width, maxValue, action, value = 0, share = None):
 		self.action = action
 		self.width = width
 		self.height = 50
 		self.maxValue = maxValue
 		self.value = value
+		self.old_value = value
 		self.shortcut = [constants.NOKEY]
 
 		Elements.__init__(self, x, y)
 
 		self.pointerPos = tools.Vector2(self.x + int(self.value*self.width/self.maxValue), self.y)
 		self.backgroundColor = theme.sliderBackColor
+		self.icon = share
 		self.turn_off()
 
 	def turn_on(self):
@@ -143,7 +160,7 @@ class SlideBar(Elements):
 				self.turn_on()
 				self.pointerPos.x = mouse.get_pos()[0]
 				self.value = (self.pointerPos.x - self.x)*self.maxValue/self.width
-				self.action(self.value)
+				self.action(self.value, self.icon)
 
 		return done, action
 
