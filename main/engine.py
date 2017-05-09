@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from actors import hero
 from audiovisual import theme, themeManager
@@ -20,6 +21,8 @@ def set_environment():
 
 class Engine:
 	def __init__(self):
+		self.elapsed_pause=0.0
+		self.pausetime=0.0
 		self._hero = hero.Hero() #the player
 		self._ball = []	#the enemies
 		self.cont = 0 #blocks that remains conquered on screen
@@ -83,11 +86,12 @@ class Engine:
 
 	#handle player inputs
 	def checkInput(self, repint, screen):
+		start_pause = time.clock()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				return repint, constants.QUIT
 			#if key pressed ...
-			if event.type == pygame.KEYDOWN:
+			if event.type == pygame.KEYUP:
 				#exit to previous menu
 				if event.key == constants.keys['q']:
 					return repint, self.action
@@ -96,15 +100,22 @@ class Engine:
 					_menu = menu.PauseMenu(self.action)
 					screen.fill(constants.WHITE)
 					action = _menu.update(screen, self.getInstructions())
+
+
 					if action == self.action:
 						return repint, self.action
 					elif action == constants.RESTART:
 						return repint, constants.RESTART
 					repint = True
 				else:
-					self._hero.update(event.key, True)
+					self._hero.update(event.key, False)
 			if event.type == pygame.KEYUP:
-				self._hero.update(event.key, False)
+				self._hero.update(event.key, True)
+
+		self.elapsed_pause = time.clock()
+		self.elapsed_pause = self.elapsed_pause - start_pause
+		if self.elapsed_pause >=1 :
+			self.pausetime=self.elapsed_pause+self.pausetime
 		return repint, None
 
 	#update hero and balls positions, also checks if any ball hitted the player path
@@ -239,7 +250,7 @@ class Engine:
 			return constants.LOSE
 
 		font = pygame.font.SysFont('Calibri', 18, True, False)
-		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, theme.text_color)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart+self.pausetime)), True, theme.text_color)
 		screen.blit(text, [750, 0])
 
 		return None
