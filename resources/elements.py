@@ -360,3 +360,8 @@ class TextBox(Elements):
 		text_rect = self.text.get_rect()
 		pygame.draw.rect(screen, constants.WHITE, [self.x, self.y, self.width, self.height])
 		screen.blit(self.text, self.centralize(text_rect))
+
+class tutorial(Elements):
+	def __init__(self, self.x, self.y):
+	def blit(self, screen):
+

@@ -258,7 +258,7 @@ class StageMenu(Menu):
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
-		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.UNDEFINED, [constants.keys['t']]))
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.TUTORIAL_MENU, [constants.keys['t']]))
 		self.elements.append(elements.miniButton(constants.POS['RIGHT']+130, 240, '>', constants.STAGE_MENU_2, [constants.KEY_RIGHT]))
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Stages'))
 		# self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
@@ -277,7 +277,7 @@ class Stage2Menu(Menu):
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
-		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.UNDEFINED, [constants.keys['t']]))
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.TUTORIAL_MENU, [constants.keys['t']]))
 		self.elements.append(
 			elements.miniButton(constants.POS['LEFT']+10, 240, '<', constants.STAGE_MENU, [constants.KEY_LEFT]))
 
@@ -500,3 +500,7 @@ class InsertRankMenu(Menu):
 			clock.tick(200)
 
 		return action
+
+
+class TutorialMenu (Menu):
+
