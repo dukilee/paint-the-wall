@@ -97,8 +97,7 @@ class AchievementsMenu(Menu):
 		"""yoga master instructions"""
 		self.overString = 'Kill a ball with only the first move.'
 		if self.cont==8:
-			dm = dataManager.DataManager()
-			dm.full()
+			dataManager.full()
 		elif self.cont != 9:
 			self.cont = 0
 
@@ -226,7 +225,7 @@ class AchievementsMenu(Menu):
 
 		if data.i['immortal'] == 1:
 			self.elements.append(elements.Label(50, 410, 'Immortal', 30, False, None, None))
-			self.elements.append(elements.ButtonOver(50, 350, self.toIM, 'jedi.png'))
+			self.elements.append(elements.ButtonOver(50, 350, self.toIM, 'immortalMini.png'))
 		else:
 			self.elements.append(
 				elements.Label(50, 410, 'Immortal', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -236,7 +235,7 @@ class AchievementsMenu(Menu):
 		if data.i['pilgrim'] == 1:
 			self.elements.append(
 				elements.Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(elements.ButtonOver(300, 350, self.toPI, 'jedi.png'))
+			self.elements.append(elements.ButtonOver(300, 350, self.toPI, 'pilgrimMini.png'))
 		else:
 			self.elements.append(
 				elements.Label(300, 410, 'Pilgrim', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -245,7 +244,7 @@ class AchievementsMenu(Menu):
 
 		if data.i['hacker'] == 1:
 			self.elements.append(elements.Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextColor))
-			self.elements.append(elements.ButtonOver(550, 350, self.toHA, 'jedi.png'))
+			self.elements.append(elements.ButtonOver(550, 350, self.toHA, 'hackerMini.png'))
 		else:
 			self.elements.append(
 				elements.Label(550, 410, 'Hacker', 30, False, theme.labelBackColor, theme.labelTextLowColor))
@@ -361,8 +360,7 @@ class StatsMenu(Menu):
 											   (actualTime) % 60)
 
 	def resetData(self):
-		dm = dataManager.DataManager()
-		dm.reset()
+		dataManager.reset()
 
 	def initActors(self):
 		"""Instantiates button, labels, titles, sliders"""

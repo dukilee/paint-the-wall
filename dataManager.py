@@ -69,42 +69,40 @@ class DataManager:
 			file.write(s)
 		file.close()
 
-	@staticmethod
-	def reset():
-		"""
-		Reset all data.
-		"""
-		data.startTime = 0
-		data.startTime = data.getActualTime()
-		data.new_score, data.new_player = 0, '-'
+def reset():
+	"""
+	Reset all data.
+	"""
+	data.startTime = 0
+	data.startTime = data.getActualTime()
+	data.new_score, data.new_player = 0, '-'
 
-		data.i = {'timePlayed': 0, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': 0,
-			 'lastUnlockedStages': 1, 'theme': 0,
-			 # achievements
-			 'doubleKill': 0, 'worldEmperor': 0, 'yogaMaster': 0, 'immortal': 0, 'jedi': 0,
-			 'pilgrim': 0, 'hacker': 0, 'pacifist': 0, 'serialKiller': 0,
-			 # settings
-			 'musicVolume': 0, 'effectsVolume': 0, 'rank': [('-', 0) for k in range(10)]}
-		data.i['timePlayed'] = 0
-		bd = data.i['ballsDestructed']
-		print("revd = ", bd)
+	data.i = {'timePlayed': 0, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': 0,
+		 'lastUnlockedStages': 1, 'theme': 0,
+		 # achievements
+		 'doubleKill': 0, 'worldEmperor': 0, 'yogaMaster': 0, 'immortal': 0, 'jedi': 0,
+		 'pilgrim': 0, 'hacker': 0, 'pacifist': 0, 'serialKiller': 0,
+		 # settings
+		 'musicVolume': 0, 'effectsVolume': 0, 'rank': [('-', 0) for k in range(10)]}
+	data.i['timePlayed'] = 0
+	bd = data.i['ballsDestructed']
+	print("revd = ", bd)
 
-	@staticmethod
-	def full():
-		"""
-		Unlocks everything that is possible.
-		"""
-		tp = data.i['timePlayed']
-		bd = data.i['ballsDestructed']
-		print("bd = ", bd)
-		if(bd<42):
-			bd = 42
-		print("bd = ", bd)
-		rk = data.i['rank']
-		data.i = {'timePlayed': tp, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': bd,
-			 'lastUnlockedStages': 21, 'theme': 0,
-			 # achievements
-			 'doubleKill': 1, 'worldEmperor': 1, 'yogaMaster': 1, 'immortal': 1, 'jedi': 1,
-			 'pilgrim': 1, 'hacker': 1, 'pacifist': 1, 'serialKiller': 1,
-			 # settings
-			 'musicVolume': 100, 'effectsVolume': 100, 'rank': rk}
+def full():
+	"""
+	Unlocks everything that is possible.
+	"""
+	tp = data.i['timePlayed']
+	bd = data.i['ballsDestructed']
+	print("bd = ", bd)
+	if(bd<42):
+		bd = 42
+	print("bd = ", bd)
+	rk = data.i['rank']
+	data.i = {'timePlayed': tp, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': bd,
+		 'lastUnlockedStages': 21, 'theme': 0,
+		 # achievements
+		 'doubleKill': 1, 'worldEmperor': 1, 'yogaMaster': 1, 'immortal': 1, 'jedi': 1,
+		 'pilgrim': 1, 'hacker': 1, 'pacifist': 1, 'serialKiller': 1,
+		 # settings
+		 'musicVolume': 100, 'effectsVolume': 100, 'rank': rk}

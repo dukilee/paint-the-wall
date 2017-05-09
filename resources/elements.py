@@ -102,6 +102,7 @@ class Rectangle(Elements):
 		"""
 		if self.thickness > 0:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height], self.thickness)
+			print("rec: ", self.width)
 		else:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
 
@@ -498,6 +499,8 @@ class ButtonOver(Button):
 		Button.__init__(self, x, y, '', constants.UNCLICKABLE, [constants.NOKEY],
 					 callAction, constants.BUTTON_FONT_SIZE, True, None, None)
 		self.present_button = theme.sprite(imageName)
+		self.width = 197
+		self.height = 53
 
 	# activate button if hovering, deactivate if not
 	def hover(self, mouse, done, action):
@@ -511,6 +514,19 @@ class ButtonOver(Button):
 		if self.ishovering(mouse.get_pos()):
 			self.callAction()
 		return done, action
+
+	def blit(self, screen):
+		"""
+		blits the button to the screen
+		:param screen: game screen, comes from pygame
+		"""
+		text_rect = self.text.get_rect()
+		if self.present_button != None:
+			screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
+		else:
+			pygame.draw.rect(screen, self.presentColor, [self.x, self.y, self.width, self.height])
+		print(self.width)
+		screen.blit(self.text, [self.x, self.y])
 
 class miniButton(Button):
 	"""
