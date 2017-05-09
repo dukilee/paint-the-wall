@@ -225,7 +225,6 @@ class MainMenu(Menu):
 		self.elements.append(elements.Button(None, 357, 'STATS', constants.STATS_MENU, [constants.keys['t']]))
 		self.elements.append(elements.Button(None, 426, 'SETTINGS', constants.SETTINGS_MENU, [constants.keys['g']]))
 		self.elements.append(elements.Button(None, 495, 'QUIT', constants.QUIT))
-
 		#animations
 		# self.animations.append(animation.MainMenuAnimation())
 
@@ -350,7 +349,10 @@ class SettingsMenu(Menu):
 		else:
 			icon.turn_on()
 			icon.is_on = True
-		
+		if icon.is_on == False:
+			theme.vol_max == 0.0
+
+
 	def setEffectsVolume(self, val, icon):
 		data.i['effectsVolume'] = val
 		theme.sfx_max = val / 100.0
@@ -378,6 +380,8 @@ class SettingsMenu(Menu):
 			theme.vol_max = 0.0
 			theme.sfx_max = 0.0
 			theme.music.set_volume(0)
+			self.slide_1.setValue(0)
+			self.slide_2.setValue(0)
 			for k in theme.sfx_list:
 				theme.sfx_list[k].set_volume(0)
 		return not is_on
@@ -389,14 +393,14 @@ class SettingsMenu(Menu):
 		#actors
 		self.elements = []
 		icon = elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], self.mute)
-		slide_1 = elements.SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume'], icon)
-		slide_2 = elements.SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume'], icon)
-		icon.slide_1, icon.slide_2 = slide_1, slide_2
+		self.slide_1 = elements.SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume'], icon)
+		self.slide_2 = elements.SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume'], icon)
+		icon.slide_1, icon.slide_2 = self.slide_1, self.slide_2
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Settings'))
 		self.elements.append(icon)
-		self.elements.append(slide_1)
+		self.elements.append(self.slide_1)
 		self.elements.append(elements.Label(constants.POS['LEFT'], 135, 'Music Volume:', 40, False))
-		self.elements.append(slide_2)
+		self.elements.append(self.slide_2)
 		self.elements.append(elements.Label(constants.POS['LEFT'], 215, 'Effects Volume:', 40, False))
 
 		self.elements.append(elements.Label(constants.POS['LEFT'], 295, 'Theme:', 40, False))

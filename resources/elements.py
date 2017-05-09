@@ -163,6 +163,10 @@ class SlideBar(Elements):
 				self.action(self.value, self.icon)
 
 		return done, action
+	def setValue(self, value):
+		self.value=value
+		self.pointerPos = tools.Vector2(self.x + int(self.value * self.width / self.maxValue), self.y)
+
 
 class Label(Elements):	
 	def __init__(self, x = None, y = None, b_text = '', text_size = constants.LABEL_FONT_SIZE, b_bold = True, b_color = None, t_color = None, update = None):
