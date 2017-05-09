@@ -97,10 +97,11 @@ STAGE_MENU = 5
 STATS_MENU = 6
 SURVIVAL_MENU = 7
 SETTINGS_MENU = 8
+TUTORIAL_MENU=10
 STAGE_MENU_2 = 121
 MENU_INDEX = { ABOUT_MENU: "About", ACHIEVEMENTS_MENU: "Achievements",
                MAIN_MENU: "Main", STAGE_MENU: "Stage", STAGE_MENU_2: "Stage2",
-               STATS_MENU: "Stats", SURVIVAL_MENU: "Survival", SETTINGS_MENU: "Settings" }
+               STATS_MENU: "Stats", SURVIVAL_MENU: "Survival", SETTINGS_MENU: "Settings", TUTORIAL_MENU:"Tutorial"}
 
 #stages
 PLAY = 9

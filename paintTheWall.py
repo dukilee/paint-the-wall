@@ -12,10 +12,12 @@ Main class of the game Paint The Wall
 
 screen, dManager, _menu = engine.set_environment()
 
-action = constants.MAIN_MENU #flag
+action = constants.MAIN_MENU 	#flag game state
 lastAction = constants.UNDEFINED
 
 theme.play_music(theme.menu_song, theme.menu_vol)
+
+# Game Loop
 while action != constants.QUIT:
 	screen.fill(theme.backgroundColor)
 

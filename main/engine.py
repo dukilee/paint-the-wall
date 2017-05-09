@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from actors import hero
 from audiovisual import theme, themeManager
@@ -107,6 +108,8 @@ class Engine:
 					_menu = menu.PauseMenu(self.action)
 					screen.fill(constants.WHITE)
 					action = _menu.update(screen, self.getInstructions())
+
+
 					if action == self.action:
 						return repint, self.action
 					elif action == constants.RESTART:
@@ -285,7 +288,7 @@ class Engine:
 			return constants.LOSE
 
 		font = pygame.font.SysFont('Calibri', 18, True, False)
-		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, theme.text_color)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart+self.pausetime)), True, theme.text_color)
 		screen.blit(text, [750, 0])
 
 		return None
