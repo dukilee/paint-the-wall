@@ -6,6 +6,10 @@ from resources import constants, tools
 from stages import stage, stage_Survival
 from user_data import data, dataManager
 
+"""
+Main class of the game Paint The Wall
+"""
+
 screen, dManager, _menu = engine.set_environment()
 
 action = constants.MAIN_MENU #flag

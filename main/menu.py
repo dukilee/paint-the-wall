@@ -7,15 +7,32 @@ from resources import constants, elements, tools
 from user_data import data
 
 class Menu:
+	"""
+	Abstract Class, defines the methods that its subclasses should have
+	"""
 	def __init__(self, parent = constants.MAIN_MENU):
+		"""
+		:param parent: menu before the current one
+		"""
 		self.elements = []
 		self.animations = []
 		self.parent_menu = parent #where to go when quitting this menu
 
 	def initActors(self, ):
+		"""
+		Instantiates button, labels, titles, sliders
+		"""
 		pass
 
 	def update(self, screen, anotherElement = None):
+		"""
+		In each iteration, checks if the user is doing some iteration with the elements. If it's, then
+		reacts accordingly
+		:param screen: game screen, comes from pygame
+		:param anotherElement: sometimes, the action can create a new element that will be
+		added to the menu dynamically
+		:return: the next action the game should do
+		"""
 		clock = pygame.time.Clock()
 		done = False
 		action = self.parent_menu
@@ -67,43 +84,79 @@ class Menu:
 
 		return action
 
-class AboutMenu(Menu):
-	def initActors(self):
-		#part of the screen that this menu uses
-		self.updateRect = constants.SCR
-
-		#actors
-		self.elements = []
-		self.elements.append(Label(None, constants.POS['UP'], 'About'))
-		self.elements.append(Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
-
 class AchievementsMenu(Menu):
-	def toDK(self):#double kill
+	def toDK(self):
+		"""double kill instructions"""
 		self.overString = 'Kill two balls at same time.'
+		if self.cont==0:
+			self.cont = self.cont + 1
+		elif self.cont != 1:
+			self.cont = 0
 
-	def toYM(self):#Yoga master
+	def toYM(self):
+		"""yoga master instructions"""
 		self.overString = 'Kill a ball with only the first move.'
+		if self.cont==8:
+			dm = dataManager.DataManager()
+			dm.full()
+		elif self.cont != 9:
+			self.cont = 0
 
-	def toWE(self): #World Emperor
+	def toWE(self):
+		"""world emperor instructions"""
 		self.overString = 'Conquer the hole screen.'
+		if self.cont==1:
+			self.cont = self.cont + 1
+		elif self.cont != 2:
+			self.cont = 0
 
-	def toIM(self):#Immortal
+	def toIM(self):
+		"""immortal instructions"""
 		self.overString = 'Do 666 points in survival mode.'
+		if self.cont==4:
+			self.cont = self.cont + 1
+		elif self.cont != 5:
+			self.cont = 0
 
-	def toJE(self):#Jedi
+	def toJE(self):
+		"""jedi instructions"""
 		self.overString = 'Conquer all achievements.'
+		if self.cont==2:
+			self.cont = self.cont + 1
+		elif self.cont != 3:
+			self.cont = 0
 
-	def toPI(self):#Pilgrim
+	def toPI(self):#
+		"""Pilgrim instructions"""
 		self.overString = 'Complete stage 10.'
+		if self.cont==5:
+			self.cont = self.cont + 1
+		elif self.cont != 6:
+			self.cont = 0
 
-	def toHA(self):#hacker
+	def toHA(self):
+		"""Hacker instructions"""
 		self.overString = 'Complete all stages. :D'
+		if self.cont==6:
+			self.cont = self.cont + 1
+		elif self.cont != 7:
+			self.cont = 0
 
-	def toPA(self):#Pacifist
+	def toPA(self):
+		"""Pacifist instructions"""
 		self.overString = 'Complete stage 9 without killing balls'
+		if self.cont==3:
+			self.cont = self.cont + 1
+		elif self.cont != 4:
+			self.cont = 0
 
-	def toSK(self):#Serial Killer
+	def toSK(self):
+		"""Serial killer instructions"""
 		self.overString = 'Kill 42 balls.'
+		if self.cont==7:
+			self.cont = self.cont + 1
+		elif self.cont != 8:
+			self.cont = 0
 
 	def instructionsText(self):
 		copy = self.overString
@@ -111,9 +164,11 @@ class AchievementsMenu(Menu):
 		return copy
 
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 		self.overString = '<Pass mouse over achievements>'
+		self.cont = 0
 
 		#actors
 		self.elements = []
@@ -209,6 +264,7 @@ class AchievementsMenu(Menu):
 
 class MainMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#where to go when quitting this menu
 		self.parent_menu = constants.QUIT
 
@@ -231,6 +287,7 @@ class MainMenu(Menu):
 
 class PauseMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
@@ -243,6 +300,7 @@ class PauseMenu(Menu):
 
 class StartMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
@@ -254,6 +312,7 @@ class StartMenu(Menu):
 
 class StageMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 
@@ -273,6 +332,7 @@ class StageMenu(Menu):
 
 class Stage2Menu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 
@@ -293,11 +353,20 @@ class Stage2Menu(Menu):
 
 class StatsMenu(Menu):
 	def timeText(self):
+		"""
+		Gets the actual time to change the text of one label
+		:return: Returns a string corresponding to the actual time
+		"""
 		actualTime = data.getActualTime()
 		return '{0:0=2d}:{1:0=2d}:{2:0=2d}'.format(int(actualTime / 3600), (int(actualTime / 60)) % 60,
 											   (actualTime) % 60)
 
+	def resetData(self):
+		dm = dataManager.DataManager()
+		dm.reset()
+
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 
@@ -305,6 +374,7 @@ class StatsMenu(Menu):
 		self.elements = []
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Stats'))
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']]))
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'RESET', constants.STATS_MENU, [constants.NOKEY], self.resetData))
 		self.elements.append(elements.Label(constants.POS['LEFT'], 300, 'Time Played:', 30, False))
 		self.elements.append(elements.Label(constants.POS['LEFT'], 350, 'Blocks Destructed:', 30, False))
 		self.elements.append(elements.Label(constants.POS['LEFT'], 400, 'Balls Killed:', 30, False))
@@ -316,6 +386,7 @@ class StatsMenu(Menu):
 
 class SurvivalMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 
@@ -331,15 +402,23 @@ class SurvivalMenu(Menu):
 
 class SettingsMenu(Menu):
 	def toBasic(self):
+		"""Change theme to basic"""
 		themeManager.changeTheme(constants.BASIC_THEME)
 
 	def toDark(self):
+		"""Change theme to dark"""
 		themeManager.changeTheme(constants.DARK_THEME)
 
 	def toSMW(self):
+		"""Change theme to super mario"""
 		themeManager.changeTheme(constants.MARIO_THEME)
 
 	def setMusicVolume(self, val, icon):
+		"""
+		Change music volume to val
+		:param val: new value to volume
+		:param icon: sprite to mute/unmute
+		"""
 		data.i['musicVolume'] = val
 		theme.vol_max = val / 100.0
 		theme.old_music = val / 100.0
@@ -352,6 +431,11 @@ class SettingsMenu(Menu):
 			icon.is_on = True
 		
 	def setEffectsVolume(self, val, icon):
+		"""
+		Change sound effects volume to val
+		:param val: new value to volume
+		:param icon: sprite to mute/unmute
+		"""
 		data.i['effectsVolume'] = val
 		theme.sfx_max = val / 100.0
 		theme.old_sfx = val / 100.0
@@ -366,6 +450,11 @@ class SettingsMenu(Menu):
 			icon.is_on = True
 
 	def mute(self, icon, is_on):
+		"""
+		Change music volume to 0
+		:param icon: sprite to mute/unmute
+		:param is_on: bool representing if the soun was already mute
+		"""
 		if not is_on:
 			icon.turn_on()
 			theme.vol_max = theme.old_music
@@ -383,6 +472,7 @@ class SettingsMenu(Menu):
 		return not is_on
 
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = constants.SCR
 
@@ -407,6 +497,7 @@ class SettingsMenu(Menu):
 
 class LoseMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#part of the screen that this menu uses
 		self.updateRect = Rect(0, 100, constants.SCREEN_SIZE[0], 300)
 
@@ -419,6 +510,7 @@ class LoseMenu(Menu):
 
 class WinMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#where to go when quitting this menu
 		self.parent_menu = constants.STAGE_MENU
 		
@@ -435,6 +527,7 @@ class WinMenu(Menu):
 
 class InsertRankMenu(Menu):
 	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
 		#where to go when quitting this menu
 		self.parent_menu = constants.SURVIVAL_MENU
 
@@ -448,6 +541,12 @@ class InsertRankMenu(Menu):
 		self.text_box = elements.TextBox()
 
 	def update(self, screen):
+		"""
+		In each iteration, checks if the user is doing some iteration with the elements. If it's, then
+		reacts accordingly
+		:param screen: game screen, comes from pygame
+		:return: the next action the game should do
+		"""
 		done = False
 		action = self.parent_menu
 		clock = pygame.time.Clock()

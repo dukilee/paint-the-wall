@@ -2,15 +2,32 @@ import pygame
 
 from resources import constants
 
+"""
+Keeps the value of each color/sprite for the current theme
+"""
+
 pygame.init()
 
 class sprite(pygame.sprite.Sprite):
+	"""
+	Keeps the sprite image and its size
+	"""
 	def __init__(self, path, scale = 1.0):
+		"""
+		:param path: Name of the archive in the computer
+		:param scale: Diminishes the image
+		"""
 		self.img = pygame.image.load('resources/sprites/' + path)
 		self.rec = self.img.get_rect()
 		self.img = pygame.transform.scale(self.img, (int(self.rec.width * scale), int(self.rec.height * scale)))
 
 def play_music(path, vol = 1.0, rep = -1):
+	"""
+	starts the music
+	:param path: name of the archive in the computer
+	:param vol: volume of the music
+	:param rep: number of repetitions
+	"""
 	global music, vol_max
 	music.stop()
 	music.load(path)

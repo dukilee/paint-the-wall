@@ -5,6 +5,10 @@ from resources import constants, tools
 from user_data import data
 
 def changeTheme(n):
+    """
+    changes the current theme by updating variables in theme.py
+    :param n: index of the new theme
+    """
     if n != constants.RESET_THEME:
         changeTheme(constants.RESET_THEME)
 

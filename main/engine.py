@@ -7,19 +7,11 @@ from pygame.locals import *
 from resources import constants, tools
 from user_data import data, dataManager
 
-def set_environment():
-	pygame.init()
-	pygame.key.set_repeat(1, 200) #turn on "repeat" functionality of keyboard
-	pygame.display.set_caption('paintTheWall', 'The Game') #game title
-
-	dManager = dataManager.DataManager() #recover data from last game
-	data.startTime = data.getActualTime() - data.i['timePlayed']
-	themeManager.changeTheme(data.i['theme']) #loads theme
-
-	return pygame.display.set_mode(constants.SCREEN_SIZE), dManager, menu.MainMenu(constants.QUIT)
-
 class Engine:
 	def __init__(self):
+		"""
+		Instantiates every object and give their initial values.
+		"""
 		self._hero = hero.Hero() #the player
 		self._ball = []	#the enemies
 		self.cont = 0 #blocks that remains conquered on screen
@@ -34,10 +26,16 @@ class Engine:
 		self.numberMovements = 0 #number of movements made by the player
 		self.numberMovementsMax = -1
 		self.newBlocksConquered = 0
-		
-	#depth first search, to paint new conquered perimeter
-	#mode: True - painting the screen; False - looking for HYPER blocks
+
 	def DFS(self, startx, starty, mode = False):
+		"""
+		depth first search, to paint new conquered perimeter
+		:param startx: horizontal position where the dfs starts
+		:param starty: vertical position where the dfs starts
+		:param mode: True - painting the screen; False - looking for HYPER blocks
+		:return: the quantity of new blocks conquered
+		"""
+
 		stack = []
 		aux = [startx, starty]
 		stack.append(aux)
@@ -63,6 +61,12 @@ class Engine:
 
 	#get grid color represented by 'n'
 	def getColor(self, n):
+		"""
+		Given the condition of a block (PROCESS, CONQUERED, HYPER, FREE), returns the color it should
+		be painted.
+		:param n: Current condition of a block
+		:return: Color of the block
+		"""
 		if n == constants.PROCESS:
 			return theme.procColor
 		if n == constants.CONQUERED:
@@ -71,8 +75,10 @@ class Engine:
 			return theme.conqColor
 		return theme.freeColor
 
-	#grid initialization
 	def initGrid(self):
+		"""
+		Initial game state, initialize grid
+		"""
 		for i in range (constants.GRID_SIZE[0]):
 			self.grid[i][0] = constants.CONQUERED
 			self.grid[i][constants.GRID_SIZE[1]-1] = constants.CONQUERED
@@ -81,13 +87,18 @@ class Engine:
 			self.grid[0][i] = constants.CONQUERED
 			self.grid[constants.GRID_SIZE[0]-1][i] = constants.CONQUERED		
 
-	#handle player inputs
 	def checkInput(self, repint, screen):
+		"""
+		Handles player inputs. Get the pressed keys and execute the corresponding action
+		:param repint: if true, repints the whole screen
+		:param screen: game screen, comes from pygame
+		:return: repint, next action of the game
+		"""
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				return repint, constants.QUIT
 			#if key pressed ...
-			if event.type == pygame.KEYDOWN:
+			if event.type == pygame.KEYUP:
 				#exit to previous menu
 				if event.key == constants.keys['q']:
 					return repint, self.action
@@ -102,13 +113,17 @@ class Engine:
 						return repint, constants.RESTART
 					repint = True
 				else:
-					self._hero.update(event.key, True)
-			if event.type == pygame.KEYUP:
-				self._hero.update(event.key, False)
+					self._hero.update(event.key, False)
+			if event.type == pygame.KEYDOWN:
+				self._hero.update(event.key, True)
 		return repint, None
 
 	#update hero and balls positions, also checks if any ball hitted the player path
 	def updateObjects(self):
+		"""
+		Update the position of the balls and of the hero
+		:return: returns if the players has lost or not the game
+		"""
 		self._hero.update(0, False)
 		for b in self._ball:
 			if b.update(self.grid) == constants.LOSE:
@@ -117,6 +132,10 @@ class Engine:
 
 	#update new paintings!
 	def updateGrid(self):
+		"""
+		After the hero moved, there is a possibility that he conquered more of the screen. This
+		function updates the current game state.
+		"""
 		self.newBlocksConquered = 0
 		
 		#if a perimeter was closed ...
@@ -167,6 +186,10 @@ class Engine:
 			
 	#paint the wall!
 	def drawGrid(self, screen):
+		"""
+		draws the whole screen again
+		:param screen: game screen, comes from pygame
+		"""
 		for x in range(constants.GRID_SIZE[0]):
 			for y in range(constants.GRID_SIZE[1]):
 				_color = theme.freeColor
@@ -182,10 +205,18 @@ class Engine:
 		pygame.display.flip()
 
 	def winCondition(self):
+		"""
+		checks if the player won the game
+		:return: true if the player won, false otherwise
+		"""
 		return self.cont <= self.minimum
 
 	#draw hero and balls on screen
 	def draw(self, screen):
+		"""
+		draws hero, balls and writes the time, score
+		:param screen: game screen, comes from pygame
+		"""
 		self.objectErase.append(constants.SCR)
 		
 		#draw hero
@@ -193,7 +224,7 @@ class Engine:
 
 		#draw ball
 		for b in self._ball:
-			screen.blit(b.sprite.img, [b.pos.x, b.pos.y])
+			screen.blit(b.sprite.img, [b.pos.x+3, b.pos.y+2])
 
 		#Score
 		font = pygame.font.SysFont('Calibri', 18, True, False)
@@ -203,6 +234,10 @@ class Engine:
 		pygame.display.update(self.objectErase)
 
 	def achievementsCondition(self):
+		"""
+		Checks if the player did something worth an achievement. If he did, then updates the data
+		:return: a list of the achievements unlocked by the player
+		"""
 		new_achievement = []
 
 		if not data.i['doubleKill'] == 1 and self.ballsKilled - self.oldBallsKilled > 1:
@@ -222,19 +257,30 @@ class Engine:
 		return new_achievement
 
 	def createObjects(self):
+		"""Instantiates the balls"""
 		pass
 
 	def stageDifferences(self, screen):
+		"""
+		Allows the stage to draw on the screen
+		:param screen: game screen, comes from pygame
+		"""
 		pass
 
 	def initialSettings(self):
+		"""Sets initial values to variables"""
 		pass
 
 	def getInstructions(self):
+		""":return: string with the info of what the player needs to do."""
 		pass
 
-	#checks if there's still time left
 	def timer(self, screen):
+		"""
+		Checks if there's still time left, and if there is updates the counter text
+		:param screen: game screen, comes from pygame
+		:return: returns if the player has lost the game
+		"""
 		if data.getActualTime() - self.timeStart > self.timerMax:
 			return constants.LOSE
 
@@ -244,8 +290,12 @@ class Engine:
 
 		return None
 
-	#checks if there's still movements left
 	def movesLeft(self, screen):
+		"""
+		Check if there's still movements left
+		:param screen: game screen, comes from pygame
+		:return: returns if the player has lost the game
+		"""
 		if self.numberMovements > self.numberMovementsMax:
 			return constants.LOSE
 
@@ -257,12 +307,22 @@ class Engine:
 
 	#show achievements
 	def achieve_advisor(self, screen, achieve):
+		"""
+		Prints a message on the screen if the player unlocked a new achievement
+		:param screen: game screen, comes from pygame
+		:param achieve: name of the achievement
+		"""
 		screen.fill(theme.conqColor, [200, 585, 400, 30])
 		font = pygame.font.SysFont('Calibri', 18, True, False)
 		text = font.render('New Achievement Unlocked! - ' + achieve, True, theme.text_color)
 		screen.blit(text, [250, 584])
 
 	def run(self, screen):
+		"""
+		Main loop of the game
+		:param screen: game screen, comes from pygame
+		:return: returns if the player won or lost the current stage
+		"""
 		self.conquering = False #true if there is any process block
 		self.repint = True #true when the whole screen needs to be redrawn
 		self.objectErase = [] #marks the position of everything that surrounds objects (balls or hero)
@@ -376,3 +436,17 @@ class Engine:
 	def __del__(self):
 		data.i['ballsDestructed'] += self.ballsKilled
 		data.i['blocksConquered'] += self.cont + self.newBlocksConquered
+
+def set_environment():
+	"""
+	Responsible for setting game caption and title
+	"""
+	pygame.init()
+	pygame.key.set_repeat(1, 200)  # turn on "repeat" functionality of keyboard
+	pygame.display.set_caption('paintTheWall', 'The Game')  # game title
+
+	dManager = dataManager.DataManager()  # recover data from last game
+	data.startTime = data.getActualTime() - data.i['timePlayed']
+	themeManager.changeTheme(data.i['theme'])  # loads theme
+
+	return pygame.display.set_mode(constants.SCREEN_SIZE), dManager, menu.MainMenu(constants.QUIT)

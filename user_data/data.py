@@ -3,14 +3,20 @@ import time
 
 from audiovisual import theme
 
+"""
+	stores every information about the game, as the achievements, time played, achievements
+	and rank information of suvival mode.
+"""
+
 new_score, new_player = 0, '-'
 
 startTime = 0
+already = False
 def getActualTime():
 	return int(time.mktime(time.localtime( )) - startTime)
 
 i = {'timePlayed': 0, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': 0,
-		'lastUnlockedStages': 10, 'theme':0,
+		'lastUnlockedStages': 1, 'theme':0,
 		#achievements
 		'doubleKill': 0, 'worldEmperor': 0, 'yogaMaster': 0, 'immortal': 0, 'jedi':0,
 	 	'pilgrim': 0, 'hacker': 0, 'pacifist': 0, 'serialKiller':0,

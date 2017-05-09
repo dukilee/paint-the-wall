@@ -1,5 +1,9 @@
 import pygame
 
+"""
+Keeps the all the game constants
+"""
+
 #colors
 NONE = (-1, -1, -1)
 WHITE = (255, 255, 255)
