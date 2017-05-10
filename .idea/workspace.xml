@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37ecea71-7b96-447d-8a27-d9add1c74195" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/user_data/user_data.bin" afterPath="$PROJECT_DIR$/user_data/user_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main/menu.py" afterPath="$PROJECT_DIR$/main/menu.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/constants.py" afterPath="$PROJECT_DIR$/resources/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/elements.py" afterPath="$PROJECT_DIR$/resources/elements.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="menu.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/menu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="547" column="84" lean-forward="true" selection-start-line="547" selection-start-column="84" selection-end-line="547" selection-end-column="84" />
+            <state relative-caret-position="155">
+              <caret line="341" column="0" lean-forward="true" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -349,8 +348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main/menu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="547" column="84" lean-forward="true" selection-start-line="547" selection-start-column="84" selection-end-line="547" selection-end-column="84" />
+        <state relative-caret-position="155">
+          <caret line="341" column="0" lean-forward="true" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
