@@ -389,6 +389,8 @@ class SurvivalMenu(Menu):
 
 		#actors
 		self.elements = [elements.Title(None, constants.POS['UP'], 'Survival')]
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.TUTORIAL_MENU_4))
+
 		
 		for k in range(len(data.i['rank'])):
 			self.elements.append(elements.Label(300, 150 + 35 * k, data.i['rank'][k][0], 30, False))
@@ -561,8 +563,6 @@ class Tutorial2Menu(Menu):
 
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU,
 											 [constants.keys['b']]))
-		self.elements.append(elements.miniButton(constants.POS['RIGHT']+180, 240, '>', constants.TUTORIAL_MENU_3, [constants.KEY_RIGHT]))
-		self.elements.append(elements.miniButton(constants.POS['LEFT']-40, 240, '<', constants.TUTORIAL_MENU_1, [constants.KEY_LEFT]))
 
 
 class Tutorial3Menu(Menu):
@@ -577,4 +577,16 @@ class Tutorial3Menu(Menu):
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU,
 											 [constants.keys['b']]))
 		self.elements.append(elements.miniButton(constants.POS['LEFT']-40, 240, '<', constants.TUTORIAL_MENU_2, [constants.KEY_LEFT]))
+
+class Tutorial4Menu	(Menu):
+	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
+		# part of the screen that this menu uses
+		self.updateRect = constants.SCR
+
+		# actors
+
+		self.elements.append(elements.Image(0, 0, 'Description.png'))
+		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU,
+											 [constants.keys['b']]))
 
