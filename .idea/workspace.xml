@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="37ecea71-7b96-447d-8a27-d9add1c74195" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/user_data/user_data.bin" afterPath="$PROJECT_DIR$/user_data/user_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main/menu.py" afterPath="$PROJECT_DIR$/main/menu.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/constants.py" afterPath="$PROJECT_DIR$/resources/constants.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="menu.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="menu.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/menu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="589" column="50" lean-forward="false" selection-start-line="589" selection-start-column="50" selection-end-line="589" selection-end-column="50" />
+            <state relative-caret-position="78">
+              <caret line="561" column="64" lean-forward="true" selection-start-line="561" selection-start-column="64" selection-end-line="561" selection-end-column="64" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -50,10 +47,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constants.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/constants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
+            <state relative-caret-position="1669">
               <caret line="106" column="22" lean-forward="false" selection-start-line="106" selection-start-column="22" selection-end-line="108" selection-end-column="93" />
               <folding />
             </state>
@@ -79,8 +76,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/resources/elements.py" />
-        <option value="$PROJECT_DIR$/main/menu.py" />
         <option value="$PROJECT_DIR$/resources/constants.py" />
+        <option value="$PROJECT_DIR$/main/menu.py" />
       </list>
     </option>
   </component>
@@ -289,7 +286,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
+    <frame x="-7" y="0" width="1378" height="735" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2496329" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -335,6 +332,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1669">
+          <caret line="106" column="22" lean-forward="false" selection-start-line="106" selection-start-column="22" selection-end-line="108" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/elements.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -345,19 +350,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main/menu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="589" column="50" lean-forward="false" selection-start-line="589" selection-start-column="50" selection-end-line="589" selection-end-column="50" />
+        <state relative-caret-position="78">
+          <caret line="561" column="64" lean-forward="true" selection-start-line="561" selection-start-column="64" selection-end-line="561" selection-end-column="64" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="106" column="22" lean-forward="false" selection-start-line="106" selection-start-column="22" selection-end-line="108" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>

@@ -563,6 +563,8 @@ class Tutorial2Menu(Menu):
 
 		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU,
 											 [constants.keys['b']]))
+		self.elements.append(elements.miniButton(constants.POS['RIGHT']+180, 240, '>', constants.TUTORIAL_MENU_3, [constants.KEY_RIGHT]))
+		self.elements.append(elements.miniButton(constants.POS['LEFT']-40, 240, '<', constants.TUTORIAL_MENU_1, [constants.KEY_LEFT]))
 
 
 class Tutorial3Menu(Menu):
