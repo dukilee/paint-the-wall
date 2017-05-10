@@ -126,7 +126,7 @@ class Image(Elements):
 		:param screen: game screen, comes from pygame
 		"""
 
-		actualImage = theme.sprite(self.path)
+		actualImage = theme.sprite(self.path, 0.85)
 		screen.blit(actualImage.img, [self.x, self.y])
 
 
