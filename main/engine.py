@@ -153,7 +153,7 @@ class Engine:
 			#if it happened when hero was conquering area ...
 			if self.conquering:
 				self.numberMovements += 1
-				soundManager.play_music(theme.conquered_song, 1.0, 0)
+				soundManager.play_music('conquered', 1.0, 0)
 				self.conquering = False #end of conquering
 				self.repint = True #screen need to be entirely updated
 				
@@ -191,7 +191,7 @@ class Engine:
 			#continues to conquer
 			self.conquering = True
 			if self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] == constants.NOTHING:
-				soundManager.play_music(theme.conquering_song, 1.0, 0)
+				soundManager.play_music('conquering', 1.0, 0)
 
 			self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] = constants.PROCESS
 			

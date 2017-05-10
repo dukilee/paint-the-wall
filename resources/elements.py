@@ -102,7 +102,6 @@ class Rectangle(Elements):
 		"""
 		if self.thickness > 0:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height], self.thickness)
-			print("rec: ", self.width)
 		else:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
 
@@ -551,7 +550,6 @@ class ButtonOver(Button):
 			screen.blit(self.present_button.img, self.centralize(self.present_button.rec))
 		else:
 			pygame.draw.rect(screen, self.presentColor, [self.x, self.y, self.width, self.height])
-		print(self.width)
 		screen.blit(self.text, [self.x, self.y])
 
 class miniButton(Button):

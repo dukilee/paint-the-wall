@@ -34,6 +34,9 @@ def setMusicVolume(val = -1, icon = None):
             icon.turn_on()
             icon.is_on = True
 
+
+
+
 def setEffectsVolume(val = -1, icon = None):
     """
     Change sound effects volume to val
@@ -46,8 +49,10 @@ def setEffectsVolume(val = -1, icon = None):
         data.i['effectsVolume'] = val
     data.sfx_max = val / 100.0
     data.old_sfx = val / 100.0
-    # sfx_list['conquering'].play()
-    play_music(theme.conquering_song, 1.0, 0)
+    for k in sfx_list:
+        # play_music(sfx, 1.0, 0)
+        sfx_list[k].set_volume(data.i['effectsVolume']/100.0)
+    sfx_list['conquering'].play()
     if icon != None:
         if data.vol_max < 0.05 and data.sfx_max < 0.05:
             icon.turn_off()
@@ -89,7 +94,9 @@ def play_music(path, vol = 1.0, rep = -1):
     :param rep: number of repetitions
     """
     global music, vol_max
-    if rep == -1:#background song
+    if path == 'conquering' or path == 'conquered':
+        sfx_list[path].play()
+    else:
         global currentMusic
         if currentMusic != path:
             currentMusic = path
@@ -97,8 +104,3 @@ def play_music(path, vol = 1.0, rep = -1):
             music.load(path)
             setMusicVolume()
             music.play(rep)
-    else:
-        music.stop()
-        music.load(path)
-        music.set_volume(data.i['effectsVolume']/100.0)
-        music.play(rep)
