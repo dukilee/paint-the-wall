@@ -106,6 +106,31 @@ class Rectangle(Elements):
 		else:
 			pygame.draw.rect(screen, self.b_color, [self.x, self.y, self.width, self.height])
 
+class Image(Elements):
+	def __init__(self, x = None, y = None, path = None):
+		"""
+		:param x: horizontal position
+		:param y: vertical position
+		:param width: width of the rectangle
+		:param height: height of the rectangle
+		:param b_color: color of the rectangle
+		:param thickness: if -1 is a solid rectangle, else is just the edge with the specified thickness
+		"""
+		Elements.__init__(self, x, y)
+		self.path = path
+		self.shortcut = [constants.NOKEY]
+
+	def blit(self, screen):
+		"""
+		blits the title to the screen with its background image
+		:param screen: game screen, comes from pygame
+		"""
+
+		actualImage = theme.sprite(self.path)
+		screen.blit(actualImage.img, [self.x, self.y])
+
+
+
 class Icon(Elements):
 	"""
 	Creates an Icon

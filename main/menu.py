@@ -316,7 +316,7 @@ class StageMenu(Menu):
 
 		#actors
 		self.elements = [elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'Back', constants.MAIN_MENU, [constants.keys['b'], constants.keys['backspace']])]
-		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.TUTORIAL_MENU, [constants.keys['t']]))
+		self.elements.append(elements.Button(constants.POS['LEFT'], constants.POS['DOWN'], 'Tutorial', constants.TUTORIAL_MENU))
 		self.elements.append(elements.miniButton(constants.POS['RIGHT']+130, 240, '>', constants.STAGE_MENU_2, [constants.KEY_RIGHT]))
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Stages'))
 		# self.elements.append(Label(None, constants.POS['UP'], 'Stages'))
@@ -537,3 +537,15 @@ class InsertRankMenu(Menu):
 		return action
 
 
+class TutorialMenu(Menu):
+	def initActors(self):
+		"""Instantiates button, labels, titles, sliders"""
+		# part of the screen that this menu uses
+		self.updateRect = constants.SCR
+
+		# actors
+		self.elements = [elements.Title(None, constants.POS['UP'], 'Tutorial')]
+
+		self.elements.append(elements.Image(200,300, 'jedi.png'))
+		self.elements.append(elements.Button(constants.POS['RIGHT'], constants.POS['DOWN'], 'BACK', constants.MAIN_MENU,
+											 [constants.keys['b']]))
