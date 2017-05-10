@@ -13,6 +13,7 @@ class Engine:
 		"""
 		Instantiates every object and give their initial values.
 		"""
+		self.pause_time=0.0
 		self._hero = hero.Hero() #the player
 		self._ball = []	#the enemies
 		self.cont = 0 #blocks that remains conquered on screen
@@ -89,6 +90,7 @@ class Engine:
 			self.grid[constants.GRID_SIZE[0]-1][i] = constants.CONQUERED		
 
 	def checkInput(self, repint, screen):
+		startpause = time.clock()
 		"""
 		Handles player inputs. Get the pressed keys and execute the corresponding action
 		:param repint: if true, repints the whole screen
@@ -119,6 +121,10 @@ class Engine:
 					self._hero.update(event.key, False)
 			if event.type == pygame.KEYDOWN:
 				self._hero.update(event.key, True)
+		endpause=time.clock()
+		if endpause-startpause>=1:
+			self.pause_time=self.pause_time+endpause-startpause
+
 		return repint, None
 
 	#update hero and balls positions, also checks if any ball hitted the player path
@@ -288,7 +294,7 @@ class Engine:
 			return constants.LOSE
 
 		font = pygame.font.SysFont('Calibri', 18, True, False)
-		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart+self.pausetime)), True, theme.text_color)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart+self.pause_time)), True, theme.text_color)
 		screen.blit(text, [750, 0])
 
 		return None
