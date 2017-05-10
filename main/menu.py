@@ -4,7 +4,7 @@ import pygame
 from audiovisual import animation, theme, themeManager
 from pygame.locals import *
 from resources import constants, elements, tools
-from user_data import data
+from user_data import data, soundManager
 
 class Menu:
 	"""
@@ -38,7 +38,7 @@ class Menu:
 		action = self.parent_menu
 		pygame.mouse.set_cursor(*pygame.cursors.tri_left)
 		listShortcut = {}
-		
+
 		mouse = pygame.mouse
 		self.initActors()
 
@@ -410,68 +410,6 @@ class SettingsMenu(Menu):
 		"""Change theme to super mario"""
 		themeManager.changeTheme(constants.MARIO_THEME)
 
-	def setMusicVolume(self, val, icon):
-		"""
-		Change music volume to val
-		:param val: new value to volume
-		:param icon: sprite to mute/unmute
-		"""
-		data.i['musicVolume'] = val
-		theme.vol_max = val / 100.0
-		theme.old_music = val / 100.0
-		theme.music.set_volume(theme.vol_max * theme.menu_vol)
-		if theme.vol_max == 0.0 and theme.sfx_max == 0.0:
-			icon.turn_off()
-			icon.is_on = False
-		else:
-			icon.turn_on()
-			icon.is_on = True
-		if icon.is_on == False:
-			theme.vol_max == 0.0
-
-
-	def setEffectsVolume(self, val, icon):
-		"""
-		Change sound effects volume to val
-		:param val: new value to volume
-		:param icon: sprite to mute/unmute
-		"""
-		data.i['effectsVolume'] = val
-		theme.sfx_max = val / 100.0
-		theme.old_sfx = val / 100.0
-		for k in theme.sfx_list:
-			theme.sfx_list[k].set_volume(theme.sfx_max)
-		theme.sfx_list['conquering'].play()
-		if theme.vol_max < 0.05 and theme.sfx_max < 0.05:
-			icon.turn_off()
-			icon.is_on = False
-		else:
-			icon.turn_on()
-			icon.is_on = True
-
-	def mute(self, icon, is_on):
-		"""
-		Change music volume to 0
-		:param icon: sprite to mute/unmute
-		:param is_on: bool representing if the soun was already mute
-		"""
-		if not is_on:
-			icon.turn_on()
-			theme.vol_max = theme.old_music
-			theme.sfx_max = theme.old_sfx
-			theme.music.set_volume(theme.vol_max * theme.menu_vol)
-			for k in theme.sfx_list:
-				theme.sfx_list[k].set_volume(theme.sfx_max)
-		else:
-			icon.turn_off()
-			theme.vol_max = 0.0
-			theme.sfx_max = 0.0
-			theme.music.set_volume(0)
-			self.slide_1.setValue(0)
-			self.slide_2.setValue(0)
-			for k in theme.sfx_list:
-				theme.sfx_list[k].set_volume(0)
-		return not is_on
 
 	def initActors(self):
 		"""Instantiates button, labels, titles, sliders"""
@@ -480,9 +418,9 @@ class SettingsMenu(Menu):
 
 		#actors
 		self.elements = []
-		icon = elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], self.mute)
-		self.slide_1 = elements.SlideBar(350, 120, 410, 100, self.setMusicVolume, data.i['musicVolume'], icon)
-		self.slide_2 = elements.SlideBar(350, 200, 410, 100, self.setEffectsVolume, data.i['effectsVolume'], icon)
+		icon = elements.Icon(constants.POS['LEFT'], constants.POS['DOWN'], constants.SPECIAL, [constants.keys['m']], soundManager.mute)
+		self.slide_1 = elements.SlideBar(350, 120, 410, 100, soundManager.setMusicVolume, data.i['musicVolume'], icon)
+		self.slide_2 = elements.SlideBar(350, 200, 410, 100, soundManager.setEffectsVolume, data.i['effectsVolume'], icon)
 		icon.slide_1, icon.slide_2 = self.slide_1, self.slide_2
 		self.elements.append(elements.Title(None, constants.POS['UP'], 'Settings'))
 		self.elements.append(icon)

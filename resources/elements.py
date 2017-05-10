@@ -292,8 +292,9 @@ class SlideBar(Elements):
 				self.action(self.value, self.icon)
 
 		return done, action
+
 	def setValue(self, value):
-		self.value=value
+		self.value = value
 		self.pointerPos = tools.Vector2(self.x + int(self.value * self.width / self.maxValue), self.y)
 
 

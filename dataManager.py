@@ -1,4 +1,4 @@
-from user_data import data
+from user_data import data, soundManager
 
 class DataManager:
 	"""
@@ -6,6 +6,8 @@ class DataManager:
 	All information is stored on data.py
 	"""
 	def __init__(self):
+		# soundManager.setMusicVolume(data.i['musicVolume'])
+
 		"""
 		Load data from user's computer. If there's no data or is corrupted created a new one
 		"""
@@ -30,6 +32,9 @@ class DataManager:
 				self.reset();
 				print("Creating a new data file...")
 				self.save()
+		print("setting sound music to ", data.i['musicVolume'])
+		soundManager.setMusicVolume(data.i['musicVolume'])
+
 
 	@staticmethod
 	def updateData():
@@ -86,7 +91,6 @@ def reset():
 		 'musicVolume': 0, 'effectsVolume': 0, 'rank': [('-', 0) for k in range(10)]}
 	data.i['timePlayed'] = 0
 	bd = data.i['ballsDestructed']
-	print("revd = ", bd)
 
 def full():
 	"""
@@ -94,10 +98,8 @@ def full():
 	"""
 	tp = data.i['timePlayed']
 	bd = data.i['ballsDestructed']
-	print("bd = ", bd)
 	if(bd<42):
 		bd = 42
-	print("bd = ", bd)
 	rk = data.i['rank']
 	data.i = {'timePlayed': tp, 'blocksConquered': 0, 'deaths': 0, 'ballsDestructed': bd,
 		 'lastUnlockedStages': 21, 'theme': 0,

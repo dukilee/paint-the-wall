@@ -7,6 +7,7 @@ from main import menu
 from pygame.locals import *
 from resources import constants, tools
 from user_data import data, dataManager
+from user_data import soundManager
 
 class Engine:
 	def __init__(self):
@@ -146,7 +147,7 @@ class Engine:
 			#if it happened when hero was conquering area ...
 			if self.conquering:
 				self.numberMovements += 1
-				theme.sfx_list['conquered'].play()
+				soundManager.play_music(theme.conquered_song, 1.0, 0)
 				self.conquering = False #end of conquering
 				self.repint = True #screen need to be entirely updated
 				
@@ -184,7 +185,8 @@ class Engine:
 			#continues to conquer
 			self.conquering = True
 			if self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] == constants.NOTHING:
-				theme.sfx_list['conquering'].play()
+				soundManager.play_music(theme.conquering_song, 1.0, 0)
+
 			self.grid[self._hero.pos.Dx()][self._hero.pos.Dy()] = constants.PROCESS
 			
 	#paint the wall!
@@ -288,7 +290,7 @@ class Engine:
 			return constants.LOSE
 
 		font = pygame.font.SysFont('Calibri', 18, True, False)
-		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart+self.pausetime)), True, theme.text_color)
+		text = font.render("{}".format(int(self.timerMax - data.getActualTime() + self.timeStart)), True, theme.text_color)
 		screen.blit(text, [750, 0])
 
 		return None

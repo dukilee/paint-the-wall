@@ -1,6 +1,6 @@
 import binascii
 
-from user_data import data
+from user_data import data, soundManager
 
 class DataManager:
 	"""
@@ -12,16 +12,16 @@ class DataManager:
 		"""
 		try:
 			file = open('user_data\\user_data.bin', 'rb')
-			
+
 			content = (self.read_data(file)).split('\n')
-			file.close()			
+			file.close()
 
 			for x in content:
 				if x == '':
 					break
 
 				lines = x.strip().split(": ")
-				
+
 				if len(lines) != 2 or lines[0] not in data.i.keys():
 					print("Data file is corrupted :(")
 				else:
@@ -30,9 +30,11 @@ class DataManager:
 					else:
 						data.i[lines[0]] = eval(lines[1])
 
+
 		except IOError:
 			print("Creating a new data file...")
 			self.save()
+		soundManager.setMusicVolume(data.i['musicVolume'])
 
 	def updateData(self):
 		"""

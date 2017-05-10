@@ -21,18 +21,6 @@ class sprite(pygame.sprite.Sprite):
 		self.rec = self.img.get_rect()
 		self.img = pygame.transform.scale(self.img, (int(self.rec.width * scale), int(self.rec.height * scale)))
 
-def play_music(path, vol = 1.0, rep = -1):
-	"""
-	starts the music
-	:param path: name of the archive in the computer
-	:param vol: volume of the music
-	:param rep: number of repetitions
-	"""
-	global music, vol_max
-	music.stop()
-	music.load(path)
-	music.set_volume(vol * vol_max)
-	music.play(rep)
 
 #Basic Theme
 backgroundColor = (245, 245, 255)
@@ -76,16 +64,10 @@ sound_on = sprite('sound_on.png')
 sound_off = sprite('sound_off.png')
 
 #sounds
-music = pygame.mixer.music
-sfx = pygame.mixer
-old_music, old_sfx = 1.0, 1.0
-vol_max, sfx_max = 1.0, 1.0
 menu_song = 'resources/sounds/menu.mid'
-menu_vol = 1.0
 game_song = 'resources/sounds/game.mid'
-game_vol = 0.4
 rank_song = 'resources/sounds/rank.mid'
 lose_song = 'resources/sounds/lose.mid'
 win_song = 'resources/sounds/win.mid'
-sfx_arq = { 'conquering': 'resources/sounds/conquering.wav', 'conquered': 'resources/sounds/conquered.wav' }
-sfx_list = { k: pygame.mixer.Sound(sfx_arq[k]) for k in sfx_arq }
+conquering_song = 'resources/sounds/conquering.wav'
+conquered_song = 'resources/sounds/conquered.wav'

@@ -30,3 +30,7 @@ def insert_rank():
 	i['rank'].append((new_player, new_score))
 	i['rank'] = sorted(i['rank'], key = lambda x: x[1])[::-1]
 	i['rank'].pop(-1)
+
+menu_vol, game_vol = 1.0, 1.0
+old_music, old_sfx = 1.0, 1.0
+vol_max, sfx_max = 1.0, 1.0
